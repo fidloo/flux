@@ -1,2 +1,2 @@
-rootProject.name = "AndroidDevChallenge"
+rootProject.name = "Flux"
 include ':app'

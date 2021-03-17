@@ -10,7 +10,7 @@
       the License.
       -->
     <!-- Base application theme. -->
-    <style name="Theme.AndroidDevChallenge" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+    <style name="Theme.Flux" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/purple_200</item>
         <item name="colorPrimaryVariant">@color/purple_700</item>

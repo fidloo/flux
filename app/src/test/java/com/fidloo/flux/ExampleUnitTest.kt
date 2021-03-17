@@ -13,26 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.example.androiddevchallenge
-
-import androidx.compose.ui.test.junit4.createAndroidComposeRule
-import androidx.test.ext.junit.runners.AndroidJUnit4
-import org.junit.Rule
-import org.junit.Test
-import org.junit.runner.RunWith
+package com.fidloo.flux
 
 /**
- * Instrumented test, which will execute on an Android device.
+ * Example local unit test, which will execute on the development machine (host).
  *
  * See [testing documentation](http://d.android.com/tools/testing).
  */
-@RunWith(AndroidJUnit4::class)
-class ExampleInstrumentedTest {
-    @get:Rule
-    val composeTestRule = createAndroidComposeRule<MainActivity>()
-
-    @Test
-    fun sampleTest() {
-        // Add instrumented tests here
-    }
+class ExampleUnitTest {
+    // Add unit tests here
 }

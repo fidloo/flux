@@ -11,18 +11,18 @@
   -->
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.androiddevchallenge">
+    package="com.fidloo.flux">
 
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/Theme.AndroidDevChallenge">
+        android:theme="@style/Theme.Flux">
         <activity
-            android:name="com.example.androiddevchallenge.MainActivity"
+            android:name="com.fidloo.flux.MainActivity"
             android:label="@string/app_name"
-            android:theme="@style/Theme.AndroidDevChallenge.NoActionBar">
+            android:theme="@style/Theme.Flux.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
