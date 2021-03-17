@@ -17,27 +17,74 @@ package com.fidloo.flux.ui.theme
 
 import androidx.compose.material.Typography
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
+import com.fidloo.flux.R
 
-// Set of Material typography styles to start with
-val typography = Typography(
+private val KulimPark = FontFamily(
+    Font(R.font.kulimpark_regular),
+    Font(R.font.kulimpark_light, FontWeight.Light),
+)
+
+private val Lato = FontFamily(
+    Font(R.font.lato_regular),
+    Font(R.font.lato_bold, FontWeight.Bold),
+)
+
+val typography = typographyFromDefaults(
+    h1 = TextStyle(
+        fontFamily = KulimPark,
+        fontWeight = FontWeight.Light,
+        fontSize = 28.sp,
+        letterSpacing = 1.15.sp
+    ),
+    h2 = TextStyle(
+        fontFamily = KulimPark,
+        fontSize = 15.sp,
+        letterSpacing = 1.15.sp,
+
+        ),
+    h3 = TextStyle(
+        fontFamily = Lato,
+        fontWeight = FontWeight.Bold,
+        fontSize = 14.sp,
+        letterSpacing = 0.sp,
+    ),
     body1 = TextStyle(
-        fontFamily = FontFamily.Default,
-        fontWeight = FontWeight.Normal,
-        fontSize = 16.sp
-    )
-        /* Other default text styles to override
+        fontFamily = Lato,
+        fontSize = 14.sp,
+        letterSpacing = 0.sp,
+    ),
     button = TextStyle(
-        fontFamily = FontFamily.Default,
-        fontWeight = FontWeight.W500,
-        fontSize = 14.sp
+        fontFamily = Lato,
+        fontWeight = FontWeight.Bold,
+        fontSize = 14.sp,
+        letterSpacing = 1.15.sp,
     ),
     caption = TextStyle(
-        fontFamily = FontFamily.Default,
-        fontWeight = FontWeight.Normal,
-        fontSize = 12.sp
-    )
-    */
+        fontFamily = KulimPark,
+        fontSize = 12.sp,
+        letterSpacing = 1.15.sp,
+    ),
 )
+
+fun typographyFromDefaults(
+    h1: TextStyle?,
+    h2: TextStyle?,
+    h3: TextStyle?,
+    body1: TextStyle?,
+    button: TextStyle?,
+    caption: TextStyle?,
+): Typography {
+    val defaults = Typography()
+    return Typography(
+        h1 = defaults.h1.merge(h1),
+        h2 = defaults.h2.merge(h2),
+        h3 = defaults.h3.merge(h3),
+        body1 = defaults.body1.merge(body1),
+        button = defaults.button.merge(button),
+        caption = defaults.caption.merge(caption),
+    )
+}
