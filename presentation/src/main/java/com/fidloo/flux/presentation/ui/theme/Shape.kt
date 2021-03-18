@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 The Android Open Source Project
+ * Copyright 2021 The Android Open Source Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,19 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.fidloo.flux.ui.theme
+package com.fidloo.flux.presentation.ui.theme
 
-import androidx.compose.runtime.Immutable
-import androidx.compose.runtime.staticCompositionLocalOf
-import androidx.compose.ui.unit.Dp
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Shapes
 import androidx.compose.ui.unit.dp
 
-/**
- * Elevation values that can be themed.
- */
-@Immutable
-data class Elevations(
-    val Backdrop: Dp = 8.dp,
+val shapes = Shapes(
+    small = RoundedCornerShape(4.dp),
+    medium = RoundedCornerShape(4.dp),
+    large = RoundedCornerShape(0.dp)
 )
 
-internal val LocalElevations = staticCompositionLocalOf { Elevations() }
+val BottomSheetShape = RoundedCornerShape(
+    topStart = 10.dp,
+    topEnd = 10.dp,
+    bottomStart = 0.dp,
+    bottomEnd = 0.dp
+)

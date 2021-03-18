@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.fidloo.flux.ui.welcome
+package com.fidloo.flux.presentation.ui.welcome
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -22,7 +22,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.fidloo.flux.ui.component.PrimaryButton
+import com.fidloo.flux.presentation.ui.component.PrimaryButton
 
 @Composable
 fun Welcome(

@@ -52,21 +52,6 @@ android {
         jvmTarget = "1.8"
     }
 
-    buildFeatures {
-        compose true
-
-        // Disable unused AGP features
-        buildConfig false
-        aidl false
-        renderScript false
-        resValues false
-        shaders false
-    }
-
-    composeOptions {
-        kotlinCompilerExtensionVersion compose_version
-    }
-
     packagingOptions {
         // Multiple dependency bring these files in. Exclude them to enable
         // our test APK to build (has no effect on our AARs)
@@ -98,13 +83,13 @@ dependencies {
     implementation Libs.AndroidX.Compose.animation
     implementation Libs.AndroidX.Compose.iconsExtended
     implementation Libs.AndroidX.Compose.tooling
+    implementation Libs.AndroidX.Compose.hilt
     implementation Libs.AndroidX.lifecycle
     implementation Libs.AndroidX.appcompat
     implementation Libs.material
 
     implementation Libs.Accompanist.coil
     implementation Libs.Accompanist.insets
-    implementation "androidx.hilt:hilt-navigation-compose:1.0.0-alpha01"
 
     androidTestImplementation Libs.AndroidX.Activity.activityCompose
 

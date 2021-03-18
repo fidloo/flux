@@ -13,13 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.fidloo.flux
+package com.fidloo.flux.presentation.ui
 
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.WindowCompat
-import com.fidloo.flux.ui.App
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.fidloo.flux.ui.home
+package com.fidloo.flux.presentation.ui.home
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -40,9 +40,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.fidloo.flux.ui.component.SectionHeader
-import com.fidloo.flux.ui.theme.BottomSheetShape
-import com.fidloo.flux.ui.theme.FluxTheme
+import com.fidloo.flux.presentation.ui.component.SectionHeader
+import com.fidloo.flux.presentation.ui.theme.BottomSheetShape
+import com.fidloo.flux.presentation.ui.theme.FluxTheme
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable

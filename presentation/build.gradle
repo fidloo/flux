@@ -1,10 +1,12 @@
+import com.fidloo.flux.buildsrc.Libs
 import com.fidloo.flux.buildsrc.Versions
 
 plugins {
     id 'com.android.library'
     id 'kotlin-android'
+    id 'kotlin-kapt'
+    id 'dagger.hilt.android.plugin'
 }
-
 android {
     compileSdkVersion Versions.CompileSdkVersion
 
@@ -25,9 +27,62 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
+
+    buildFeatures {
+        compose true
+
+        // Disable unused AGP features
+        buildConfig false
+        aidl false
+        renderScript false
+        resValues false
+        shaders false
+    }
+
+    composeOptions {
+        kotlinCompilerExtensionVersion compose_version
+    }
+
 }
 
 dependencies {
     implementation project(':domain')
     implementation project(':common')
+
+    implementation Libs.Kotlin.stdlib
+    implementation Libs.Coroutines.android
+
+    implementation Libs.AndroidX.coreKtx
+    implementation Libs.AndroidX.navigation
+    implementation Libs.AndroidX.Activity.activityCompose
+    implementation Libs.AndroidX.ConstraintLayout.constraintLayoutCompose
+
+    implementation Libs.AndroidX.Compose.runtime
+    implementation Libs.AndroidX.Compose.foundation
+    implementation Libs.AndroidX.Compose.layout
+    implementation Libs.AndroidX.Compose.ui
+    implementation Libs.AndroidX.Compose.uiUtil
+    implementation Libs.AndroidX.Compose.material
+    implementation Libs.AndroidX.Compose.animation
+    implementation Libs.AndroidX.Compose.iconsExtended
+    implementation Libs.AndroidX.Compose.tooling
+    implementation Libs.AndroidX.lifecycle
+    implementation Libs.AndroidX.appcompat
+    implementation Libs.AndroidX.Compose.hilt
+    implementation Libs.material
+
+    implementation Libs.Accompanist.coil
+    implementation Libs.Accompanist.insets
+
+    androidTestImplementation Libs.AndroidX.Activity.activityCompose
+
+    implementation Libs.Hilt.library
+    kapt Libs.Hilt.compiler
+
+    androidTestImplementation Libs.JUnit.junit
+    androidTestImplementation Libs.AndroidX.Test.core
+    androidTestImplementation Libs.AndroidX.Test.espressoCore
+    androidTestImplementation Libs.AndroidX.Test.rules
+    androidTestImplementation Libs.AndroidX.Test.Ext.junit
+    androidTestImplementation Libs.AndroidX.Compose.uiTest
 }

@@ -1,4 +1,4 @@
-package com.fidloo.flux.ui.component
+package com.fidloo.flux.presentation.ui.component
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.fidloo.flux.ui.theme
+package com.fidloo.flux.presentation.ui.theme
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material.Colors
@@ -24,7 +24,7 @@ import androidx.compose.material.darkColors
 import androidx.compose.material.lightColors
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
-import com.fidloo.flux.R
+import com.fidloo.flux.presentation.R
 
 private val LightTheme = lightColors(
     primary = gray900,
@@ -46,9 +46,9 @@ private val DarkTheme = darkColors(
     onSurface = white800
 )
 
-private val LightImages = Images(lockupLogo = R.drawable.ic_launcher_foreground)
+private val LightImages = Images(lockupLogo = R.drawable.ic_sun)
 
-private val DarkImages = Images(lockupLogo = R.drawable.ic_launcher_background)
+private val DarkImages = Images(lockupLogo = R.drawable.ic_sun)
 
 @Composable
 fun FluxTheme(

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.fidloo.flux.ui.navigation
+package com.fidloo.flux.presentation.ui.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -23,9 +23,9 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigate
 import androidx.navigation.compose.rememberNavController
-import com.fidloo.flux.ui.home.HomeScreen
-import com.fidloo.flux.ui.home.HomeViewModel
-import com.fidloo.flux.ui.welcome.Welcome
+import com.fidloo.flux.presentation.ui.home.HomeScreen
+import com.fidloo.flux.presentation.ui.home.HomeViewModel
+import com.fidloo.flux.presentation.ui.welcome.Welcome
 
 object MainDestinations {
     const val WELCOME_ROUTE = "welcome"

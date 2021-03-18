@@ -1,4 +1,4 @@
-package com.fidloo.flux.ui.home
+package com.fidloo.flux.presentation.ui.home
 
 import android.content.Context
 import androidx.lifecycle.ViewModel

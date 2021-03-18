@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.fidloo.flux.ui
+package com.fidloo.flux.presentation.ui
 
 import android.graphics.Color
 import android.os.Build
@@ -28,9 +28,9 @@ import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
-import com.fidloo.flux.ui.theme.FluxTheme
-import com.fidloo.flux.ui.navigation.LocalBackDispatcher
-import com.fidloo.flux.ui.navigation.NavGraph
+import com.fidloo.flux.presentation.ui.theme.FluxTheme
+import com.fidloo.flux.presentation.ui.navigation.LocalBackDispatcher
+import com.fidloo.flux.presentation.ui.navigation.NavGraph
 import dev.chrisbanes.accompanist.insets.ProvideWindowInsets
 
 @Composable
