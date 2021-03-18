@@ -15,6 +15,7 @@
  */
 package com.fidloo.flux.presentation.ui.home
 
+import android.widget.ProgressBar
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -25,6 +26,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.BackdropScaffold
 import androidx.compose.material.BackdropValue
+import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.ContentAlpha
 import androidx.compose.material.Divider
 import androidx.compose.material.ExperimentalMaterialApi
@@ -35,18 +37,26 @@ import androidx.compose.material.Text
 import androidx.compose.material.rememberBackdropScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.fidloo.flux.domain.base.Result
+import com.fidloo.flux.domain.base.successOr
+import com.fidloo.flux.presentation.ui.component.GenericErrorMessage
 import com.fidloo.flux.presentation.ui.component.SectionHeader
+import com.fidloo.flux.presentation.ui.component.SectionProgressBar
 import com.fidloo.flux.presentation.ui.theme.BottomSheetShape
 import com.fidloo.flux.presentation.ui.theme.FluxTheme
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun HomeScreen(viewModel: HomeViewModel = viewModel()) {
+    val viewState by viewModel.state.collectAsState()
     BackdropScaffold(
         scaffoldState = rememberBackdropScaffoldState(BackdropValue.Revealed),
         frontLayerScrimColor = Color.Transparent,
@@ -54,36 +64,26 @@ fun HomeScreen(viewModel: HomeViewModel = viewModel()) {
         backLayerContent = {
             Column {
                 Spacer(modifier = Modifier.height(56.dp))
-                Text(
-                    text = "Hello",
-                )
+                Text(text = "Hello")
                 Spacer(modifier = Modifier.height(56.dp))
-                Text(
-                    text = "Hello",
-                )
+                Text(text = "Hello")
                 Spacer(modifier = Modifier.height(56.dp))
-                Text(
-                    text = "Hello",
-                )
+                Text(text = "Hello")
                 Spacer(modifier = Modifier.height(56.dp))
-                Text(
-                    text = "Hello",
-                )
+                Text(text = "Hello")
                 Spacer(modifier = Modifier.height(56.dp))
-                Text(
-                    text = "Hello",
-                )
+                Text(text = "Hello")
             }
         },
         frontLayerContent = {
-            DetailedWeather()
+            DetailedWeather(viewState)
         },
         appBar = {}
     )
 }
 
 @Composable
-fun DetailedWeather() {
+fun DetailedWeather(viewState: HomeViewState) {
     Surface(
         modifier = Modifier.fillMaxSize(),
         color = MaterialTheme.colors.background,
@@ -98,44 +98,43 @@ fun DetailedWeather() {
         ) {
             SectionHeader(title = "Details", subtitle = "Weather now")
             Spacer(Modifier.height(8.dp))
-            for (i in 1..5) {
-                Column(Modifier.fillMaxWidth()) {
-                    CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.medium) {
-                        Text(
-                            text = "Item $i",
-                            modifier = Modifier.padding(vertical = 20.dp),
-                            style = MaterialTheme.typography.body1,
-                        )
+
+            when (viewState.currentWeather) {
+                is Result.Error -> GenericErrorMessage()
+                Result.Loading -> SectionProgressBar()
+                is Result.Success -> {
+                    for (i in 1..5) {
+                        Column(Modifier.fillMaxWidth()) {
+                            CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.medium) {
+                                Text(
+                                    text = "Item $i",
+                                    modifier = Modifier.padding(vertical = 20.dp),
+                                    style = MaterialTheme.typography.body1,
+                                )
+                            }
+                            Divider(color = Color.LightGray)
+                        }
                     }
-                    Divider(color = Color.LightGray)
                 }
             }
+
             SectionHeader(title = "Hourly weather", subtitle = "24-hour forecast")
             Spacer(Modifier.height(8.dp))
-            for (i in 1..5) {
-                Column(Modifier.fillMaxWidth()) {
-                    CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.medium) {
-                        Text(
-                            text = "Item $i",
-                            modifier = Modifier.padding(vertical = 20.dp),
-                            style = MaterialTheme.typography.body1,
-                        )
-                    }
-                    Divider(color = Color.LightGray)
+
+            when (viewState.hourlyWeather) {
+                is Result.Error -> GenericErrorMessage()
+                Result.Loading -> SectionProgressBar()
+                is Result.Success -> {
+                    Text(text = viewState.hourlyWeather.data)
                 }
             }
             SectionHeader(title = "This week", subtitle = "7-day forecast")
             Spacer(Modifier.height(8.dp))
-            for (i in 1..5) {
-                Column(Modifier.fillMaxWidth()) {
-                    CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.medium) {
-                        Text(
-                            text = "Item $i",
-                            modifier = Modifier.padding(vertical = 20.dp),
-                            style = MaterialTheme.typography.body1,
-                        )
-                    }
-                    Divider(color = Color.LightGray)
+            when (viewState.weekWeather) {
+                is Result.Error -> GenericErrorMessage()
+                Result.Loading -> SectionProgressBar()
+                is Result.Success -> {
+                    Text(text = viewState.weekWeather.data)
                 }
             }
         }

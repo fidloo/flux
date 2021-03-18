@@ -1,8 +1,11 @@
+import com.fidloo.flux.buildsrc.Libs
 import com.fidloo.flux.buildsrc.Versions
 
 plugins {
     id 'com.android.library'
     id 'kotlin-android'
+    id 'kotlin-kapt'
+    id 'dagger.hilt.android.plugin'
 }
 
 android {
@@ -29,4 +32,11 @@ android {
 
 dependencies {
     implementation project(':common')
+
+    implementation Libs.Kotlin.stdlib
+    implementation Libs.Coroutines.core
+
+    implementation Libs.Hilt.library
+    kapt Libs.Hilt.compiler
+
 }
