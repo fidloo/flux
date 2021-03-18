@@ -15,8 +15,10 @@
  */
 package com.fidloo.flux.presentation.ui.home
 
+import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -48,6 +50,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -57,6 +62,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.fidloo.flux.domain.base.Result
 import com.fidloo.flux.domain.model.CurrentWeather
+import com.fidloo.flux.presentation.ui.component.ExpandableSectionHeader
 import com.fidloo.flux.presentation.ui.component.GenericErrorMessage
 import com.fidloo.flux.presentation.ui.component.SectionHeader
 import com.fidloo.flux.presentation.ui.component.SectionProgressBar
@@ -133,11 +139,18 @@ fun DetailedWeather(viewState: HomeViewState) {
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun CurrentWeather(currentWeatherResult: Result<CurrentWeather>) {
+    var expanded by remember { mutableStateOf(false) }
     Column(
         modifier = Modifier
             .fillMaxWidth()
+            .animateContentSize()
     ) {
-        SectionHeader(title = "Details", subtitle = "Weather now")
+        ExpandableSectionHeader(
+            title = "Details",
+            subtitle = "Weather now",
+            expanded = expanded,
+            onToggleState = { expanded = !expanded }
+        )
         Spacer(Modifier.height(8.dp))
 
         when (currentWeatherResult) {
@@ -148,18 +161,20 @@ fun CurrentWeather(currentWeatherResult: Result<CurrentWeather>) {
                 val weatherFacts = currentWeather.extractFacts()
 
                 val itemsPerRow = 2
-                weatherFacts.chunked(itemsPerRow).forEach { factsPerRow ->
-                    Row(modifier = Modifier.fillMaxWidth()) {
-                        factsPerRow.forEachIndexed { index, fact ->
-                            Box(
-                                modifier = Modifier
-                                    .fillMaxWidth(1f / (itemsPerRow - index))
-                            ) {
-                                WeatherFact(fact)
+                weatherFacts.chunked(itemsPerRow)
+                    .run { if (!expanded) take(2) else this }
+                    .forEach { factsPerRow ->
+                        Row(modifier = Modifier.fillMaxWidth()) {
+                            factsPerRow.forEachIndexed { index, fact ->
+                                Box(
+                                    modifier = Modifier
+                                        .fillMaxWidth(1f / (itemsPerRow - index))
+                                ) {
+                                    WeatherFact(fact)
+                                }
                             }
                         }
                     }
-                }
             }
         }
     }
