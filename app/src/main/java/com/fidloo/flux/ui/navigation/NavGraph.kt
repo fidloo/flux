@@ -17,12 +17,14 @@ package com.fidloo.flux.ui.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
+import androidx.hilt.navigation.compose.hiltNavGraphViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigate
 import androidx.navigation.compose.rememberNavController
-import com.fidloo.flux.ui.home.Home
+import com.fidloo.flux.ui.home.HomeScreen
+import com.fidloo.flux.ui.home.HomeViewModel
 import com.fidloo.flux.ui.welcome.Welcome
 
 object MainDestinations {
@@ -42,8 +44,9 @@ fun NavGraph(startDestination: String = MainDestinations.HOME_ROUTE) {
         composable(MainDestinations.WELCOME_ROUTE) {
             Welcome(onGetStartedClicked = actions.welcomeComplete)
         }
-        composable(MainDestinations.HOME_ROUTE) {
-            Home()
+        composable(MainDestinations.HOME_ROUTE) { backStackEntry ->
+            val viewModel = hiltNavGraphViewModel<HomeViewModel>(backStackEntry = backStackEntry)
+            HomeScreen(viewModel)
         }
     }
 }

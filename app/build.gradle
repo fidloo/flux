@@ -1,20 +1,24 @@
 
+
+import com.fidloo.flux.buildsrc.Versions
 import com.fidloo.flux.buildsrc.Libs
 
 plugins {
     id 'com.android.application'
     id 'kotlin-android'
+    id 'kotlin-kapt'
+    id 'dagger.hilt.android.plugin'
 }
 
 android {
-    compileSdkVersion 30
+    compileSdkVersion Versions.CompileSdkVersion
 
     defaultConfig {
         applicationId "com.fidloo.flux"
-        minSdkVersion 23
-        targetSdkVersion 30
-        versionCode 1
-        versionName "1.0"
+        minSdkVersion Versions.MinSdkVersion
+        targetSdkVersion Versions.TargetSdkVersion
+        versionCode Versions.VersionCode
+        versionName Versions.VersionName
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -27,6 +31,11 @@ android {
             keyAlias 'androiddebugkey'
             keyPassword 'android'
         }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
 
     buildTypes {
@@ -90,8 +99,12 @@ dependencies {
 
     implementation Libs.Accompanist.coil
     implementation Libs.Accompanist.insets
+    implementation "androidx.hilt:hilt-navigation-compose:1.0.0-alpha01"
 
     androidTestImplementation Libs.AndroidX.Activity.activityCompose
+
+    implementation Libs.Hilt.library
+    kapt Libs.Hilt.compiler
 
     androidTestImplementation Libs.JUnit.junit
     androidTestImplementation Libs.AndroidX.Test.core

@@ -17,6 +17,13 @@
 package com.fidloo.flux.buildsrc
 
 object Versions {
+    const val CompileSdkVersion = 30
+    const val MinSdkVersion = 23
+    const val TargetSdkVersion = 30
+
+    const val VersionCode = 1
+    const val VersionName = "1.0"
+
     const val ktlint = "0.40.0"
 }
 
@@ -94,5 +101,13 @@ object Libs {
 
             const val espressoCore = "androidx.test.espresso:espresso-core:3.3.0"
         }
+    }
+
+    object Hilt {
+        private const val version = "2.33-beta"
+        const val library = "com.google.dagger:hilt-android:$version"
+        const val compiler = "com.google.dagger:hilt-android-compiler:$version"
+        const val testing = "com.google.dagger:hilt-android-testing:$version"
+        const val gradlePlugin = "com.google.dagger:hilt-android-gradle-plugin:$version"
     }
 }
