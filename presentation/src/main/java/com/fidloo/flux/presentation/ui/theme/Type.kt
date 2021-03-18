@@ -41,15 +41,15 @@ val typography = typographyFromDefaults(
         letterSpacing = 1.15.sp
     ),
     h2 = TextStyle(
-        fontFamily = Roboto,
-        fontSize = 15.sp,
+        fontFamily = Lato,
+        fontSize = 18.sp,
         letterSpacing = 1.15.sp,
 
         ),
     h3 = TextStyle(
         fontFamily = Lato,
         fontWeight = FontWeight.Bold,
-        fontSize = 14.sp,
+        fontSize = 15.sp,
         letterSpacing = 0.sp,
     ),
     subtitle1 = TextStyle(
@@ -58,7 +58,7 @@ val typography = typographyFromDefaults(
         letterSpacing = 0.15.sp,
     ),
     body1 = TextStyle(
-        fontFamily = Lato,
+        fontFamily = Roboto,
         fontSize = 14.sp,
         letterSpacing = 0.sp,
     ),
