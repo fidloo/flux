@@ -32,8 +32,7 @@ private val LightTheme = lightColors(
     onSecondary = white,
     onPrimary = white,
     surface = white850,
-    background = taupe100,
-    onBackground = taupe800,
+    background = white,
     onSurface = gray800
 )
 
@@ -44,7 +43,6 @@ private val DarkTheme = darkColors(
     onPrimary = gray900,
     surface = white150,
     background = gray900,
-    onBackground = taupe100,
     onSurface = white800
 )
 

@@ -25,7 +25,7 @@ import androidx.compose.ui.unit.dp
  */
 @Immutable
 data class Elevations(
-    val bottomNavigation: Dp = 8.dp,
+    val Backdrop: Dp = 8.dp,
 )
 
 internal val LocalElevations = staticCompositionLocalOf { Elevations() }
