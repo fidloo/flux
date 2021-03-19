@@ -26,6 +26,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.fidloo.flux.domain.base.Result
+import com.fidloo.flux.domain.model.CurrentWeather
 import com.fidloo.flux.domain.model.WeatherFacts
 import com.fidloo.flux.presentation.ui.component.ExpandableSectionHeader
 import com.fidloo.flux.presentation.ui.component.GenericErrorMessage
@@ -34,7 +35,7 @@ import com.fidloo.flux.presentation.ui.component.SectionProgressBar
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun CurrentWeather(currentWeatherResult: Result<WeatherFacts>) {
+fun CurrentWeather(currentWeatherResult: Result<CurrentWeather>) {
     var expanded by remember { mutableStateOf(false) }
     Column(
         modifier = Modifier

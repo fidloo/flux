@@ -14,6 +14,7 @@ import androidx.compose.material.icons.outlined.WbSunny
 import androidx.compose.material.icons.outlined.WbTwilight
 import androidx.compose.material.icons.rounded.Air
 import androidx.compose.ui.graphics.vector.ImageVector
+import com.fidloo.flux.domain.model.CurrentWeather
 import com.fidloo.flux.domain.model.WeatherFacts
 
 data class WeatherFact(
@@ -22,55 +23,55 @@ data class WeatherFact(
     val icon: ImageVector,
 )
 
-fun WeatherFacts.extractFacts() = listOf(
+fun CurrentWeather.extractFacts() = listOf(
     WeatherFact(
         label = "Temperature",
-        value = "$temperature°C",
+        value = "$minTemperature° | ${maxTemperature}°",
         icon = Icons.Outlined.Thermostat
     ),
     WeatherFact(
         label = "Feels like",
-        value = "${apparentTemperature}°C",
+        value = "${hourWeather.apparentTemperature}°",
         icon = Icons.Outlined.Face
     ),
     WeatherFact(
         label = "Wind speed",
-        value = "$windSpeed km/h",
+        value = "${hourWeather.windSpeed} km/h",
         icon = Icons.Rounded.Air
     ),
     WeatherFact(
         label = "Precipitation",
-        value = "${precipitation * 100}%",
+        value = "${hourWeather.precipitation * 100}%",
         icon = Icons.Outlined.Umbrella
     ),
     WeatherFact(
         label = "Cloud cover",
-        value = "${cloudCover * 100}%",
+        value = "${hourWeather.cloudCover * 100}%",
         icon = Icons.Outlined.FilterDrama
     ),
     WeatherFact(
         label = "Humidity",
-        value = "${humidity * 100}%",
+        value = "${hourWeather.humidity * 100}%",
         icon = Icons.Outlined.Opacity
     ),
     WeatherFact(
         label = "Pressure",
-        value = "$pressure bar",
+        value = "${hourWeather.pressure} bar",
         icon = Icons.Outlined.Speed
     ),
     WeatherFact(
         label = "UV Index",
-        value = "$uvIndex",
+        value = "${hourWeather.uvIndex}",
         icon = Icons.Outlined.WbSunny
     ),
     WeatherFact(
         label = "Visibility",
-        value = "$visibility km",
+        value = "${hourWeather.visibility} km",
         icon = Icons.Outlined.Visibility
     ),
     WeatherFact(
         label = "Dew Point",
-        value = "${dewPoint}°C",
+        value = "${hourWeather.dewPoint}°",
         icon = Icons.Outlined.Water
     ),
     WeatherFact(

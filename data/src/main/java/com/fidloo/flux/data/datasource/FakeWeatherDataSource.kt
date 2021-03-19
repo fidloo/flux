@@ -1,14 +1,22 @@
 package com.fidloo.flux.data.datasource
 
 import com.fidloo.flux.domain.model.HourWeather
+import com.fidloo.flux.domain.model.CurrentWeather
 import com.fidloo.flux.domain.model.WeatherFacts
 import java.util.Calendar
 
 object FakeWeatherDataSource {
 
-    fun getCurrentWeather(): WeatherFacts {
+    fun getCurrentWeather(): CurrentWeather {
         val hour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY)
-        return next24HourWeather.first { it.hour == hour }.facts
+        val hourFacts = next24HourWeather.first { it.hour == hour }.facts
+        return CurrentWeather(
+            hourWeather = hourFacts,
+            sunrise = "06:46",
+            sunset = "18h53",
+            minTemperature = -1,
+            maxTemperature = 9
+        )
     }
 
     val next24HourWeather = listOf(
@@ -25,8 +33,6 @@ object FakeWeatherDataSource {
                 visibility = 5f,
                 uvIndex = 1,
                 dewPoint = -4,
-                sunrise = "06:48",
-                sunset = "18h50",
             )
         ),
         HourWeather(
@@ -42,8 +48,6 @@ object FakeWeatherDataSource {
                 visibility = 5f,
                 uvIndex = 1,
                 dewPoint = -4,
-                sunrise = "06:48",
-                sunset = "18h50",
             )
         ),
         HourWeather(
@@ -59,8 +63,6 @@ object FakeWeatherDataSource {
                 visibility = 5f,
                 uvIndex = 1,
                 dewPoint = -4,
-                sunrise = "06:48",
-                sunset = "18h50",
             )
         ),
         HourWeather(
@@ -76,8 +78,6 @@ object FakeWeatherDataSource {
                 visibility = 5f,
                 uvIndex = 1,
                 dewPoint = -4,
-                sunrise = "06:48",
-                sunset = "18h50",
             )
         ),
         HourWeather(
@@ -93,8 +93,6 @@ object FakeWeatherDataSource {
                 visibility = 5f,
                 uvIndex = 1,
                 dewPoint = -4,
-                sunrise = "06:48",
-                sunset = "18h50",
             )
         ),
         HourWeather(
@@ -110,8 +108,6 @@ object FakeWeatherDataSource {
                 visibility = 5f,
                 uvIndex = 1,
                 dewPoint = -4,
-                sunrise = "06:48",
-                sunset = "18h50",
             )
         ),
         HourWeather(
@@ -127,8 +123,6 @@ object FakeWeatherDataSource {
                 visibility = 5f,
                 uvIndex = 1,
                 dewPoint = -4,
-                sunrise = "06:48",
-                sunset = "18h50",
             )
         ),
         HourWeather(
@@ -144,8 +138,6 @@ object FakeWeatherDataSource {
                 visibility = 5f,
                 uvIndex = 1,
                 dewPoint = -4,
-                sunrise = "06:48",
-                sunset = "18h50",
             )
         ),
         HourWeather(
@@ -161,8 +153,6 @@ object FakeWeatherDataSource {
                 visibility = 5f,
                 uvIndex = 1,
                 dewPoint = -4,
-                sunrise = "06:48",
-                sunset = "18h50",
             )
         ),
         HourWeather(
@@ -178,8 +168,6 @@ object FakeWeatherDataSource {
                 visibility = 5f,
                 uvIndex = 1,
                 dewPoint = -4,
-                sunrise = "06:48",
-                sunset = "18h50",
             )
         ),
         HourWeather(
@@ -195,8 +183,6 @@ object FakeWeatherDataSource {
                 visibility = 5f,
                 uvIndex = 1,
                 dewPoint = -4,
-                sunrise = "06:48",
-                sunset = "18h50",
             )
         ),
         HourWeather(
@@ -212,8 +198,6 @@ object FakeWeatherDataSource {
                 visibility = 5f,
                 uvIndex = 1,
                 dewPoint = -4,
-                sunrise = "06:48",
-                sunset = "18h50",
             )
         ),
         HourWeather(
@@ -229,8 +213,6 @@ object FakeWeatherDataSource {
                 visibility = 5f,
                 uvIndex = 1,
                 dewPoint = -4,
-                sunrise = "06:48",
-                sunset = "18h50",
             )
         ),
         HourWeather(
@@ -246,8 +228,6 @@ object FakeWeatherDataSource {
                 visibility = 5f,
                 uvIndex = 1,
                 dewPoint = -4,
-                sunrise = "06:48",
-                sunset = "18h50",
             )
         ),
         HourWeather(
@@ -263,8 +243,6 @@ object FakeWeatherDataSource {
                 visibility = 5f,
                 uvIndex = 1,
                 dewPoint = -4,
-                sunrise = "06:48",
-                sunset = "18h50",
             )
         ),
         HourWeather(
@@ -280,8 +258,6 @@ object FakeWeatherDataSource {
                 visibility = 5f,
                 uvIndex = 1,
                 dewPoint = -4,
-                sunrise = "06:48",
-                sunset = "18h50",
             )
         ),
         HourWeather(
@@ -297,8 +273,6 @@ object FakeWeatherDataSource {
                 visibility = 5f,
                 uvIndex = 1,
                 dewPoint = -4,
-                sunrise = "06:48",
-                sunset = "18h50",
             )
         ),
         HourWeather(
@@ -314,8 +288,6 @@ object FakeWeatherDataSource {
                 visibility = 5f,
                 uvIndex = 1,
                 dewPoint = -4,
-                sunrise = "06:48",
-                sunset = "18h50",
             )
         ),
         HourWeather(
@@ -331,8 +303,6 @@ object FakeWeatherDataSource {
                 visibility = 5f,
                 uvIndex = 1,
                 dewPoint = -4,
-                sunrise = "06:48",
-                sunset = "18h50",
             )
         ),
         HourWeather(
@@ -348,8 +318,6 @@ object FakeWeatherDataSource {
                 visibility = 5f,
                 uvIndex = 1,
                 dewPoint = -4,
-                sunrise = "06:48",
-                sunset = "18h50",
             )
         ),
         HourWeather(
@@ -365,8 +333,6 @@ object FakeWeatherDataSource {
                 visibility = 5f,
                 uvIndex = 1,
                 dewPoint = -4,
-                sunrise = "06:48",
-                sunset = "18h50",
             )
         ),
         HourWeather(
@@ -381,9 +347,7 @@ object FakeWeatherDataSource {
                 pressure = 1.0f,
                 visibility = 5f,
                 uvIndex = 1,
-                dewPoint = -4,
-                sunrise = "06:48",
-                sunset = "18h50",
+                dewPoint = -4
             )
         ),
         HourWeather(
@@ -399,8 +363,6 @@ object FakeWeatherDataSource {
                 visibility = 5f,
                 uvIndex = 1,
                 dewPoint = -4,
-                sunrise = "06:48",
-                sunset = "18h50",
             )
         ),
         HourWeather(
@@ -416,8 +378,6 @@ object FakeWeatherDataSource {
                 visibility = 5f,
                 uvIndex = 1,
                 dewPoint = -4,
-                sunrise = "06:48",
-                sunset = "18h50",
             )
         ),
     )

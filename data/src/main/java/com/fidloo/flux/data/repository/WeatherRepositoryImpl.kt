@@ -2,7 +2,7 @@ package com.fidloo.flux.data.repository
 
 import com.fidloo.flux.data.datasource.FakeWeatherDataSource
 import com.fidloo.flux.domain.model.HourWeather
-import com.fidloo.flux.domain.model.WeatherFacts
+import com.fidloo.flux.domain.model.CurrentWeather
 import com.fidloo.flux.domain.repository.WeatherRepository
 import kotlinx.coroutines.delay
 import javax.inject.Inject
@@ -10,7 +10,7 @@ import javax.inject.Inject
 class WeatherRepositoryImpl @Inject constructor(
 
 ) : WeatherRepository {
-    override suspend fun fetchCurrentWeather(): WeatherFacts {
+    override suspend fun fetchCurrentWeather(): CurrentWeather {
         // Simulate network delay
         delay(1L)
         return FakeWeatherDataSource.getCurrentWeather()

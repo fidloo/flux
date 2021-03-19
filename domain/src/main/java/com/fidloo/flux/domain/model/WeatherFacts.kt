@@ -10,7 +10,5 @@ data class WeatherFacts(
     val pressure: Float,
     val visibility: Float,
     val uvIndex: Int,
-    val dewPoint: Int,
-    val sunrise: String,
-    val sunset: String,
+    val dewPoint: Int
 )
