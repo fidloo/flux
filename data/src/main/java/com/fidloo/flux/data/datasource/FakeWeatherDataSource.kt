@@ -32,7 +32,7 @@ object FakeWeatherDataSource {
         HourWeather(
             1,
             WeatherFacts(
-                temperature = 2,
+                temperature = 1,
                 apparentTemperature = 2,
                 precipitation = 0.2f,
                 humidity = 0.49f,
@@ -49,7 +49,7 @@ object FakeWeatherDataSource {
         HourWeather(
             2,
             WeatherFacts(
-                temperature = 1,
+                temperature = 0,
                 apparentTemperature = 2,
                 precipitation = 0.2f,
                 humidity = 0.49f,
@@ -66,7 +66,7 @@ object FakeWeatherDataSource {
         HourWeather(
             3,
             WeatherFacts(
-                temperature = 1,
+                temperature = 0,
                 apparentTemperature = 2,
                 precipitation = 0.2f,
                 humidity = 0.49f,
@@ -83,7 +83,7 @@ object FakeWeatherDataSource {
         HourWeather(
             4,
             WeatherFacts(
-                temperature = 0,
+                temperature = -1,
                 apparentTemperature = 2,
                 precipitation = 0.2f,
                 humidity = 0.49f,
@@ -100,7 +100,7 @@ object FakeWeatherDataSource {
         HourWeather(
             5,
             WeatherFacts(
-                temperature = 0,
+                temperature = -1,
                 apparentTemperature = 2,
                 precipitation = 0.2f,
                 humidity = 0.49f,
