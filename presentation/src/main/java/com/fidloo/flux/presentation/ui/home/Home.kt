@@ -89,6 +89,7 @@ fun DetailedWeather(viewState: HomeViewState) {
         ) {
             CurrentWeather(viewState.currentWeather)
             HourlyWeather(viewState.hourlyWeather)
+            WeatherRadar()
 
             SectionHeader(title = "This week", subtitle = "7-day forecast")
             Spacer(Modifier.height(8.dp))
