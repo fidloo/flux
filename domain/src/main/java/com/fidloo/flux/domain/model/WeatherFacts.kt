@@ -1,6 +1,6 @@
 package com.fidloo.flux.domain.model
 
-data class CurrentWeather(
+data class WeatherFacts(
     val temperature: Int,
     val apparentTemperature: Int,
     val precipitation: Float,

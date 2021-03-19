@@ -3,10 +3,7 @@ package com.fidloo.flux.presentation.ui.home
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Face
 import androidx.compose.material.icons.outlined.FilterDrama
-import androidx.compose.material.icons.outlined.Light
 import androidx.compose.material.icons.outlined.LightMode
-import androidx.compose.material.icons.outlined.MotionPhotosOn
-import androidx.compose.material.icons.outlined.NightsStay
 import androidx.compose.material.icons.outlined.Opacity
 import androidx.compose.material.icons.outlined.Speed
 import androidx.compose.material.icons.outlined.Thermostat
@@ -16,11 +13,8 @@ import androidx.compose.material.icons.outlined.Water
 import androidx.compose.material.icons.outlined.WbSunny
 import androidx.compose.material.icons.outlined.WbTwilight
 import androidx.compose.material.icons.rounded.Air
-import androidx.compose.material.icons.rounded.NightsStay
-import androidx.compose.material.icons.rounded.Thermostat
-import androidx.compose.material.icons.rounded.WbSunny
 import androidx.compose.ui.graphics.vector.ImageVector
-import com.fidloo.flux.domain.model.CurrentWeather
+import com.fidloo.flux.domain.model.WeatherFacts
 
 data class WeatherFact(
     val label: String,
@@ -28,7 +22,7 @@ data class WeatherFact(
     val icon: ImageVector,
 )
 
-fun CurrentWeather.extractFacts() = listOf(
+fun WeatherFacts.extractFacts() = listOf(
     WeatherFact(
         label = "Temperature",
         value = "$temperature°C",

@@ -27,7 +27,7 @@ import androidx.compose.runtime.CompositionLocalProvider
 import com.fidloo.flux.presentation.R
 
 private val LightTheme = lightColors(
-    primary = gray900,
+    primary = yellow500,
     secondary = rust600,
     onSecondary = white,
     onPrimary = white,
@@ -37,7 +37,7 @@ private val LightTheme = lightColors(
 )
 
 private val DarkTheme = darkColors(
-    primary = white,
+    primary = yellow,
     secondary = rust300,
     onSecondary = gray900,
     onPrimary = gray900,

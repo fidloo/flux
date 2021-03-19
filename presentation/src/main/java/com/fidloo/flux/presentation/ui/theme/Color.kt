@@ -31,6 +31,8 @@ val white800 = Color(0xCCFFFFFF)
 val white850 = Color(0xD9FFFFFF)
 val white = Color(0xFFFFFFFF)
 val black = Color(0xFF000000)
+val yellow = Color(0xFFFFCF44)
+val yellow500 = Color(0xFFF5BD1C)
 
 @Composable
 fun Colors.compositedOnSurface(alpha: Float): Color {
