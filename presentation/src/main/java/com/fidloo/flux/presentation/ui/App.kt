@@ -28,9 +28,9 @@ import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
-import com.fidloo.flux.presentation.ui.theme.FluxTheme
 import com.fidloo.flux.presentation.ui.navigation.LocalBackDispatcher
 import com.fidloo.flux.presentation.ui.navigation.NavGraph
+import com.fidloo.flux.presentation.ui.theme.FluxTheme
 import dev.chrisbanes.accompanist.insets.ProvideWindowInsets
 
 @Composable
@@ -68,11 +68,11 @@ fun BarsTheming(window: Window) {
             )
         } else {
             window.decorView.systemUiVisibility = window.decorView.systemUiVisibility or
-                    View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+                View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 window.decorView.systemUiVisibility =
                     window.decorView.systemUiVisibility or
-                            View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR
+                    View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR
             }
         }
     }

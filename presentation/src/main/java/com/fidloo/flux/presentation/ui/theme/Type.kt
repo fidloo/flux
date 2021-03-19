@@ -42,10 +42,11 @@ val typography = typographyFromDefaults(
     ),
     h2 = TextStyle(
         fontFamily = Lato,
+        fontWeight = FontWeight.Bold,
         fontSize = 18.sp,
         letterSpacing = 1.15.sp,
 
-        ),
+    ),
     h3 = TextStyle(
         fontFamily = Lato,
         fontWeight = FontWeight.Bold,

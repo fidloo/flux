@@ -15,7 +15,14 @@
  */
 package com.fidloo.flux.domain.model
 
-data class HourWeather(
-    val hour: Int,
-    val facts: WeatherFacts,
-)
+enum class WeatherState {
+    CLEAR_SKY,
+    FEW_CLOUDS,
+    SCATTERED_CLOUDS,
+    MOSTLY_CLOUDY,
+    HEAVY_RAIN,
+    RAIN,
+    THUNDERSTORM,
+    SNOW,
+    FOG,
+}

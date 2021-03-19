@@ -1,3 +1,18 @@
+/*
+ * Copyright 2021 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.fidloo.flux.presentation.ui.home
 
 import androidx.compose.material.icons.Icons
@@ -15,7 +30,7 @@ import androidx.compose.material.icons.outlined.WbTwilight
 import androidx.compose.material.icons.rounded.Air
 import androidx.compose.ui.graphics.vector.ImageVector
 import com.fidloo.flux.domain.model.CurrentWeather
-import com.fidloo.flux.domain.model.WeatherFacts
+import com.fidloo.flux.domain.model.DayWeather
 
 data class WeatherFact(
     val label: String,
@@ -26,7 +41,7 @@ data class WeatherFact(
 fun CurrentWeather.extractFacts() = listOf(
     WeatherFact(
         label = "Temperature",
-        value = "$minTemperature° | ${maxTemperature}°",
+        value = "$maxTemperature°  |  $minTemperature°",
         icon = Icons.Outlined.Thermostat
     ),
     WeatherFact(
@@ -73,6 +88,39 @@ fun CurrentWeather.extractFacts() = listOf(
         label = "Dew Point",
         value = "${hourWeather.dewPoint}°",
         icon = Icons.Outlined.Water
+    ),
+    WeatherFact(
+        label = "Sunrise",
+        value = sunrise,
+        icon = Icons.Outlined.LightMode
+    ),
+    WeatherFact(
+        label = "Sunset",
+        value = sunset,
+        icon = Icons.Outlined.WbTwilight
+    ),
+)
+
+fun DayWeather.extractFacts() = listOf(
+    WeatherFact(
+        label = "Cloud cover",
+        value = "${facts.cloudCover * 100}%",
+        icon = Icons.Outlined.FilterDrama
+    ),
+    WeatherFact(
+        label = "Wind speed",
+        value = "${facts.windSpeed} km/h",
+        icon = Icons.Rounded.Air
+    ),
+    WeatherFact(
+        label = "Humidity",
+        value = "${facts.humidity * 100}%",
+        icon = Icons.Outlined.Opacity
+    ),
+    WeatherFact(
+        label = "UV Index",
+        value = "${facts.uvIndex}",
+        icon = Icons.Outlined.WbSunny
     ),
     WeatherFact(
         label = "Sunrise",

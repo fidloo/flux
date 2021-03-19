@@ -46,9 +46,9 @@ private val DarkTheme = darkColors(
     onSurface = white800
 )
 
-private val LightImages = Images(lockupLogo = R.drawable.ic_sun)
+private val LightImages = Images(lockupLogo = R.drawable.ic_sunny)
 
-private val DarkImages = Images(lockupLogo = R.drawable.ic_sun)
+private val DarkImages = Images(lockupLogo = R.drawable.ic_night_clear)
 
 @Composable
 fun FluxTheme(

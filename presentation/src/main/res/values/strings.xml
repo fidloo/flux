@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="clear_sky">Clear sky</string>
+    <string name="mostly_cloudy">Mostly cloudy</string>
+    <string name="scattered_clouds">Scattered clouds</string>
+    <string name="foggy">Foggy</string>
+    <string name="snowy">Snowy</string>
+    <string name="thunderstorm">Thunderstorm</string>
+    <string name="rainy">Rainy</string>
+    <string name="heavy_rain">Heavy rain</string>
+    <string name="few_clouds">Few clouds</string>
+</resources>
