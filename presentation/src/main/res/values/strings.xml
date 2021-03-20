@@ -9,4 +9,8 @@
     <string name="rainy">Rainy</string>
     <string name="heavy_rain">Heavy rain</string>
     <string name="few_clouds">Few clouds</string>
+    <string name="moon">Moon</string>
+    <string name="moutain">Mountain</string>
+    <string name="sky">Sky</string>
+    <string name="sun">Sun</string>
 </resources>

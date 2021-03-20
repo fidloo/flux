@@ -26,13 +26,13 @@ import javax.inject.Inject
 class WeatherRepositoryImpl @Inject constructor() : WeatherRepository {
     override suspend fun fetchCurrentWeather(): CurrentWeather {
         // Simulate network delay
-        delay(400L)
+        delay(0L)
         return FakeWeatherDataSource.getCurrentWeather()
     }
 
     override suspend fun fetchHourlyWeather(): List<HourWeather> {
         // Simulate network delay
-        delay(400L)
+        delay(0L)
         return FakeWeatherDataSource.next24HourWeather
     }
 

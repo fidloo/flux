@@ -29,9 +29,10 @@ object FakeWeatherDataSource {
         val hour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY)
         val hourFacts = next24HourWeather.first { it.hour == hour }.facts
         return CurrentWeather(
+            time = Date(),
             hourWeather = hourFacts,
             sunrise = "06:46",
-            sunset = "18h53",
+            sunset = "18:53",
             minTemperature = -1,
             maxTemperature = 9
         )
@@ -449,7 +450,7 @@ object FakeWeatherDataSource {
                     state = WeatherState.CLEAR_SKY
                 ),
                 sunrise = "06:44",
-                sunset = "18h54",
+                sunset = "18:54",
                 minTemperature = -1,
                 maxTemperature = 10
             ),
@@ -469,7 +470,7 @@ object FakeWeatherDataSource {
                     state = WeatherState.CLEAR_SKY
                 ),
                 sunrise = "06:42",
-                sunset = "18h55",
+                sunset = "18:55",
                 minTemperature = 4,
                 maxTemperature = 12
             ),
@@ -489,7 +490,7 @@ object FakeWeatherDataSource {
                     state = WeatherState.MOSTLY_CLOUDY
                 ),
                 sunrise = "06:41",
-                sunset = "18h57",
+                sunset = "18:57",
                 minTemperature = 0,
                 maxTemperature = 12
             ),
@@ -509,7 +510,7 @@ object FakeWeatherDataSource {
                     state = WeatherState.CLEAR_SKY
                 ),
                 sunrise = "06:39",
-                sunset = "18h58",
+                sunset = "18:58",
                 minTemperature = -1,
                 maxTemperature = 16
             ),
@@ -529,7 +530,7 @@ object FakeWeatherDataSource {
                     state = WeatherState.CLEAR_SKY
                 ),
                 sunrise = "06:37",
-                sunset = "18h59",
+                sunset = "18:59",
                 minTemperature = 0,
                 maxTemperature = 19
             ),

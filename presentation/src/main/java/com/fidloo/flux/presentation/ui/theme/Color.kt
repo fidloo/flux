@@ -36,7 +36,10 @@ val yellow500 = Color(0xFFF5BD1C)
 val purple = Color(0XFF4A22A8)
 val darkBlue = Color(0XFF0e0f6d)
 val blue = Color(0XFF1753ce)
-val skyBlue = Color(0XFF6ce5ff)
+val skyBlue = Color(0XFF6691cb)
+val sand = Color(0XFFd7975a)
+val snow = Color(0xFF7C706A)
+val darkGrey = Color(0xFF444444)
 
 @Composable
 fun Colors.compositedOnSurface(alpha: Float): Color {

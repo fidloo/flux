@@ -15,7 +15,10 @@
  */
 package com.fidloo.flux.domain.model
 
+import java.util.Date
+
 data class CurrentWeather(
+    val time: Date,
     val hourWeather: WeatherFacts,
     val sunrise: String,
     val sunset: String,

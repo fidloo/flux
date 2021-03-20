@@ -15,13 +15,8 @@
  */
 package com.fidloo.flux.presentation.ui.home
 
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -29,35 +24,25 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.BackdropScaffold
 import androidx.compose.material.BackdropValue
-import androidx.compose.material.Button
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
-import androidx.compose.material.Text
 import androidx.compose.material.rememberBackdropScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.fidloo.flux.domain.base.Result
-import com.fidloo.flux.domain.model.DayWeather
-import com.fidloo.flux.presentation.R
 import com.fidloo.flux.presentation.ui.component.GenericErrorMessage
 import com.fidloo.flux.presentation.ui.component.SectionHeader
 import com.fidloo.flux.presentation.ui.component.SectionProgressBar
 import com.fidloo.flux.presentation.ui.theme.BottomSheetShape
 import com.fidloo.flux.presentation.ui.theme.FluxTheme
-import com.fidloo.flux.presentation.ui.theme.blue
-import com.fidloo.flux.presentation.ui.theme.darkBlue
-import com.fidloo.flux.presentation.ui.theme.purple
 import com.fidloo.flux.presentation.ui.theme.skyBlue
 
 @OptIn(ExperimentalMaterialApi::class)
@@ -70,27 +55,7 @@ fun HomeScreen(viewModel: HomeViewModel = viewModel()) {
         backLayerBackgroundColor = skyBlue,
         frontLayerElevation = FluxTheme.elevations.Backdrop,
         backLayerContent = {
-            ConstraintLayout(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .fillMaxHeight(0.35f)
-            )
-            {
-                // Create references for the composables to constrain
-                val (button, text, background) = createRefs()
-
-                Image(
-                    painter = painterResource(R.drawable.night2),
-                    contentDescription = "Weather satellite images",
-                    contentScale = ContentScale.Crop,
-                    modifier = Modifier.fillMaxSize().constrainAs(background) {
-                        top.linkTo(parent.top)
-                        start.linkTo(parent.start)
-                        end.linkTo(parent.end)
-                        bottom.linkTo(parent.bottom)
-                    }
-                )
-            }
+            DynamicWeatherLandscape(viewState.currentWeather)
         },
         frontLayerContent = {
             DetailedWeather(viewState)
@@ -104,7 +69,7 @@ fun DetailedWeather(viewState: HomeViewState) {
     Surface(
         modifier = Modifier.fillMaxSize(),
         color = MaterialTheme.colors.background,
-        shape = BottomSheetShape
+//        shape = BottomSheetShape
     ) {
         val scrollState = rememberLazyListState()
         LazyColumn(
