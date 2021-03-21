@@ -13,4 +13,5 @@
     <string name="moutain">Mountain</string>
     <string name="sky">Sky</string>
     <string name="sun">Sun</string>
+    <string name="refresh_layout">Refresh layout</string>
 </resources>

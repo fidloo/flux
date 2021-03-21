@@ -21,6 +21,7 @@ import com.fidloo.flux.domain.business.FetchCurrentWeather
 import com.fidloo.flux.domain.business.FetchHourlyWeather
 import com.fidloo.flux.domain.business.FetchWeekWeather
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collect
@@ -38,8 +39,14 @@ class HomeViewModel @Inject constructor(
     private val _state = MutableStateFlow(HomeViewState())
     val state: StateFlow<HomeViewState> = _state
 
+    private var job: Job? = null
+
     init {
-        viewModelScope.launch {
+        loadData()
+    }
+
+    private fun loadData(userAction: Boolean = false) {
+        job = viewModelScope.launch {
             combine(
                 fetchCurrentWeather(Unit),
                 fetchHourlyWeather(Unit),
@@ -48,9 +55,20 @@ class HomeViewModel @Inject constructor(
                 HomeViewState(
                     currentWeather = currentWeather,
                     hourlyWeather = hourlyWeather,
-                    weekWeather = weekWeather
+                    weekWeather = weekWeather,
+                    refreshing = if (userAction) {
+                        currentWeather.isLoading() || hourlyWeather.isLoading() || weekWeather.isLoading()
+                    } else {
+                        false
+                    }
                 )
             }.collect { _state.value = it }
         }
+    }
+
+    fun refresh() {
+        job?.cancel()
+        _state.value = state.value.copy(refreshing = true)
+        loadData(userAction = true)
     }
 }
