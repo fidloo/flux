@@ -49,18 +49,23 @@ import com.fidloo.flux.presentation.ui.theme.skyBlue
 @Composable
 fun HomeScreen(viewModel: HomeViewModel = viewModel()) {
     val viewState by viewModel.state.collectAsState()
+    val state = rememberBackdropScaffoldState(BackdropValue.Revealed)
     BackdropScaffold(
-        scaffoldState = rememberBackdropScaffoldState(BackdropValue.Revealed),
+        scaffoldState = state,
         frontLayerScrimColor = Color.Transparent,
-        backLayerBackgroundColor = skyBlue,
-        frontLayerElevation = FluxTheme.elevations.Backdrop,
+        backLayerBackgroundColor = Color.Transparent,
+        frontLayerElevation = if (state.isConcealed) FluxTheme.elevations.Backdrop else 0.dp,
+        frontLayerShape = BottomSheetShape,
         backLayerContent = {
             DynamicWeatherLandscape(viewState.currentWeather)
         },
         frontLayerContent = {
             DetailedWeather(viewState)
         },
-        appBar = {}
+        appBar = {},
+        snackbarHost = {
+                       
+        },
     )
 }
 
@@ -69,7 +74,6 @@ fun DetailedWeather(viewState: HomeViewState) {
     Surface(
         modifier = Modifier.fillMaxSize(),
         color = MaterialTheme.colors.background,
-//        shape = BottomSheetShape
     ) {
         val scrollState = rememberLazyListState()
         LazyColumn(
