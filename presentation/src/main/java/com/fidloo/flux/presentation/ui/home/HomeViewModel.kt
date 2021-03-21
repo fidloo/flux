@@ -52,10 +52,30 @@ class HomeViewModel @Inject constructor(
                 fetchHourlyWeather(Unit),
                 fetchWeekWeather(Unit),
             ) { currentWeather, hourlyWeather, weekWeather ->
+
+                // Prevent the swipe refresh to replace a successful state by a progress bar
+                val newCurrentWeather = if (!userAction || currentWeather.isSuccessful()) {
+                    currentWeather
+                } else {
+                    state.value.currentWeather
+                }
+
+                val newHourlyWeather = if (!userAction || hourlyWeather.isSuccessful()) {
+                    hourlyWeather
+                } else {
+                    state.value.hourlyWeather
+                }
+
+                val newWeekWeather = if (!userAction || weekWeather.isSuccessful()) {
+                    weekWeather
+                } else {
+                    state.value.weekWeather
+                }
+
                 state.value.copy(
-                    currentWeather = currentWeather,
-                    hourlyWeather = hourlyWeather,
-                    weekWeather = weekWeather,
+                    currentWeather = newCurrentWeather,
+                    hourlyWeather = newHourlyWeather,
+                    weekWeather = newWeekWeather,
                     refreshing = if (userAction) {
                         currentWeather.isLoading() || hourlyWeather.isLoading() || weekWeather.isLoading()
                     } else {
