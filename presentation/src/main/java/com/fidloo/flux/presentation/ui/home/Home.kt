@@ -21,6 +21,7 @@ import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.infiniteRepeatable
 import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
@@ -35,6 +36,7 @@ import androidx.compose.material.BackdropValue
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Slider
 import androidx.compose.material.Surface
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.LightMode
@@ -42,6 +44,9 @@ import androidx.compose.material.rememberBackdropScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
@@ -63,6 +68,7 @@ import com.fidloo.flux.presentation.ui.theme.FluxTheme
 fun HomeScreen(viewModel: HomeViewModel = viewModel()) {
     val viewState by viewModel.state.collectAsState()
     val state = rememberBackdropScaffoldState(BackdropValue.Revealed)
+    var time by rememberSaveable { mutableStateOf(0f) }
 
     val infiniteTransition = rememberInfiniteTransition()
     val rotation by infiniteTransition.animateFloat(
@@ -87,7 +93,10 @@ fun HomeScreen(viewModel: HomeViewModel = viewModel()) {
 
                     imageVector = Icons.Rounded.LightMode,
                     contentDescription = stringResource(R.string.refresh_layout),
-                    modifier = Modifier.size(36.dp).padding(4.dp).rotate(rotation),
+                    modifier = Modifier
+                        .size(36.dp)
+                        .padding(4.dp)
+                        .rotate(rotation),
                     tint = MaterialTheme.colors.primary
                 )
             }
@@ -100,10 +109,13 @@ fun HomeScreen(viewModel: HomeViewModel = viewModel()) {
                 frontLayerElevation = if (state.isConcealed) FluxTheme.elevations.Backdrop else 0.dp,
                 frontLayerShape = BottomSheetShape,
                 backLayerContent = {
-                    DynamicWeatherLandscape(viewState.currentWeather)
+                    DynamicWeatherLandscape(viewState.currentWeather, time)
                 },
                 frontLayerContent = {
-                    DetailedWeather(viewState)
+                    Column {
+                        Slider(value = time, onValueChange = { time = it }, valueRange = 0f..1440f)
+                        DetailedWeather(viewState)
+                    }
                 },
                 appBar = {},
             )

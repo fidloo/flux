@@ -16,6 +16,7 @@
 package com.fidloo.flux.presentation.ui.home
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
@@ -45,6 +46,7 @@ import java.util.Calendar
 @Composable
 fun DynamicWeatherLandscape(
     currentWeather: Result<CurrentWeather>,
+    time: Float,
 ) {
 
     var mountainDarkTintAlpha by rememberSaveable { mutableStateOf(0f) }
@@ -52,7 +54,7 @@ fun DynamicWeatherLandscape(
     BoxWithConstraints(
         modifier = Modifier
             .fillMaxWidth()
-            .fillMaxHeight(0.35f)
+            .fillMaxHeight(0.4f)
     ) {
         val height = constraints.maxHeight
         val width = constraints.maxWidth
@@ -64,8 +66,8 @@ fun DynamicWeatherLandscape(
                 val calendar = Calendar.getInstance()
                 calendar.time = currentWeather.data.time
 
-                val time = calendar[Calendar.HOUR_OF_DAY] * MINUTES_PER_HOUR +
-                    calendar[Calendar.MINUTE]
+//                val time = calendar[Calendar.HOUR_OF_DAY] * MINUTES_PER_HOUR +
+//                    calendar[Calendar.MINUTE]
                 val weather = currentWeather.data
                 val (sunriseHour, sunriseMinute) = weather.sunrise.split(":")
                     .map { it.toFloat() }
@@ -196,13 +198,12 @@ fun DynamicWeatherLandscape(
                         .size(64.dp),
                 )
                 Image(
-                    painter = painterResource(R.drawable.mountain),
+                    painter = painterResource(R.drawable.landscape),
                     contentDescription = stringResource(R.string.moutain),
-                    contentScale = ContentScale.Crop,
+                    contentScale = ContentScale.FillWidth,
                     modifier = Modifier
-                        .fillMaxSize()
+                        .fillMaxWidth()
                         .constrainAs(mountain) {
-                            top.linkTo(parent.top)
                             start.linkTo(parent.start)
                             end.linkTo(parent.end)
                             bottom.linkTo(parent.bottom)
@@ -222,4 +223,4 @@ private const val HOURS_PER_DAY = 24
 private const val MINUTES_PER_DAY = MINUTES_PER_HOUR * HOURS_PER_DAY
 private const val LANDSCAPE_TRANSITION_DURATION = 45
 private const val MOUNTAIN_TINT_TRANSITION_DURATION = 80
-private const val MOUNTAIN_TINT_ALPHA_MAX = 0.7f
+private const val MOUNTAIN_TINT_ALPHA_MAX = 0.6f

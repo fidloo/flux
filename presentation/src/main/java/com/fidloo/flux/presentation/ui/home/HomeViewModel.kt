@@ -52,7 +52,7 @@ class HomeViewModel @Inject constructor(
                 fetchHourlyWeather(Unit),
                 fetchWeekWeather(Unit),
             ) { currentWeather, hourlyWeather, weekWeather ->
-                HomeViewState(
+                state.value.copy(
                     currentWeather = currentWeather,
                     hourlyWeather = hourlyWeather,
                     weekWeather = weekWeather,
