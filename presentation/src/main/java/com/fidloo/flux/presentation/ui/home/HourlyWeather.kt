@@ -47,12 +47,6 @@ import com.fidloo.flux.presentation.ui.component.SectionProgressBar
 
 @Composable
 fun HourlyWeather(hourlyWeatherResult: Result<List<HourWeather>>) {
-    val curveColor = MaterialTheme.colors.primary
-    val curveBackgroundColor = MaterialTheme.colors.primary.copy(alpha = 0.2f)
-    val onBackgroundColor = MaterialTheme.colors.onBackground.copy(alpha = 0.7f)
-    val cellSizeDp = 72.dp
-    val cellSize = with(LocalDensity.current) { cellSizeDp.toPx() }
-
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -64,152 +58,160 @@ fun HourlyWeather(hourlyWeatherResult: Result<List<HourWeather>>) {
         when (hourlyWeatherResult) {
             is Result.Error -> GenericErrorMessage()
             Result.Loading -> SectionProgressBar()
-            is Result.Success -> {
-                val hourlyWeather = hourlyWeatherResult.data
-                val scrollState = rememberScrollState()
-                val chartHeight = 320.dp
-                val chartVerticalPadding = 56.dp
-                val minTemp = hourlyWeather.minOf { it.facts.temperature }
-                val maxTemp = hourlyWeather.maxOf { it.facts.temperature }
-                val temperatureHeightStep =
-                    (chartHeight - chartVerticalPadding * 2) / (maxTemp - minTemp)
+            is Result.Success -> HourlyWeatherChart(hourlyWeatherResult.data)
+        }
+    }
+}
 
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(chartHeight)
-                        .horizontalScroll(scrollState)
-                ) {
-                    val canvasWidth = cellSizeDp * (hourlyWeather.size + 1)
-                    Canvas(
-                        modifier = Modifier
-                            .width(canvasWidth),
-                        onDraw = {
-                            val points = hourlyWeather.mapIndexed { index,  item ->
-                                Point(
-                                    (index.toFloat() + 1) * cellSize,
-                                    (maxTemp - item.facts.temperature.toFloat()) * temperatureHeightStep.toPx() + chartVerticalPadding.toPx()
+@Composable
+fun HourlyWeatherChart(hourlyWeather: List<HourWeather>) {
+    val curveColor = MaterialTheme.colors.primary
+    val curveBackgroundColor = MaterialTheme.colors.primary.copy(alpha = 0.2f)
+    val onBackgroundColor = MaterialTheme.colors.onBackground.copy(alpha = 0.7f)
+    val cellSizeDp = 72.dp
+    val cellSize = with(LocalDensity.current) { cellSizeDp.toPx() }
+
+    val scrollState = rememberScrollState()
+    val chartHeight = 320.dp
+    val chartVerticalPadding = 56.dp
+    val minTemp = hourlyWeather.minOf { it.facts.temperature }
+    val maxTemp = hourlyWeather.maxOf { it.facts.temperature }
+    val temperatureHeightStep =
+        (chartHeight - chartVerticalPadding * 2) / (maxTemp - minTemp)
+
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(chartHeight)
+            .horizontalScroll(scrollState)
+    ) {
+        val canvasWidth = cellSizeDp * (hourlyWeather.size + 1)
+        Canvas(
+            modifier = Modifier
+                .width(canvasWidth),
+            onDraw = {
+                val points = hourlyWeather.mapIndexed { index, item ->
+                    Point(
+                        (index.toFloat() + 1) * cellSize,
+                        (maxTemp - item.facts.temperature.toFloat()) * temperatureHeightStep.toPx() + chartVerticalPadding.toPx()
+                    )
+                }.toMutableList()
+                points.add(0, points.first().copy(x = 0f))
+                val lastPoint = points.last()
+                points.add(lastPoint.copy(x = lastPoint.x + cellSize))
+
+                val connectionPoints1 = mutableListOf<Point>()
+                val connectionPoints2 = mutableListOf<Point>()
+
+                try {
+                    for (i in 1 until points.size) {
+                        connectionPoints1.add(
+                            Point(
+                                (points[i].x + points[i - 1].x) / 2,
+                                points[i - 1].y
+                            )
+                        )
+                        connectionPoints2.add(
+                            Point(
+                                (points[i].x + points[i - 1].x) / 2,
+                                points[i].y
+                            )
+                        )
+                    }
+                } catch (e: Exception) {
+                }
+
+                val curvePath = Path()
+                val chartBottom = (chartHeight - chartVerticalPadding).toPx()
+                val curveBackgroundPath = Path()
+                val curveBackgroundOffset = 80f
+                if (points.isNotEmpty() && connectionPoints1.isNotEmpty() && connectionPoints2.isNotEmpty()) {
+                    curvePath.reset()
+                    curveBackgroundPath.reset()
+                    curvePath.moveTo(points.first().x, points.first().y)
+                    curveBackgroundPath.moveTo(
+                        points.first().x,
+                        chartBottom + curveBackgroundOffset
+                    )
+                    curveBackgroundPath.lineTo(points.first().x, points.first().y)
+                    val dashIntervals = floatArrayOf(10f, 20f)
+                    val dashPhase = 25f
+                    val dashVerticalPadding = 20f
+
+                    for (i in 1 until points.size) {
+                        curvePath.cubicTo(
+                            connectionPoints1[i - 1].x,
+                            connectionPoints1[i - 1].y,
+                            connectionPoints2[i - 1].x,
+                            connectionPoints2[i - 1].y,
+                            points[i].x,
+                            points[i].y
+                        )
+                        curveBackgroundPath.cubicTo(
+                            connectionPoints1[i - 1].x,
+                            connectionPoints1[i - 1].y,
+                            connectionPoints2[i - 1].x,
+                            connectionPoints2[i - 1].y,
+                            points[i].x,
+                            points[i].y
+                        )
+
+                        drawLine(
+                            color = onBackgroundColor,
+                            pathEffect = PathEffect.dashPathEffect(
+                                dashIntervals,
+                                dashPhase
+                            ),
+                            start = Offset(
+                                points[i].x,
+                                points[i].y + dashVerticalPadding
+                            ),
+                            end = Offset(
+                                points[i].x,
+                                chartBottom + curveBackgroundOffset - dashVerticalPadding
+                            )
+                        )
+
+                        if (i == points.size - 1) {
+                            curveBackgroundPath.lineTo(
+                                points[i].x,
+                                chartBottom + curveBackgroundOffset
+                            )
+                            curveBackgroundPath.lineTo(
+                                points.first().x,
+                                chartBottom + curveBackgroundOffset
+                            )
+                        }
+
+                        val hourWeather = hourlyWeather.getOrNull(i - 1)
+
+                        if (hourWeather != null) {
+                            val paint = Paint()
+                            paint.textAlign = Paint.Align.CENTER
+                            paint.textSize = 54f
+                            paint.color = onBackgroundColor.toArgb()
+                            drawIntoCanvas { canvas ->
+                                canvas.nativeCanvas.drawText(
+                                    hourWeather.facts.temperature.toString() + "°",
+                                    points[i].x,
+                                    points[i].y - 50f,
+                                    paint
                                 )
-                            }.toMutableList()
-                            points.add(0, points.first().copy(x = 0f))
-                            val lastPoint = points.last()
-                            points.add(lastPoint.copy(x = lastPoint.x + cellSize))
-
-                            val connectionPoints1 = mutableListOf<Point>()
-                            val connectionPoints2 = mutableListOf<Point>()
-
-                            try {
-                                for (i in 1 until points.size) {
-                                    connectionPoints1.add(
-                                        Point(
-                                            (points[i].x + points[i - 1].x) / 2,
-                                            points[i - 1].y
-                                        )
-                                    )
-                                    connectionPoints2.add(
-                                        Point(
-                                            (points[i].x + points[i - 1].x) / 2,
-                                            points[i].y
-                                        )
-                                    )
-                                }
-                            } catch (e: Exception) {
-                            }
-
-                            val curvePath = Path()
-                            val chartBottom = (chartHeight - chartVerticalPadding).toPx()
-                            val curveBackgroundPath = Path()
-                            val curveBackgroundOffset = 80f
-                            if (points.isNotEmpty() && connectionPoints1.isNotEmpty() && connectionPoints2.isNotEmpty()) {
-                                curvePath.reset()
-                                curveBackgroundPath.reset()
-                                curvePath.moveTo(points.first().x, points.first().y)
-                                curveBackgroundPath.moveTo(
-                                    points.first().x,
-                                    chartBottom + curveBackgroundOffset
+                                canvas.nativeCanvas.drawText(
+                                    "%02d".format(hourWeather.hour),
+                                    points[i].x,
+                                    chartBottom + chartVerticalPadding.toPx(),
+                                    paint
                                 )
-                                curveBackgroundPath.lineTo(points.first().x, points.first().y)
-                                val dashIntervals = floatArrayOf(10f, 20f)
-                                val dashPhase = 25f
-                                val dashVerticalPadding = 20f
-
-                                for (i in 1 until points.size) {
-                                    curvePath.cubicTo(
-                                        connectionPoints1[i - 1].x,
-                                        connectionPoints1[i - 1].y,
-                                        connectionPoints2[i - 1].x,
-                                        connectionPoints2[i - 1].y,
-                                        points[i].x,
-                                        points[i].y
-                                    )
-                                    curveBackgroundPath.cubicTo(
-                                        connectionPoints1[i - 1].x,
-                                        connectionPoints1[i - 1].y,
-                                        connectionPoints2[i - 1].x,
-                                        connectionPoints2[i - 1].y,
-                                        points[i].x,
-                                        points[i].y
-                                    )
-
-                                    drawLine(
-                                        color = onBackgroundColor,
-                                        pathEffect = PathEffect.dashPathEffect(
-                                            dashIntervals,
-                                            dashPhase
-                                        ),
-                                        start = Offset(
-                                            points[i].x,
-                                            points[i].y + dashVerticalPadding
-                                        ),
-                                        end = Offset(
-                                            points[i].x,
-                                            chartBottom + curveBackgroundOffset - dashVerticalPadding
-                                        )
-                                    )
-
-                                    if (i == points.size - 1) {
-                                        curveBackgroundPath.lineTo(
-                                            points[i].x,
-                                            chartBottom + curveBackgroundOffset
-                                        )
-                                        curveBackgroundPath.lineTo(
-                                            points.first().x,
-                                            chartBottom + curveBackgroundOffset
-                                        )
-                                    }
-
-                                    val hourWeather = hourlyWeather.getOrNull(i - 1)
-
-                                    if (hourWeather != null) {
-                                        val paint = Paint()
-                                        paint.textAlign = Paint.Align.CENTER
-                                        paint.textSize = 54f
-                                        paint.color = onBackgroundColor.toArgb()
-                                        drawIntoCanvas { canvas ->
-                                            canvas.nativeCanvas.drawText(
-                                                hourWeather.facts.temperature.toString() + "°",
-                                                points[i].x,
-                                                points[i].y - 50f,
-                                                paint
-                                            )
-                                            canvas.nativeCanvas.drawText(
-                                                "%02d".format(hourWeather.hour),
-                                                points[i].x,
-                                                chartBottom + chartVerticalPadding.toPx(),
-                                                paint
-                                            )
-                                        }
-                                    }
-                                }
-
-                                drawPath(curvePath, curveColor, style = Stroke(width = 4.dp.toPx()))
-                                drawPath(curveBackgroundPath, curveBackgroundColor, style = Fill)
                             }
                         }
-                    )
+                    }
+
+                    drawPath(curvePath, curveColor, style = Stroke(width = 4.dp.toPx()))
+                    drawPath(curveBackgroundPath, curveBackgroundColor, style = Fill)
                 }
             }
-        }
+        )
     }
 }
 

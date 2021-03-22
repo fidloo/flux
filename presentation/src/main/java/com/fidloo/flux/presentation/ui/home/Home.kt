@@ -124,7 +124,7 @@ fun HomeScreen(viewModel: HomeViewModel = viewModel()) {
                 frontLayerElevation = if (scaffoldState.isConcealed) FluxTheme.elevations.Backdrop else 0.dp,
                 frontLayerShape = BottomSheetShape,
                 backLayerContent = {
-                    DynamicWeatherLandscape(viewState.currentWeather, time)
+                    DynamicWeatherSection(viewState.currentWeather, time)
                 },
                 frontLayerContent = {
                     Column {
