@@ -16,6 +16,7 @@
     <style name="Theme.Flux.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+        <item name="android:windowLightStatusBar" tools:targetApi="m">false</item>
     </style>
 
     <style name="Theme.Flux.Splash" parent="Theme.Flux.NoActionBar">
