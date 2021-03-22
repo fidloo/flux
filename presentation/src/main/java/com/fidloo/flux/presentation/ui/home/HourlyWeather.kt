@@ -85,9 +85,9 @@ fun HourlyWeather(hourlyWeatherResult: Result<List<HourWeather>>) {
                         modifier = Modifier
                             .width(canvasWidth),
                         onDraw = {
-                            val points = hourlyWeather.map { item ->
+                            val points = hourlyWeather.mapIndexed { index,  item ->
                                 Point(
-                                    (item.hour.toFloat() + 1) * cellSize,
+                                    (index.toFloat() + 1) * cellSize,
                                     (maxTemp - item.facts.temperature.toFloat()) * temperatureHeightStep.toPx() + chartVerticalPadding.toPx()
                                 )
                             }.toMutableList()

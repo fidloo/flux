@@ -33,7 +33,7 @@ class WeatherRepositoryImpl @Inject constructor() : WeatherRepository {
     override suspend fun fetchHourlyWeather(): List<HourWeather> {
         // Simulate network delay
         delay(200L)
-        return FakeWeatherDataSource.next24HourWeather
+        return FakeWeatherDataSource.getNext24HoursWeather()
     }
 
     override suspend fun fetchWeekWeather(): List<DayWeather> {

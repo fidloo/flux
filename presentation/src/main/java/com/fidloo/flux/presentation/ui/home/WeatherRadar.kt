@@ -16,6 +16,7 @@
 package com.fidloo.flux.presentation.ui.home
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -28,13 +29,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.fidloo.flux.presentation.R
 import com.fidloo.flux.presentation.ui.component.SectionHeader
 import com.fidloo.flux.presentation.ui.theme.FluxTheme
 
 @Composable
-fun WeatherRadar() {
+fun WeatherRadar(onShowSnackbar: (String) -> Unit) {
+    val fakeDataMessage = stringResource(R.string.fake_data_message)
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -48,7 +51,8 @@ fun WeatherRadar() {
                 .padding(horizontal = 24.dp)
         ) {
             Card(
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier.fillMaxWidth()
+                    .clickable { onShowSnackbar(fakeDataMessage) },
                 shape = MaterialTheme.shapes.medium,
                 elevation = FluxTheme.elevations.Card
             ) {

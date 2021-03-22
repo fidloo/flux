@@ -16,7 +16,6 @@
 package com.fidloo.flux.presentation.ui.home
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
@@ -223,4 +222,4 @@ private const val HOURS_PER_DAY = 24
 private const val MINUTES_PER_DAY = MINUTES_PER_HOUR * HOURS_PER_DAY
 private const val LANDSCAPE_TRANSITION_DURATION = 45
 private const val MOUNTAIN_TINT_TRANSITION_DURATION = 80
-private const val MOUNTAIN_TINT_ALPHA_MAX = 0.6f
+private const val MOUNTAIN_TINT_ALPHA_MAX = 0.4f

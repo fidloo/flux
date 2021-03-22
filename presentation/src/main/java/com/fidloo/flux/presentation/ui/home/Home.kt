@@ -37,14 +37,19 @@ import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Slider
+import androidx.compose.material.Snackbar
+import androidx.compose.material.SnackbarHost
+import androidx.compose.material.SnackbarResult
 import androidx.compose.material.Surface
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.LightMode
 import androidx.compose.material.rememberBackdropScaffoldState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
@@ -67,8 +72,9 @@ import com.fidloo.flux.presentation.ui.theme.FluxTheme
 @Composable
 fun HomeScreen(viewModel: HomeViewModel = viewModel()) {
     val viewState by viewModel.state.collectAsState()
-    val state = rememberBackdropScaffoldState(BackdropValue.Revealed)
+    val scaffoldState = rememberBackdropScaffoldState(BackdropValue.Revealed)
     var time by rememberSaveable { mutableStateOf(0f) }
+    var snackbarMessage by remember { mutableStateOf<String?>(null) }
 
     val infiniteTransition = rememberInfiniteTransition()
     val rotation by infiniteTransition.animateFloat(
@@ -79,6 +85,15 @@ fun HomeScreen(viewModel: HomeViewModel = viewModel()) {
             repeatMode = RepeatMode.Restart
         )
     )
+
+    if (snackbarMessage != null) {
+        LaunchedEffect(scaffoldState) {
+            val snackbarResult = scaffoldState.snackbarHostState.showSnackbar(snackbarMessage!!)
+            if (snackbarResult == SnackbarResult.Dismissed) {
+                snackbarMessage = null
+            }
+        }
+    }
 
     SwipeToRefreshLayout(
         refreshingState = viewState.refreshing,
@@ -103,10 +118,10 @@ fun HomeScreen(viewModel: HomeViewModel = viewModel()) {
         },
         content = {
             BackdropScaffold(
-                scaffoldState = state,
+                scaffoldState = scaffoldState,
                 frontLayerScrimColor = Color.Transparent,
                 backLayerBackgroundColor = Color.Transparent,
-                frontLayerElevation = if (state.isConcealed) FluxTheme.elevations.Backdrop else 0.dp,
+                frontLayerElevation = if (scaffoldState.isConcealed) FluxTheme.elevations.Backdrop else 0.dp,
                 frontLayerShape = BottomSheetShape,
                 backLayerContent = {
                     DynamicWeatherLandscape(viewState.currentWeather, time)
@@ -114,17 +129,35 @@ fun HomeScreen(viewModel: HomeViewModel = viewModel()) {
                 frontLayerContent = {
                     Column {
                         Slider(value = time, onValueChange = { time = it }, valueRange = 0f..1440f)
-                        DetailedWeather(viewState)
+                        DetailedWeather(
+                            viewState = viewState,
+                            onShowSnackbar = { snackbarMessage = it }
+                        )
                     }
                 },
                 appBar = {},
+                snackbarHost = { state ->
+                    SnackbarHost(
+                        state,
+                        snackbar = { data ->
+                            Snackbar(
+                                data,
+                                contentColor = MaterialTheme.colors.background,
+                                elevation = 1.dp
+                            )
+                        }
+                    )
+                }
             )
         },
     )
 }
 
 @Composable
-fun DetailedWeather(viewState: HomeViewState) {
+fun DetailedWeather(
+    viewState: HomeViewState,
+    onShowSnackbar: (String) -> Unit
+) {
     Surface(
         modifier = Modifier.fillMaxSize(),
         color = MaterialTheme.colors.background,
@@ -138,7 +171,7 @@ fun DetailedWeather(viewState: HomeViewState) {
         ) {
             item { CurrentWeather(viewState.currentWeather) }
             item { HourlyWeather(viewState.hourlyWeather) }
-            item { WeatherRadar() }
+            item { WeatherRadar(onShowSnackbar = { onShowSnackbar(it) }) }
             item { SectionHeader(title = "This week", subtitle = "7-day forecast") }
             item { Spacer(Modifier.height(8.dp)) }
             when (viewState.weekWeather) {
