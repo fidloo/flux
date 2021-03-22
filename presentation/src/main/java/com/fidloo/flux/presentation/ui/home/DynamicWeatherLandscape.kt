@@ -15,6 +15,11 @@
  */
 package com.fidloo.flux.presentation.ui.home
 
+import androidx.compose.animation.core.LinearOutSlowInEasing
+import androidx.compose.animation.core.MutableTransitionState
+import androidx.compose.animation.core.animateFloat
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.core.updateTransition
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -25,6 +30,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
@@ -38,46 +44,72 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
-import com.fidloo.flux.domain.base.Result
 import com.fidloo.flux.domain.model.CurrentWeather
 import com.fidloo.flux.presentation.R
-import com.fidloo.flux.presentation.ui.component.CenteredProgressBar
-import com.fidloo.flux.presentation.ui.component.GenericErrorMessage
 import java.util.Calendar
 
 @Composable
 fun DynamicWeatherSection(
-    currentWeather: Result<CurrentWeather>,
-    time: Float,
+    currentWeather: CurrentWeather,
+    viewModel: HomeViewModel
 ) {
     BoxWithConstraints(
         modifier = Modifier
             .fillMaxWidth()
             .fillMaxHeight(0.4f)
     ) {
-        when (currentWeather) {
-            is Result.Error -> GenericErrorMessage()
-            Result.Loading -> CenteredProgressBar()
-            is Result.Success -> DynamicWeatherLandscape(currentWeather.data, time, constraints)
-        }
+        DynamicWeatherLandscape(currentWeather, constraints, viewModel)
     }
 }
 
 @Composable
-fun DynamicWeatherLandscape(weather: CurrentWeather, time: Float, constraints: Constraints) {
+fun DynamicWeatherLandscape(
+    weather: CurrentWeather,
+    constraints: Constraints,
+    viewModel: HomeViewModel
+) {
     var mountainDarkTintAlpha by rememberSaveable { mutableStateOf(0f) }
     var backgroundLayer2Alpha by rememberSaveable { mutableStateOf(0f) }
     val height = constraints.maxHeight
     val width = constraints.maxWidth
 
+    val calendar = Calendar.getInstance()
+    calendar.time = viewModel.oldSelectedWeatherTime
+
+    val oldTimeInMin = calendar[Calendar.HOUR_OF_DAY] * MINUTES_PER_HOUR +
+        calendar[Calendar.MINUTE]
+    calendar.time = weather.time
+    val newTimeInMin = calendar[Calendar.HOUR_OF_DAY] * MINUTES_PER_HOUR +
+        calendar[Calendar.MINUTE]
+
+    val currentState = remember {
+        MutableTransitionState(AnimatedTimeJumpProgress.START)
+            .apply { targetState = AnimatedTimeJumpProgress.END }
+    }
+    val transition = updateTransition(currentState)
+
+    val timeInMin by transition.animateFloat(
+        transitionSpec = {
+            tween(
+                durationMillis = 900,
+                easing = LinearOutSlowInEasing
+            )
+        }
+    ) { progress ->
+        if (progress == AnimatedTimeJumpProgress.START) {
+            oldTimeInMin.toFloat()
+        } else {
+            newTimeInMin.toFloat()
+        }
+    }
+
+    if (timeInMin == newTimeInMin.toFloat()) {
+        viewModel.oldSelectedWeatherTime = weather.time
+    }
+
     ConstraintLayout(
         modifier = Modifier.fillMaxSize()
     ) {
-        val calendar = Calendar.getInstance()
-        calendar.time = weather.time
-
-//                val time = calendar[Calendar.HOUR_OF_DAY] * MINUTES_PER_HOUR +
-//                    calendar[Calendar.MINUTE]
         val (sunriseHour, sunriseMinute) = weather.sunrise.split(":")
             .map { it.toFloat() }
         val sunriseAt = sunriseHour * 60 + sunriseMinute
@@ -85,53 +117,53 @@ fun DynamicWeatherLandscape(weather: CurrentWeather, time: Float, constraints: C
             .map { it.toFloat() }
         val sunsetAt = sunsetHour * 60 + sunsetMinute
 
-        val sunProgress = (time - (sunriseAt - LANDSCAPE_TRANSITION_DURATION)) /
+        val sunProgress = (timeInMin - (sunriseAt - LANDSCAPE_TRANSITION_DURATION)) /
             ((sunsetAt + LANDSCAPE_TRANSITION_DURATION) - (sunriseAt - LANDSCAPE_TRANSITION_DURATION))
 
         val nightElapsedTimeInMin = when {
-            time < sunriseAt -> time + MINUTES_PER_DAY - sunsetAt
-            time > sunsetAt -> time - sunsetAt
+            timeInMin < sunriseAt -> timeInMin + MINUTES_PER_DAY - sunsetAt
+            timeInMin > sunsetAt -> timeInMin - sunsetAt
             else -> 0f
         }
         val moonProgress = nightElapsedTimeInMin /
             (MINUTES_PER_DAY - sunsetAt + sunriseAt)
 
         val (backgroundLayer1Image, backgroundLayer2Image) = when {
-            time < sunriseAt - LANDSCAPE_TRANSITION_DURATION -> R.drawable.night to null
-            time < sunriseAt -> R.drawable.night to R.drawable.sunrise
-            time < sunriseAt + LANDSCAPE_TRANSITION_DURATION -> R.drawable.sunrise to R.drawable.day
-            time < sunsetAt - LANDSCAPE_TRANSITION_DURATION -> R.drawable.day to null
-            time < sunsetAt -> R.drawable.day to R.drawable.sunset
-            time < sunsetAt + LANDSCAPE_TRANSITION_DURATION -> R.drawable.sunset to R.drawable.night
-            time > sunsetAt + LANDSCAPE_TRANSITION_DURATION -> R.drawable.night to null
+            timeInMin < sunriseAt - LANDSCAPE_TRANSITION_DURATION -> R.drawable.night to null
+            timeInMin < sunriseAt -> R.drawable.night to R.drawable.sunrise
+            timeInMin < sunriseAt + LANDSCAPE_TRANSITION_DURATION -> R.drawable.sunrise to R.drawable.day
+            timeInMin < sunsetAt - LANDSCAPE_TRANSITION_DURATION -> R.drawable.day to null
+            timeInMin < sunsetAt -> R.drawable.day to R.drawable.sunset
+            timeInMin < sunsetAt + LANDSCAPE_TRANSITION_DURATION -> R.drawable.sunset to R.drawable.night
+            timeInMin > sunsetAt + LANDSCAPE_TRANSITION_DURATION -> R.drawable.night to null
             else -> null to null
         }
 
         val progress = when {
-            time < sunriseAt - LANDSCAPE_TRANSITION_DURATION -> 0f
-            time < sunriseAt -> (sunriseAt - time) / LANDSCAPE_TRANSITION_DURATION
-            time < sunriseAt + LANDSCAPE_TRANSITION_DURATION -> {
-                (sunriseAt + LANDSCAPE_TRANSITION_DURATION - time) / LANDSCAPE_TRANSITION_DURATION
+            timeInMin < sunriseAt - LANDSCAPE_TRANSITION_DURATION -> 0f
+            timeInMin < sunriseAt -> (sunriseAt - timeInMin) / LANDSCAPE_TRANSITION_DURATION
+            timeInMin < sunriseAt + LANDSCAPE_TRANSITION_DURATION -> {
+                (sunriseAt + LANDSCAPE_TRANSITION_DURATION - timeInMin) / LANDSCAPE_TRANSITION_DURATION
             }
-            time < sunsetAt - LANDSCAPE_TRANSITION_DURATION -> 0f
-            time < sunsetAt -> (sunsetAt - time) / LANDSCAPE_TRANSITION_DURATION
-            time < sunsetAt + LANDSCAPE_TRANSITION_DURATION -> {
-                (sunsetAt + LANDSCAPE_TRANSITION_DURATION - time) / LANDSCAPE_TRANSITION_DURATION
+            timeInMin < sunsetAt - LANDSCAPE_TRANSITION_DURATION -> 0f
+            timeInMin < sunsetAt -> (sunsetAt - timeInMin) / LANDSCAPE_TRANSITION_DURATION
+            timeInMin < sunsetAt + LANDSCAPE_TRANSITION_DURATION -> {
+                (sunsetAt + LANDSCAPE_TRANSITION_DURATION - timeInMin) / LANDSCAPE_TRANSITION_DURATION
             }
-            time > sunsetAt + LANDSCAPE_TRANSITION_DURATION -> 0f
+            timeInMin > sunsetAt + LANDSCAPE_TRANSITION_DURATION -> 0f
             else -> 0f
         }
 
         val mountainDarkTintPercent = when {
-            time < sunriseAt - MOUNTAIN_TINT_TRANSITION_DURATION -> 1f
-            time < sunriseAt + MOUNTAIN_TINT_TRANSITION_DURATION -> {
-                1 - (time - sunriseAt + MOUNTAIN_TINT_TRANSITION_DURATION) / (2 * MOUNTAIN_TINT_TRANSITION_DURATION)
+            timeInMin < sunriseAt - MOUNTAIN_TINT_TRANSITION_DURATION -> 1f
+            timeInMin < sunriseAt + MOUNTAIN_TINT_TRANSITION_DURATION -> {
+                1 - (timeInMin - sunriseAt + MOUNTAIN_TINT_TRANSITION_DURATION) / (2 * MOUNTAIN_TINT_TRANSITION_DURATION)
             }
-            time < sunsetAt - MOUNTAIN_TINT_TRANSITION_DURATION -> 0f
-            time < sunsetAt + MOUNTAIN_TINT_TRANSITION_DURATION -> {
-                (time - sunsetAt + MOUNTAIN_TINT_TRANSITION_DURATION) / (2 * MOUNTAIN_TINT_TRANSITION_DURATION)
+            timeInMin < sunsetAt - MOUNTAIN_TINT_TRANSITION_DURATION -> 0f
+            timeInMin < sunsetAt + MOUNTAIN_TINT_TRANSITION_DURATION -> {
+                (timeInMin - sunsetAt + MOUNTAIN_TINT_TRANSITION_DURATION) / (2 * MOUNTAIN_TINT_TRANSITION_DURATION)
             }
-            time > sunsetAt + MOUNTAIN_TINT_TRANSITION_DURATION -> 1f
+            timeInMin > sunsetAt + MOUNTAIN_TINT_TRANSITION_DURATION -> 1f
             else -> 0f
         }
         mountainDarkTintAlpha = mountainDarkTintPercent * MOUNTAIN_TINT_ALPHA_MAX
@@ -233,3 +265,5 @@ private const val MOUNTAIN_TINT_TRANSITION_DURATION = 80
 private const val SUN_BOTTOM_MARGIN = 60
 private const val MOON_BOTTOM_MARGIN = 60
 private const val MOUNTAIN_TINT_ALPHA_MAX = 0.4f
+
+private enum class AnimatedTimeJumpProgress { START, END }

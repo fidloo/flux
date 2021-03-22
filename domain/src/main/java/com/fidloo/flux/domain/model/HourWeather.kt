@@ -15,7 +15,9 @@
  */
 package com.fidloo.flux.domain.model
 
+import java.util.Date
+
 data class HourWeather(
-    val hour: Int,
+    val time: Date,
     val facts: WeatherFacts,
 )

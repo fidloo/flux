@@ -21,13 +21,14 @@ import com.fidloo.flux.domain.model.DayWeather
 import com.fidloo.flux.domain.model.HourWeather
 import com.fidloo.flux.domain.repository.WeatherRepository
 import kotlinx.coroutines.delay
+import java.util.Date
 import javax.inject.Inject
 
 class WeatherRepositoryImpl @Inject constructor() : WeatherRepository {
-    override suspend fun fetchCurrentWeather(): CurrentWeather {
+    override suspend fun fetchWeatherAtTime(time: Date): CurrentWeather {
         // Simulate network delay
-        delay(400L)
-        return FakeWeatherDataSource.getCurrentWeather()
+//        delay(400L)
+        return FakeWeatherDataSource.fetchWeatherAtTime(time)
     }
 
     override suspend fun fetchHourlyWeather(): List<HourWeather> {

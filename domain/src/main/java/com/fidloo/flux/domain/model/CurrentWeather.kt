@@ -15,6 +15,7 @@
  */
 package com.fidloo.flux.domain.model
 
+import java.util.Calendar
 import java.util.Date
 
 data class CurrentWeather(
@@ -24,4 +25,23 @@ data class CurrentWeather(
     val sunset: String,
     val minTemperature: Int,
     val maxTemperature: Int,
-)
+) {
+    companion object {
+
+        fun getDefault(): CurrentWeather {
+            val calendar = Calendar.getInstance()
+            calendar[Calendar.MINUTE] = 0
+            calendar[Calendar.SECOND] = 0
+            calendar[Calendar.MILLISECOND] = 0
+
+            return CurrentWeather(
+                time = calendar.time,
+                hourWeather = WeatherFacts.Default,
+                sunrise = "06:46",
+                sunset = "18:53",
+                minTemperature = -1,
+                maxTemperature = 9
+            )
+        }
+    }
+}

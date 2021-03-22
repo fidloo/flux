@@ -23,17 +23,18 @@ import com.fidloo.flux.domain.repository.WeatherRepository
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import java.util.Date
 import javax.inject.Inject
 
-class FetchCurrentWeather @Inject constructor(
+class FetchWeatherAtTime @Inject constructor(
     private val repository: WeatherRepository,
     @IoDispatcher dispatcher: CoroutineDispatcher
-) : FlowUseCase<Unit, CurrentWeather>(dispatcher) {
+) : FlowUseCase<Date, CurrentWeather>(dispatcher) {
 
-    override fun execute(parameters: Unit): Flow<Result<CurrentWeather>> {
+    override fun execute(parameters: Date): Flow<Result<CurrentWeather>> {
         return flow {
             emit(Result.Loading)
-            emit(Result.Success(repository.fetchCurrentWeather()))
+            emit(Result.Success(repository.fetchWeatherAtTime(parameters)))
         }
     }
 }

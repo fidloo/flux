@@ -27,4 +27,20 @@ data class WeatherFacts(
     val uvIndex: Int,
     val dewPoint: Int,
     val state: WeatherState,
-)
+) {
+    companion object {
+        val Default = WeatherFacts(
+            temperature = 2,
+            apparentTemperature = 2,
+            precipitation = 0.2f,
+            humidity = 0.49f,
+            windSpeed = 17f,
+            cloudCover = 0.88f,
+            pressure = 1.0f,
+            visibility = 5f,
+            uvIndex = 1,
+            dewPoint = -4,
+            state = WeatherState.CLEAR_SKY
+        )
+    }
+}

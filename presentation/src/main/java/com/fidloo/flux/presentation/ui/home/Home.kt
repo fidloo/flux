@@ -36,7 +36,6 @@ import androidx.compose.material.BackdropValue
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Slider
 import androidx.compose.material.Snackbar
 import androidx.compose.material.SnackbarHost
 import androidx.compose.material.SnackbarResult
@@ -50,7 +49,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
@@ -67,13 +65,13 @@ import com.fidloo.flux.presentation.ui.component.SectionProgressBar
 import com.fidloo.flux.presentation.ui.component.SwipeToRefreshLayout
 import com.fidloo.flux.presentation.ui.theme.BottomSheetShape
 import com.fidloo.flux.presentation.ui.theme.FluxTheme
+import java.util.Date
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun HomeScreen(viewModel: HomeViewModel = viewModel()) {
     val viewState by viewModel.state.collectAsState()
     val scaffoldState = rememberBackdropScaffoldState(BackdropValue.Revealed)
-    var time by rememberSaveable { mutableStateOf(0f) }
     var snackbarMessage by remember { mutableStateOf<String?>(null) }
 
     val infiniteTransition = rememberInfiniteTransition()
@@ -124,15 +122,14 @@ fun HomeScreen(viewModel: HomeViewModel = viewModel()) {
                 frontLayerElevation = if (scaffoldState.isConcealed) FluxTheme.elevations.Backdrop else 0.dp,
                 frontLayerShape = BottomSheetShape,
                 backLayerContent = {
-                    DynamicWeatherSection(viewState.currentWeather, time)
+                    DynamicWeatherSection(viewState.currentWeather, viewModel)
                 },
                 frontLayerContent = {
                     Column {
                         DetailedWeather(
                             viewState = viewState,
                             onShowSnackbar = { snackbarMessage = it },
-                            time = time,
-                            onValueChange = { time = it }
+                            onWeatherTimeSelected = viewModel::onWeatherDateSelected
                         )
                     }
                 },
@@ -158,8 +155,7 @@ fun HomeScreen(viewModel: HomeViewModel = viewModel()) {
 fun DetailedWeather(
     viewState: HomeViewState,
     onShowSnackbar: (String) -> Unit,
-    onValueChange: (Float) -> Unit,
-    time: Float,
+    onWeatherTimeSelected: (Date) -> Unit
 ) {
     Surface(
         modifier = Modifier.fillMaxSize(),
@@ -173,20 +169,14 @@ fun DetailedWeather(
                 .padding(top = 20.dp)
         ) {
 
-            val hours = time.toInt() / 60
-            val minutes = time.toInt() % 60
-            val formattedTime = "%02dh%02d".format(hours, minutes)
-            item { SectionHeader(title = "Time setting", subtitle = formattedTime) }
+//            item { CurrentWeather(viewState.currentWeather) }
             item {
-                Slider(
-                    value = time,
-                    onValueChange = { onValueChange(it) },
-                    valueRange = 0f..1440f,
-                    modifier = Modifier.padding(horizontal = 24.dp)
+                HourlyWeather(
+                    viewState.hourlyWeather,
+                    viewState.currentWeather.time,
+                    onWeatherTimeSelected
                 )
             }
-            item { CurrentWeather(viewState.currentWeather) }
-            item { HourlyWeather(viewState.hourlyWeather) }
             item { WeatherRadar(onShowSnackbar = { onShowSnackbar(it) }) }
             item { SectionHeader(title = "This week", subtitle = "7-day forecast") }
             item { Spacer(Modifier.height(8.dp)) }

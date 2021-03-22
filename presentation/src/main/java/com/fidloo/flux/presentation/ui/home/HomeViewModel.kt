@@ -17,21 +17,26 @@ package com.fidloo.flux.presentation.ui.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.fidloo.flux.domain.business.FetchCurrentWeather
+import com.fidloo.flux.domain.base.successOr
 import com.fidloo.flux.domain.business.FetchHourlyWeather
+import com.fidloo.flux.domain.business.FetchWeatherAtTime
 import com.fidloo.flux.domain.business.FetchWeekWeather
+import com.fidloo.flux.domain.model.CurrentWeather.Companion.getDefault
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.launch
+import java.util.Date
 import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    private val fetchCurrentWeather: FetchCurrentWeather,
+    private val fetchWeatherAtTime: FetchWeatherAtTime,
     private val fetchHourlyWeather: FetchHourlyWeather,
     private val fetchWeekWeather: FetchWeekWeather,
 ) : ViewModel() {
@@ -39,26 +44,27 @@ class HomeViewModel @Inject constructor(
     private val _state = MutableStateFlow(HomeViewState())
     val state: StateFlow<HomeViewState> = _state
 
+    private val selectedWeatherTime = MutableStateFlow(Date())
+
+    var oldSelectedWeatherTime: Date = Date()
+
     private var job: Job? = null
 
     init {
         loadData()
     }
 
+    @OptIn(ExperimentalCoroutinesApi::class)
     private fun loadData(userAction: Boolean = false) {
         job = viewModelScope.launch {
             combine(
-                fetchCurrentWeather(Unit),
+                selectedWeatherTime.flatMapLatest { fetchWeatherAtTime(it) },
                 fetchHourlyWeather(Unit),
                 fetchWeekWeather(Unit),
             ) { currentWeather, hourlyWeather, weekWeather ->
 
                 // Prevent the swipe refresh to replace a successful state by a progress bar
-                val newCurrentWeather = if (!userAction || currentWeather.isSuccessful()) {
-                    currentWeather
-                } else {
-                    state.value.currentWeather
-                }
+                val newCurrentWeather = currentWeather.successOr(getDefault())
 
                 val newHourlyWeather = if (!userAction || hourlyWeather.isSuccessful()) {
                     hourlyWeather
@@ -90,5 +96,9 @@ class HomeViewModel @Inject constructor(
         job?.cancel()
         _state.value = state.value.copy(refreshing = true)
         loadData(userAction = true)
+    }
+
+    fun onWeatherDateSelected(time: Date) {
+        selectedWeatherTime.value = time
     }
 }

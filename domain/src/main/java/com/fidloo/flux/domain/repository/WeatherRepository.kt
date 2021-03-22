@@ -18,9 +18,10 @@ package com.fidloo.flux.domain.repository
 import com.fidloo.flux.domain.model.CurrentWeather
 import com.fidloo.flux.domain.model.DayWeather
 import com.fidloo.flux.domain.model.HourWeather
+import java.util.Date
 
 interface WeatherRepository {
-    suspend fun fetchCurrentWeather(): CurrentWeather
+    suspend fun fetchWeatherAtTime(time: Date): CurrentWeather
     suspend fun fetchHourlyWeather(): List<HourWeather>
     suspend fun fetchWeekWeather(): List<DayWeather>
 }

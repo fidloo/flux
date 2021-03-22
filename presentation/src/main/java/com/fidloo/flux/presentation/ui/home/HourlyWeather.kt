@@ -17,6 +17,7 @@ package com.fidloo.flux.presentation.ui.home
 
 import android.graphics.Paint
 import androidx.compose.animation.animateContentSize
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
@@ -29,9 +30,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.material.Card
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -55,10 +56,14 @@ import com.fidloo.flux.presentation.ui.component.GenericErrorMessage
 import com.fidloo.flux.presentation.ui.component.SectionHeader
 import com.fidloo.flux.presentation.ui.component.SectionProgressBar
 import com.fidloo.flux.presentation.ui.utils.getIconRes
+import java.util.Calendar
+import java.util.Date
 
 @Composable
 fun HourlyWeather(
-    hourlyWeatherResult: Result<HourlyWeather>
+    hourlyWeatherResult: Result<HourlyWeather>,
+    selectedTime: Date,
+    onWeatherTimeSelected: (Date) -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -71,13 +76,21 @@ fun HourlyWeather(
         when (hourlyWeatherResult) {
             is Result.Error -> GenericErrorMessage()
             Result.Loading -> SectionProgressBar()
-            is Result.Success -> HourlyWeatherChart(hourlyWeatherResult.data)
+            is Result.Success -> HourlyWeatherChart(
+                hourlyWeatherResult.data,
+                selectedTime,
+                onWeatherTimeSelected
+            )
         }
     }
 }
 
 @Composable
-fun HourlyWeatherChart(hourlyWeather: HourlyWeather) {
+fun HourlyWeatherChart(
+    hourlyWeather: HourlyWeather,
+    selectedTime: Date,
+    onWeatherTimeSelected: (Date) -> Unit
+) {
     val curveColor = MaterialTheme.colors.primary
     val curveBackgroundColor = MaterialTheme.colors.primary.copy(alpha = 0.2f)
     val onBackgroundColor = MaterialTheme.colors.onBackground.copy(alpha = 0.7f)
@@ -211,8 +224,9 @@ fun HourlyWeatherChart(hourlyWeather: HourlyWeather) {
                 weatherPerHour.forEach { item ->
                     HourWeatherChartItemDescription(
                         item = item,
+                        selectedTime = selectedTime,
                         modifier = Modifier.width(dpPerCell.dp),
-                        onHourClicked = {}
+                        onWeatherTimeSelected = onWeatherTimeSelected
                     )
                 }
             }
@@ -223,13 +237,31 @@ fun HourlyWeatherChart(hourlyWeather: HourlyWeather) {
 @Composable
 fun HourWeatherChartItemDescription(
     item: HourWeather,
+    selectedTime: Date,
     modifier: Modifier = Modifier,
-    onHourClicked: (HourWeather) -> Unit
+    onWeatherTimeSelected: (Date) -> Unit
 ) {
-    Surface(shape = MaterialTheme.shapes.medium, color = Color.Transparent) {
+
+    val calendar = Calendar.getInstance()
+    calendar.time = selectedTime
+    val selectedHour = calendar[Calendar.HOUR_OF_DAY]
+    calendar.time = item.time
+    val itemHour = calendar[Calendar.HOUR_OF_DAY]
+    val isSelected = selectedHour == itemHour
+
+    Card(
+        shape = MaterialTheme.shapes.medium,
+        backgroundColor = if (isSelected) MaterialTheme.colors.primary.copy(alpha = 0.2f) else Color.Transparent,
+        elevation = 0.dp,
+        border = if (selectedHour == itemHour) {
+            BorderStroke(2.dp, MaterialTheme.colors.primary)
+        } else {
+            null
+        }
+    ) {
         Column(
             modifier = modifier
-                .clickable { onHourClicked(item) }
+                .clickable { onWeatherTimeSelected(item.time) }
                 .padding(vertical = 4.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
@@ -239,8 +271,11 @@ fun HourWeatherChartItemDescription(
                 modifier = Modifier.size(36.dp),
             )
 
+            val calendar = Calendar.getInstance()
+            calendar.time = item.time
+            val currentHour = calendar[Calendar.HOUR_OF_DAY]
             Text(
-                text = item.hour.toString(),
+                text = "%02d".format(currentHour),
                 style = MaterialTheme.typography.h2
             )
         }
