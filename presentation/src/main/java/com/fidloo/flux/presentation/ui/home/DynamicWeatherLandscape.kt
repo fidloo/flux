@@ -76,7 +76,7 @@ fun DynamicWeatherLandscape(
                 val sunsetAt = sunsetHour * 60 + sunsetMinute
 
                 val sunProgress = (time - (sunriseAt - LANDSCAPE_TRANSITION_DURATION)) /
-                    ((sunsetAt + LANDSCAPE_TRANSITION_DURATION) - (sunriseAt - LANDSCAPE_TRANSITION_DURATION))
+                        ((sunsetAt + LANDSCAPE_TRANSITION_DURATION) - (sunriseAt - LANDSCAPE_TRANSITION_DURATION))
 
                 val nightElapsedTimeInMin = when {
                     time < sunriseAt -> time + MINUTES_PER_DAY - sunsetAt
@@ -84,7 +84,7 @@ fun DynamicWeatherLandscape(
                     else -> 0f
                 }
                 val moonProgress = nightElapsedTimeInMin /
-                    (MINUTES_PER_DAY - sunsetAt + sunriseAt)
+                        (MINUTES_PER_DAY - sunsetAt + sunriseAt)
 
                 val (backgroundLayer1Image, backgroundLayer2Image) = when {
                     time < sunriseAt - LANDSCAPE_TRANSITION_DURATION -> R.drawable.night to null
@@ -164,15 +164,15 @@ fun DynamicWeatherLandscape(
                 val imageSize = with(LocalDensity.current) { 64.dp.toPx() }
                 val x2 = width - imageSize
                 val a = -1 * (height + imageSize) / (
-                    ((width / 2) - width - imageSize) *
-                        (width / 2)
-                    )
+                        ((width / 2) - width - imageSize) *
+                                (width / 2)
+                        )
 
                 val sunX = (width - imageSize) * (1 - sunProgress.coerceIn(0f, 1f))
-                val sunY = a * (sunX - x2) * sunX + height - imageSize
+                val sunY = a * (sunX - x2) * sunX + height - imageSize - SUN_BOTTOM_MARGIN
 
                 val moonX = (width - imageSize) * (1 - moonProgress)
-                val moonY = a * (moonX - x2) * moonX + height - imageSize
+                val moonY = a * (moonX - x2) * moonX + height - imageSize - MOON_BOTTOM_MARGIN
 
                 Image(
                     painter = painterResource(R.drawable.sun),
@@ -222,4 +222,6 @@ private const val HOURS_PER_DAY = 24
 private const val MINUTES_PER_DAY = MINUTES_PER_HOUR * HOURS_PER_DAY
 private const val LANDSCAPE_TRANSITION_DURATION = 45
 private const val MOUNTAIN_TINT_TRANSITION_DURATION = 80
+private const val SUN_BOTTOM_MARGIN = 60
+private const val MOON_BOTTOM_MARGIN = 60
 private const val MOUNTAIN_TINT_ALPHA_MAX = 0.4f
