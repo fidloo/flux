@@ -43,7 +43,6 @@ import com.fidloo.flux.domain.model.CurrentWeather
 import com.fidloo.flux.presentation.R
 import com.fidloo.flux.presentation.ui.component.CenteredProgressBar
 import com.fidloo.flux.presentation.ui.component.GenericErrorMessage
-import com.fidloo.flux.presentation.ui.component.SectionProgressBar
 import java.util.Calendar
 
 @Composable
@@ -87,7 +86,7 @@ fun DynamicWeatherLandscape(weather: CurrentWeather, time: Float, constraints: C
         val sunsetAt = sunsetHour * 60 + sunsetMinute
 
         val sunProgress = (time - (sunriseAt - LANDSCAPE_TRANSITION_DURATION)) /
-                ((sunsetAt + LANDSCAPE_TRANSITION_DURATION) - (sunriseAt - LANDSCAPE_TRANSITION_DURATION))
+            ((sunsetAt + LANDSCAPE_TRANSITION_DURATION) - (sunriseAt - LANDSCAPE_TRANSITION_DURATION))
 
         val nightElapsedTimeInMin = when {
             time < sunriseAt -> time + MINUTES_PER_DAY - sunsetAt
@@ -95,7 +94,7 @@ fun DynamicWeatherLandscape(weather: CurrentWeather, time: Float, constraints: C
             else -> 0f
         }
         val moonProgress = nightElapsedTimeInMin /
-                (MINUTES_PER_DAY - sunsetAt + sunriseAt)
+            (MINUTES_PER_DAY - sunsetAt + sunriseAt)
 
         val (backgroundLayer1Image, backgroundLayer2Image) = when {
             time < sunriseAt - LANDSCAPE_TRANSITION_DURATION -> R.drawable.night to null
@@ -175,9 +174,9 @@ fun DynamicWeatherLandscape(weather: CurrentWeather, time: Float, constraints: C
         val imageSize = with(LocalDensity.current) { 64.dp.toPx() }
         val x2 = width - imageSize
         val a = -1 * (height + imageSize) / (
-                ((width / 2) - width - imageSize) *
-                        (width / 2)
-                )
+            ((width / 2) - width - imageSize) *
+                (width / 2)
+            )
 
         val sunX = (width - imageSize) * (1 - sunProgress.coerceIn(0f, 1f))
         val sunY = a * (sunX - x2) * sunX + height - imageSize - SUN_BOTTOM_MARGIN

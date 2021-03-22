@@ -70,7 +70,7 @@ object FakeWeatherDataSource {
                     visibility = 5f,
                     uvIndex = 1,
                     dewPoint = -4,
-                    state = WeatherState.CLEAR_SKY
+                    state = WeatherState.SCATTERED_CLOUDS
                 )
             ),
             HourWeather(
@@ -86,7 +86,7 @@ object FakeWeatherDataSource {
                     visibility = 5f,
                     uvIndex = 1,
                     dewPoint = -4,
-                    state = WeatherState.CLEAR_SKY
+                    state = WeatherState.FEW_CLOUDS
                 )
             ),
             HourWeather(
@@ -102,7 +102,7 @@ object FakeWeatherDataSource {
                     visibility = 5f,
                     uvIndex = 1,
                     dewPoint = -4,
-                    state = WeatherState.CLEAR_SKY
+                    state = WeatherState.FOG
                 )
             ),
             HourWeather(
@@ -118,7 +118,7 @@ object FakeWeatherDataSource {
                     visibility = 5f,
                     uvIndex = 1,
                     dewPoint = -4,
-                    state = WeatherState.CLEAR_SKY
+                    state = WeatherState.HEAVY_RAIN
                 )
             ),
             HourWeather(
@@ -134,7 +134,7 @@ object FakeWeatherDataSource {
                     visibility = 5f,
                     uvIndex = 1,
                     dewPoint = -4,
-                    state = WeatherState.CLEAR_SKY
+                    state = WeatherState.RAIN
                 )
             ),
             HourWeather(
@@ -150,7 +150,7 @@ object FakeWeatherDataSource {
                     visibility = 5f,
                     uvIndex = 1,
                     dewPoint = -4,
-                    state = WeatherState.CLEAR_SKY
+                    state = WeatherState.MOSTLY_CLOUDY
                 )
             ),
             HourWeather(
@@ -166,7 +166,7 @@ object FakeWeatherDataSource {
                     visibility = 5f,
                     uvIndex = 1,
                     dewPoint = -4,
-                    state = WeatherState.CLEAR_SKY
+                    state = WeatherState.SNOW
                 )
             ),
             HourWeather(
@@ -182,7 +182,7 @@ object FakeWeatherDataSource {
                     visibility = 5f,
                     uvIndex = 1,
                     dewPoint = -4,
-                    state = WeatherState.CLEAR_SKY
+                    state = WeatherState.THUNDERSTORM
                 )
             ),
             HourWeather(

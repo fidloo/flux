@@ -128,10 +128,11 @@ fun HomeScreen(viewModel: HomeViewModel = viewModel()) {
                 },
                 frontLayerContent = {
                     Column {
-                        Slider(value = time, onValueChange = { time = it }, valueRange = 0f..1440f)
                         DetailedWeather(
                             viewState = viewState,
-                            onShowSnackbar = { snackbarMessage = it }
+                            onShowSnackbar = { snackbarMessage = it },
+                            time = time,
+                            onValueChange = { time = it }
                         )
                     }
                 },
@@ -156,7 +157,9 @@ fun HomeScreen(viewModel: HomeViewModel = viewModel()) {
 @Composable
 fun DetailedWeather(
     viewState: HomeViewState,
-    onShowSnackbar: (String) -> Unit
+    onShowSnackbar: (String) -> Unit,
+    onValueChange: (Float) -> Unit,
+    time: Float,
 ) {
     Surface(
         modifier = Modifier.fillMaxSize(),
@@ -169,6 +172,19 @@ fun DetailedWeather(
                 .fillMaxSize()
                 .padding(top = 20.dp)
         ) {
+
+            val hours = time.toInt() / 60
+            val minutes = time.toInt() % 60
+            val formattedTime = "%02dh%02d".format(hours, minutes)
+            item { SectionHeader(title = "Time setting", subtitle = formattedTime) }
+            item {
+                Slider(
+                    value = time,
+                    onValueChange = { onValueChange(it) },
+                    valueRange = 0f..1440f,
+                    modifier = Modifier.padding(horizontal = 24.dp)
+                )
+            }
             item { CurrentWeather(viewState.currentWeather) }
             item { HourlyWeather(viewState.hourlyWeather) }
             item { WeatherRadar(onShowSnackbar = { onShowSnackbar(it) }) }

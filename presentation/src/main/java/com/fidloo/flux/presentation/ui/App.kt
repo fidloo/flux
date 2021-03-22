@@ -16,12 +16,8 @@
 package com.fidloo.flux.presentation.ui
 
 import android.graphics.Color
-import android.os.Build
-import android.view.View
 import android.view.Window
-import android.view.WindowInsetsController
 import androidx.activity.OnBackPressedDispatcher
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface

@@ -13,16 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.fidloo.flux.presentation.ui.home
+package com.fidloo.flux.domain.model
 
-import com.fidloo.flux.domain.base.Result
-import com.fidloo.flux.domain.model.CurrentWeather
-import com.fidloo.flux.domain.model.DayWeather
-import com.fidloo.flux.domain.model.HourlyWeather
-
-data class HomeViewState(
-    val currentWeather: Result<CurrentWeather> = Result.Loading,
-    val hourlyWeather: Result<HourlyWeather> = Result.Loading,
-    val weekWeather: Result<List<DayWeather>> = Result.Loading,
-    val refreshing: Boolean = false,
+data class Point(
+    val x: Float,
+    val y: Float,
 )

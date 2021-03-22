@@ -26,8 +26,8 @@ import dagger.hilt.android.AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         /** Show a splash screen while the system is loading the app.
-        A composable splash screen could have been defined but it would have been shown
-        after the default white splash screen displayed while the system is loading the app. **/
+         A composable splash screen could have been defined but it would have been shown
+         after the default white splash screen displayed while the system is loading the app. **/
         setTheme(R.style.Theme_Flux_NoActionBar)
         super.onCreate(savedInstanceState)
 

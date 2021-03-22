@@ -84,7 +84,7 @@ fun DayWeather(item: DayWeather) {
                     verticalArrangement = Arrangement.Center,
                 ) {
                     Text(
-                        text = dateFormat.format(item.date),
+                        text = dateFormat.format(item.date).capitalize(),
                         style = MaterialTheme.typography.h2,
                     )
                     Spacer(Modifier.height(4.dp))
