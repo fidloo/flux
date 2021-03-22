@@ -19,11 +19,16 @@ import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.WindowCompat
+import com.fidloo.flux.presentation.R
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
+        /** Show a splash screen while the system is loading the app.
+        A composable splash screen could have been defined but it would have been shown
+        after the default white splash screen displayed while the system is loading the app. **/
+        setTheme(R.style.Theme_Flux_NoActionBar)
         super.onCreate(savedInstanceState)
 
         WindowCompat.setDecorFitsSystemWindows(window, false)

@@ -22,7 +22,7 @@
         <activity
             android:name=".presentation.ui.MainActivity"
             android:label="@string/app_name"
-            android:theme="@style/Theme.Flux.NoActionBar">
+            android:theme="@style/Theme.Flux.Splash">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
