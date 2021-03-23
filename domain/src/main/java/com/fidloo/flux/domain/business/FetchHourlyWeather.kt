@@ -25,47 +25,95 @@ import com.fidloo.flux.domain.model.HourlyWeatherType
 import com.fidloo.flux.domain.model.Point
 import com.fidloo.flux.domain.repository.WeatherRepository
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
+import kotlin.math.abs
+import kotlin.math.max
+import kotlin.math.min
 
 class FetchHourlyWeather @Inject constructor(
     private val repository: WeatherRepository,
     @IoDispatcher dispatcher: CoroutineDispatcher
-) : FlowUseCase<HourlyWeatherType, HourlyWeather>(dispatcher) {
+) : FlowUseCase<FetchHourlyWeather.Parameters, HourlyWeather>(dispatcher) {
 
-    override fun execute(parameters: HourlyWeatherType): Flow<Result<HourlyWeather>> {
+    override fun execute(parameters: Parameters): Flow<Result<HourlyWeather>> {
         return flow {
             emit(Result.Loading)
             val weatherPerHour = repository.fetchHourlyWeather()
             val hourlyWeatherCurvePoints = computeHourlyWeatherCurvePoints(
                 hourlyWeather = weatherPerHour,
-                parameters
+                parameters.type,
             )
 
-            emit(
-                Result.Success(
-                    HourlyWeather(
-                        weatherPerHour = weatherPerHour,
-                        hourlyWeatherCurvePoints = hourlyWeatherCurvePoints
+            val newPoints = hourlyWeatherCurvePoints.points
+            val oldPoints = if (parameters.oldPoints.isNotEmpty()) {
+                parameters.oldPoints
+            } else {
+                newPoints.map { it.copy(y = 0f) }
+            }
+
+            val size = oldPoints.size
+            var maxDiffY = 0f
+            for (i in 0 until size) {
+                val abs = abs(oldPoints[i].y - newPoints[i].y)
+                if (abs > maxDiffY) maxDiffY = abs
+            }
+
+            val loopCount = maxDiffY / 16
+            val tempPointsForAnimation = mutableListOf<MutableList<Point>>()
+
+            for (i in 0 until size) {
+                val old = oldPoints[i]
+                val new = newPoints[i]
+
+                val plusOrMinusAmount = abs(new.y - old.y) / maxDiffY * 16
+
+                var tempY = old.y
+                val tempList = mutableListOf<Point>()
+
+                for (j in 0..loopCount.toInt()) {
+                    if (tempY == new.y) {
+                        tempList.add(Point(new.x, new.y))
+                    } else {
+                        if (new.y > old.y) {
+                            tempY += plusOrMinusAmount
+                            tempY = min(tempY, new.y)
+                            tempList.add(Point(new.x, tempY))
+                        } else {
+                            tempY -= plusOrMinusAmount
+                            tempY = max(tempY, new.y)
+                            tempList.add(Point(new.x, tempY))
+                        }
+                    }
+                }
+                tempPointsForAnimation.add(tempList)
+            }
+
+            val first = tempPointsForAnimation[0]
+            val length = first.size
+
+            for (i in 0 until length) {
+                emit(
+                    Result.Success(
+                        HourlyWeather(
+                            weatherPerHour = weatherPerHour,
+                            hourlyWeatherCurvePoints = computeConnectionPoints(
+                                tempPointsForAnimation.map { it[i] }.toMutableList()
+                            )
+                        )
                     )
                 )
-            )
-        }
-    }
-
-    private fun getValueForType(weather: HourWeather, type: HourlyWeatherType): Float {
-        return when (type) {
-            HourlyWeatherType.Temperature -> weather.facts.temperature
-            HourlyWeatherType.Wind -> weather.facts.windSpeed
-            HourlyWeatherType.CloudCover -> weather.facts.cloudCover * 100
+                delay(16)
+            }
         }
     }
 
     // Compute bezier curve points in IO thread
     private fun computeHourlyWeatherCurvePoints(
         hourlyWeather: List<HourWeather>,
-        type: HourlyWeatherType
+        type: HourlyWeatherType,
     ): HourlyWeatherCurvePoints {
         val cellSize = HourlyWeatherCurveParameters.cellSize
         val offsetY = HourlyWeatherCurveParameters.offsetTop
@@ -87,6 +135,10 @@ class FetchHourlyWeather @Inject constructor(
         val lastPoint = points.last()
         points.add(lastPoint.copy(x = lastPoint.x + cellSize))
 
+        return computeConnectionPoints(points)
+    }
+
+    private fun computeConnectionPoints(points: MutableList<Point>): HourlyWeatherCurvePoints {
         val connectionPoints1 = mutableListOf<Point>()
         val connectionPoints2 = mutableListOf<Point>()
 
@@ -114,6 +166,19 @@ class FetchHourlyWeather @Inject constructor(
             connectionPoints2
         )
     }
+
+    private fun getValueForType(weather: HourWeather, type: HourlyWeatherType): Float {
+        return when (type) {
+            HourlyWeatherType.Temperature -> weather.facts.temperature
+            HourlyWeatherType.Wind -> weather.facts.windSpeed
+            HourlyWeatherType.CloudCover -> weather.facts.cloudCover * 100
+        }
+    }
+
+    data class Parameters(
+        val type: HourlyWeatherType,
+        val oldPoints: List<Point>
+    )
 }
 
 object HourlyWeatherCurveParameters {

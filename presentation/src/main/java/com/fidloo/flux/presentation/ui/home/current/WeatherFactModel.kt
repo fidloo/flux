@@ -56,7 +56,7 @@ fun CurrentWeather.extractFacts() = listOf(
     ),
     WeatherFact(
         label = "Precipitation",
-        value = "${hourWeather.precipitation * 100}%",
+        value = "${(hourWeather.precipitation * 100).toInt()}%",
         icon = Icons.Outlined.Umbrella
     ),
     WeatherFact(
@@ -66,7 +66,7 @@ fun CurrentWeather.extractFacts() = listOf(
     ),
     WeatherFact(
         label = "Humidity",
-        value = "${hourWeather.humidity * 100}%",
+        value = "${(hourWeather.humidity * 100).toInt()}%",
         icon = Icons.Outlined.Opacity
     ),
     WeatherFact(
@@ -114,7 +114,7 @@ fun DayWeather.extractFacts() = listOf(
     ),
     WeatherFact(
         label = "Humidity",
-        value = "${facts.humidity * 100}%",
+        value = "${(facts.humidity * 100).toInt()}%",
         icon = Icons.Outlined.Opacity
     ),
     WeatherFact(

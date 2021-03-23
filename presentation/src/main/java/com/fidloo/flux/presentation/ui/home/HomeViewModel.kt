@@ -72,7 +72,11 @@ class HomeViewModel @Inject constructor(
         job = viewModelScope.launch {
             combine(
                 selectedWeatherTime.flatMapLatest { fetchWeatherAtTime(it) },
-                selectedFilter.flatMapLatest { fetchHourlyWeather(it) },
+                selectedFilter.flatMapLatest { type ->
+                    val oldPoints = state.value.hourlyWeather
+                        .successOr(null)?.hourlyWeatherCurvePoints?.points.orEmpty()
+                    fetchHourlyWeather(FetchHourlyWeather.Parameters(type, oldPoints))
+                },
                 fetchWeekWeather(Unit),
                 selectedFilter
             ) { currentWeather, hourlyWeather, weekWeather, selectedFilter ->

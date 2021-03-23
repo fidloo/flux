@@ -377,7 +377,7 @@ fun DynamicWeatherLandscape(
         )
 
         Text(
-            text = weather.hourWeather.temperature.toString(),
+            text = weather.hourWeather.temperature.toInt().toString(),
             style = MaterialTheme.typography.h1.copy(
                 fontSize = 60.sp,
                 shadow = textShadow
