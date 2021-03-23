@@ -27,8 +27,11 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.offset
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -37,15 +40,19 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.BlendMode
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.graphics.Shadow
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import com.fidloo.flux.domain.model.CurrentWeather
 import com.fidloo.flux.domain.model.WeatherState
@@ -54,6 +61,7 @@ import com.fidloo.flux.presentation.ui.home.HomeViewModel
 import com.fidloo.flux.presentation.ui.particle.Particles
 import com.fidloo.flux.presentation.ui.particle.rainParameters
 import com.fidloo.flux.presentation.ui.particle.snowParameters
+import com.fidloo.flux.presentation.ui.utils.getDescriptionRes
 import dev.chrisbanes.accompanist.insets.statusBarsPadding
 import java.util.Calendar
 
@@ -119,6 +127,11 @@ fun DynamicWeatherLandscape(
     ConstraintLayout(
         modifier = Modifier.fillMaxSize()
     ) {
+        val (
+            backgroundLayer1, backgroundLayer2, mountain, particles, clouds, fog, temperature,
+            temperatureUnit, weatherDescription
+        ) = createRefs()
+
         val (sunriseHour, sunriseMinute) = weather.sunrise.split(":")
             .map { it.toFloat() }
         val sunriseAt = sunriseHour * 60 + sunriseMinute
@@ -178,7 +191,6 @@ fun DynamicWeatherLandscape(
         nightTintAlpha = mountainDarkTintPercent * MOUNTAIN_TINT_ALPHA_MAX
 
         backgroundLayer2Alpha = 1 - progress
-        val (backgroundLayer1, backgroundLayer2, mountain, particles, clouds, fog, thunder) = createRefs()
 
         if (backgroundLayer1Image != null) {
             Image(
@@ -358,6 +370,53 @@ fun DynamicWeatherLandscape(
                 )
             }
         }
+
+        val textShadow = Shadow(
+            offset = Offset(5f, 5f),
+            blurRadius = 5f
+        )
+
+        Text(
+            text = weather.hourWeather.temperature.toString(),
+            style = MaterialTheme.typography.h1.copy(
+                fontSize = 60.sp,
+                shadow = textShadow
+            ),
+            modifier = Modifier
+                .statusBarsPadding()
+                .constrainAs(temperature) {
+                    top.linkTo(parent.top)
+                    start.linkTo(parent.start, margin = 16.dp)
+                }
+        )
+
+        Text(
+            text = "°C",
+            style = MaterialTheme.typography.h1.copy(
+                shadow = textShadow
+            ),
+            modifier = Modifier
+                .statusBarsPadding()
+                .padding(top = 12.dp)
+                .constrainAs(temperatureUnit) {
+                    top.linkTo(parent.top)
+                    start.linkTo(temperature.end, margin = 4.dp)
+                }
+        )
+
+        val description = stringResource(id = weatherState.getDescriptionRes())
+        Text(
+            text = "Lyon  •  $description",
+            style = MaterialTheme.typography.h2.copy(
+                fontWeight = FontWeight.Normal,
+                shadow = textShadow
+            ),
+            modifier = Modifier
+                .constrainAs(weatherDescription) {
+                    top.linkTo(temperature.bottom, margin = 8.dp)
+                    start.linkTo(parent.start, margin = 16.dp)
+                }
+        )
     }
 }
 

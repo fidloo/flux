@@ -40,7 +40,7 @@ import java.util.Date
 fun HourlyWeather(
     hourlyWeatherResult: Result<HourlyWeather>,
     selectedTime: Date,
-    selectedFilter : HourlyWeatherType,
+    selectedFilter: HourlyWeatherType,
     onWeatherTimeSelected: (Date) -> Unit,
     onFilterSelected: (HourlyWeatherType) -> Unit
 ) {
@@ -73,5 +73,3 @@ fun HourlyWeather(
         }
     }
 }
-
-
