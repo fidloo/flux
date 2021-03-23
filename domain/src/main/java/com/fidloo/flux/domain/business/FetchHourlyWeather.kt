@@ -21,6 +21,7 @@ import com.fidloo.flux.domain.di.IoDispatcher
 import com.fidloo.flux.domain.model.HourWeather
 import com.fidloo.flux.domain.model.HourlyWeather
 import com.fidloo.flux.domain.model.HourlyWeatherCurvePoints
+import com.fidloo.flux.domain.model.HourlyWeatherType
 import com.fidloo.flux.domain.model.Point
 import com.fidloo.flux.domain.repository.WeatherRepository
 import kotlinx.coroutines.CoroutineDispatcher
@@ -31,14 +32,15 @@ import javax.inject.Inject
 class FetchHourlyWeather @Inject constructor(
     private val repository: WeatherRepository,
     @IoDispatcher dispatcher: CoroutineDispatcher
-) : FlowUseCase<Unit, HourlyWeather>(dispatcher) {
+) : FlowUseCase<HourlyWeatherType, HourlyWeather>(dispatcher) {
 
-    override fun execute(parameters: Unit): Flow<Result<HourlyWeather>> {
+    override fun execute(parameters: HourlyWeatherType): Flow<Result<HourlyWeather>> {
         return flow {
             emit(Result.Loading)
             val weatherPerHour = repository.fetchHourlyWeather()
             val hourlyWeatherCurvePoints = computeHourlyWeatherCurvePoints(
-                hourlyWeather = weatherPerHour
+                hourlyWeather = weatherPerHour,
+                parameters
             )
 
             emit(
@@ -52,22 +54,33 @@ class FetchHourlyWeather @Inject constructor(
         }
     }
 
+    private fun getValueForType(weather: HourWeather, type: HourlyWeatherType): Float {
+        return when (type) {
+            HourlyWeatherType.Temperature -> weather.facts.temperature
+            HourlyWeatherType.Wind -> weather.facts.windSpeed
+            HourlyWeatherType.CloudCover -> weather.facts.cloudCover * 100
+        }
+    }
+
     // Compute bezier curve points in IO thread
-    private fun computeHourlyWeatherCurvePoints(hourlyWeather: List<HourWeather>): HourlyWeatherCurvePoints {
+    private fun computeHourlyWeatherCurvePoints(
+        hourlyWeather: List<HourWeather>,
+        type: HourlyWeatherType
+    ): HourlyWeatherCurvePoints {
         val cellSize = HourlyWeatherCurveParameters.cellSize
         val offsetY = HourlyWeatherCurveParameters.offsetTop
         val chartHeight = HourlyWeatherCurveParameters.heightInterval
         val chartTopPadding = HourlyWeatherCurveParameters.offsetTop
         val curveBottomOffset = HourlyWeatherCurveParameters.offsetBottom
-        val minTemp = hourlyWeather.minOf { it.facts.temperature }
-        val maxTemp = hourlyWeather.maxOf { it.facts.temperature }
-        val temperatureHeightStep =
-            (chartHeight - (chartTopPadding + curveBottomOffset)) / (maxTemp - minTemp)
+        val minY = hourlyWeather.minOf { getValueForType(it, type) }
+        val maxY = hourlyWeather.maxOf { getValueForType(it, type) }
+        val heightStep =
+            (chartHeight - (chartTopPadding + curveBottomOffset)) / (maxY - minY)
 
         val points = hourlyWeather.mapIndexed { index, item ->
             Point(
                 (index.toFloat() + 1) * cellSize,
-                (maxTemp - item.facts.temperature.toFloat()) * temperatureHeightStep + offsetY
+                (maxY - getValueForType(item, type)) * heightStep + offsetY
             )
         }.toMutableList()
         points.add(0, points.first().copy(x = 0f))

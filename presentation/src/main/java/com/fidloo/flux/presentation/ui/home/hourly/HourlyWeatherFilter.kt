@@ -29,6 +29,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.fidloo.flux.domain.model.HourlyWeatherType
 import com.fidloo.flux.presentation.R
 
 @Composable
@@ -52,15 +53,23 @@ fun HourlyWeatherFilter(
                 null
             },
         ) {
+            val suffix = when (item) {
+                HourlyWeatherType.Temperature -> "  -  °C"
+                HourlyWeatherType.Wind -> "  -  km/h"
+                HourlyWeatherType.CloudCover -> "  -  %"
+            }
+
+            val message = when (item) {
+                HourlyWeatherType.Temperature -> stringResource(id = R.string.temperature)
+                HourlyWeatherType.Wind -> stringResource(id = R.string.wind)
+                HourlyWeatherType.CloudCover -> stringResource(id = R.string.cloud_cover)
+            }.run { if (selected) this + suffix else this }
+
             Text(
                 modifier = Modifier
                     .clickable { onFilterSelected(item) }
                     .padding(horizontal = 16.dp, vertical = 8.dp),
-                text = when (item) {
-                    HourlyWeatherType.Temperature -> stringResource(id = R.string.temperature)
-                    HourlyWeatherType.Wind -> stringResource(id = R.string.wind)
-                    HourlyWeatherType.Rain -> stringResource(id = R.string.rain)
-                },
+                text = message,
                 style = MaterialTheme.typography.h3.copy(
                     fontWeight = if (selected) {
                         FontWeight.Bold

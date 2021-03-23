@@ -22,7 +22,7 @@ import com.fidloo.flux.domain.business.FetchHourlyWeather
 import com.fidloo.flux.domain.business.FetchWeatherAtTime
 import com.fidloo.flux.domain.business.FetchWeekWeather
 import com.fidloo.flux.domain.model.CurrentWeather.Companion.getDefault
-import com.fidloo.flux.presentation.ui.home.hourly.HourlyWeatherType
+import com.fidloo.flux.domain.model.HourlyWeatherType
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -72,7 +72,7 @@ class HomeViewModel @Inject constructor(
         job = viewModelScope.launch {
             combine(
                 selectedWeatherTime.flatMapLatest { fetchWeatherAtTime(it) },
-                fetchHourlyWeather(Unit),
+                selectedFilter.flatMapLatest { fetchHourlyWeather(it) },
                 fetchWeekWeather(Unit),
                 selectedFilter
             ) { currentWeather, hourlyWeather, weekWeather, selectedFilter ->
@@ -80,7 +80,7 @@ class HomeViewModel @Inject constructor(
                 // Prevent the swipe refresh to replace a successful state by a progress bar
                 val newCurrentWeather = currentWeather.successOr(getDefault())
 
-                val newHourlyWeather = if (!userAction || hourlyWeather.isSuccessful()) {
+                val newHourlyWeather = if (hourlyWeather.isSuccessful()) {
                     hourlyWeather
                 } else {
                     state.value.hourlyWeather

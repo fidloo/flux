@@ -27,6 +27,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.fidloo.flux.domain.model.HourWeather
 import com.fidloo.flux.domain.model.HourlyWeather
 import com.fidloo.flux.domain.model.HourlyWeatherCurvePoints
+import com.fidloo.flux.domain.model.HourlyWeatherType
 import com.fidloo.flux.domain.model.WeatherFacts
 import java.util.Calendar
 import java.util.Date
@@ -36,7 +37,8 @@ fun HourlyWeatherChart(
     hourlyWeather: HourlyWeather,
     selectedTime: Date,
     onWeatherTimeSelected: (Date) -> Unit,
-    expanded: Boolean
+    expanded: Boolean,
+    type: HourlyWeatherType
 ) {
     val scrollState = rememberScrollState()
 
@@ -47,7 +49,7 @@ fun HourlyWeatherChart(
     ) {
         Column(modifier = Modifier.animateContentSize()) {
             if (expanded) {
-                HourlyWeatherCurve(hourlyWeather)
+                HourlyWeatherCurve(hourlyWeather, type)
             }
             HourlyWeatherChartHorizontalAxisDescription(
                 hourlyWeather,
@@ -74,7 +76,7 @@ fun HourlyWeatherChartPreview() {
 
         HourWeather(
             time = calendar.time,
-            facts = WeatherFacts.Default.copy(temperature = index),
+            facts = WeatherFacts.Default.copy(temperature = index.toFloat()),
             night = false
         )
     }
@@ -82,5 +84,5 @@ fun HourlyWeatherChartPreview() {
         weatherPerHour = weatherPerHour,
         hourlyWeatherCurvePoints = HourlyWeatherCurvePoints()
     )
-    HourlyWeatherChart(item, Date(), {}, true)
+    HourlyWeatherChart(item, Date(), {}, true, HourlyWeatherType.Temperature)
 }

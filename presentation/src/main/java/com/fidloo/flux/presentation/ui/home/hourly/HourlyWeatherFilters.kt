@@ -15,13 +15,14 @@
  */
 package com.fidloo.flux.presentation.ui.home.hourly
 
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.fidloo.flux.domain.model.HourlyWeatherType
 
 @Composable
 fun HourlyWeatherFilters(
@@ -30,9 +31,9 @@ fun HourlyWeatherFilters(
 ) {
     val items = HourlyWeatherType.values()
     LazyRow(
+        contentPadding = PaddingValues(horizontal = 16.dp, vertical = 16.dp),
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 24.dp, vertical = 16.dp)
     ) {
         items(items) { item ->
             HourlyWeatherFilter(item, item == selectedFilter, onFilterSelected)

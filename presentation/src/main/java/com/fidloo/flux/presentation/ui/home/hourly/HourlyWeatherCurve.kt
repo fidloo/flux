@@ -36,11 +36,15 @@ import com.fidloo.flux.domain.business.HourlyWeatherCurveParameters
 import com.fidloo.flux.domain.model.HourWeather
 import com.fidloo.flux.domain.model.HourlyWeather
 import com.fidloo.flux.domain.model.HourlyWeatherCurvePoints
+import com.fidloo.flux.domain.model.HourlyWeatherType
 import com.fidloo.flux.domain.model.WeatherFacts
 import java.util.Calendar
 
 @Composable
-fun HourlyWeatherCurve(hourlyWeather: HourlyWeather) {
+fun HourlyWeatherCurve(
+    hourlyWeather: HourlyWeather,
+    type: HourlyWeatherType
+) {
     val curveColor = MaterialTheme.colors.primary
     val curveBackgroundColor = MaterialTheme.colors.primary.copy(alpha = 0.2f)
     val onBackgroundColor = MaterialTheme.colors.onBackground.copy(alpha = 0.7f)
@@ -143,8 +147,20 @@ fun HourlyWeatherCurve(hourlyWeather: HourlyWeather) {
                         paint.textSize = 54f
                         paint.color = onBackgroundColor.toArgb()
                         drawIntoCanvas { canvas ->
+                            val text = when (type) {
+                                HourlyWeatherType.Temperature -> {
+                                    hourWeather.facts.temperature.toInt().toString() + "°"
+                                }
+                                HourlyWeatherType.Wind -> {
+                                    hourWeather.facts.windSpeed.toInt().toString()
+                                }
+                                HourlyWeatherType.CloudCover -> {
+                                    (hourWeather.facts.cloudCover * 100).toInt().toString() + "%"
+                                }
+                            }
+
                             canvas.nativeCanvas.drawText(
-                                hourWeather.facts.temperature.toString() + "°",
+                                text,
                                 points[i].x,
                                 points[i].y - 50f,
                                 paint
@@ -176,7 +192,7 @@ fun HourlyWeatherCurvePreview() {
 
         HourWeather(
             time = calendar.time,
-            facts = WeatherFacts.Default.copy(temperature = index),
+            facts = WeatherFacts.Default.copy(temperature = index.toFloat()),
             night = false
         )
     }
@@ -184,5 +200,5 @@ fun HourlyWeatherCurvePreview() {
         weatherPerHour = weatherPerHour,
         hourlyWeatherCurvePoints = HourlyWeatherCurvePoints()
     )
-    HourlyWeatherCurve(item)
+    HourlyWeatherCurve(item, HourlyWeatherType.Temperature)
 }

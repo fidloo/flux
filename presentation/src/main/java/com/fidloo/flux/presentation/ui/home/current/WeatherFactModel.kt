@@ -51,7 +51,7 @@ fun CurrentWeather.extractFacts() = listOf(
     ),
     WeatherFact(
         label = "Wind speed",
-        value = "${hourWeather.windSpeed} km/h",
+        value = "${hourWeather.windSpeed.toInt()} km/h",
         icon = Icons.Rounded.Air
     ),
     WeatherFact(
@@ -61,7 +61,7 @@ fun CurrentWeather.extractFacts() = listOf(
     ),
     WeatherFact(
         label = "Cloud cover",
-        value = "${hourWeather.cloudCover * 100}%",
+        value = "${(hourWeather.cloudCover * 100).toInt()}%",
         icon = Icons.Outlined.FilterDrama
     ),
     WeatherFact(
@@ -104,12 +104,12 @@ fun CurrentWeather.extractFacts() = listOf(
 fun DayWeather.extractFacts() = listOf(
     WeatherFact(
         label = "Cloud cover",
-        value = "${facts.cloudCover * 100}%",
+        value = "${(facts.cloudCover * 100).toInt()}%",
         icon = Icons.Outlined.FilterDrama
     ),
     WeatherFact(
         label = "Wind speed",
-        value = "${facts.windSpeed} km/h",
+        value = "${facts.windSpeed.toInt()} km/h",
         icon = Icons.Rounded.Air
     ),
     WeatherFact(

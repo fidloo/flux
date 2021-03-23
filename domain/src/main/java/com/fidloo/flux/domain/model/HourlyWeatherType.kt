@@ -13,10 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.fidloo.flux.presentation.ui.home.hourly
+package com.fidloo.flux.domain.model
 
 enum class HourlyWeatherType {
     Temperature,
     Wind,
-    Rain
+    CloudCover
 }

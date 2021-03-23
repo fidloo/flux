@@ -68,7 +68,7 @@ fun HourlyWeatherChartHorizontalAxisDescriptionPreview() {
 
         HourWeather(
             time = calendar.time,
-            facts = WeatherFacts.Default.copy(temperature = index),
+            facts = WeatherFacts.Default.copy(temperature = index.toFloat()),
             night = false
         )
     }

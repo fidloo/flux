@@ -57,6 +57,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.fidloo.flux.domain.base.Result
+import com.fidloo.flux.domain.model.HourlyWeatherType
 import com.fidloo.flux.presentation.R
 import com.fidloo.flux.presentation.ui.component.ErrorMessage
 import com.fidloo.flux.presentation.ui.component.SectionHeader
@@ -65,7 +66,6 @@ import com.fidloo.flux.presentation.ui.component.SwipeToRefreshLayout
 import com.fidloo.flux.presentation.ui.home.current.CurrentWeatherSection
 import com.fidloo.flux.presentation.ui.home.day.DayWeather
 import com.fidloo.flux.presentation.ui.home.hourly.HourlyWeather
-import com.fidloo.flux.presentation.ui.home.hourly.HourlyWeatherType
 import com.fidloo.flux.presentation.ui.home.landscape.DynamicWeatherSection
 import com.fidloo.flux.presentation.ui.home.radar.WeatherRadar
 import com.fidloo.flux.presentation.ui.theme.BottomSheetShape

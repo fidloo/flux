@@ -16,7 +16,7 @@
 package com.fidloo.flux.domain.model
 
 data class WeatherFacts(
-    val temperature: Int,
+    val temperature: Float,
     val apparentTemperature: Int,
     val precipitation: Float,
     val humidity: Float,
@@ -30,7 +30,7 @@ data class WeatherFacts(
 ) {
     companion object {
         val Default = WeatherFacts(
-            temperature = 2,
+            temperature = 2f,
             apparentTemperature = 2,
             precipitation = 0.2f,
             humidity = 0.49f,

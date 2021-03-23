@@ -19,7 +19,7 @@ import com.fidloo.flux.domain.base.Result
 import com.fidloo.flux.domain.model.CurrentWeather
 import com.fidloo.flux.domain.model.DayWeather
 import com.fidloo.flux.domain.model.HourlyWeather
-import com.fidloo.flux.presentation.ui.home.hourly.HourlyWeatherType
+import com.fidloo.flux.domain.model.HourlyWeatherType
 
 data class HomeViewState(
     val currentWeather: CurrentWeather = CurrentWeather.getDefault(),

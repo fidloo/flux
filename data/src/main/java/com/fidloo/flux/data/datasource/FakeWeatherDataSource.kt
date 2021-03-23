@@ -52,12 +52,12 @@ object FakeWeatherDataSource {
 
         val next24HourWeather = listOf(
             WeatherFacts(
-                temperature = 2,
+                temperature = 2f,
                 apparentTemperature = 2,
                 precipitation = 0.2f,
                 humidity = 0.49f,
-                windSpeed = 17f,
-                cloudCover = 0.88f,
+                windSpeed = 6f,
+                cloudCover = 0f,
                 pressure = 1.0f,
                 visibility = 5f,
                 uvIndex = 1,
@@ -65,12 +65,12 @@ object FakeWeatherDataSource {
                 state = WeatherState.CLEAR_SKY
             ),
             WeatherFacts(
-                temperature = 1,
+                temperature = 1f,
                 apparentTemperature = 2,
                 precipitation = 0.2f,
                 humidity = 0.49f,
-                windSpeed = 17f,
-                cloudCover = 0.88f,
+                windSpeed = 5f,
+                cloudCover = 0.13f,
                 pressure = 1.0f,
                 visibility = 5f,
                 uvIndex = 1,
@@ -78,12 +78,12 @@ object FakeWeatherDataSource {
                 state = WeatherState.FEW_CLOUDS
             ),
             WeatherFacts(
-                temperature = 0,
+                temperature = 0f,
                 apparentTemperature = 2,
                 precipitation = 0.2f,
                 humidity = 0.49f,
-                windSpeed = 17f,
-                cloudCover = 0.88f,
+                windSpeed = 5f,
+                cloudCover = 0.37f,
                 pressure = 1.0f,
                 visibility = 5f,
                 uvIndex = 1,
@@ -91,11 +91,11 @@ object FakeWeatherDataSource {
                 state = WeatherState.SCATTERED_CLOUDS
             ),
             WeatherFacts(
-                temperature = 0,
+                temperature = 0f,
                 apparentTemperature = 2,
                 precipitation = 0.2f,
                 humidity = 0.49f,
-                windSpeed = 17f,
+                windSpeed = 5f,
                 cloudCover = 0.88f,
                 pressure = 1.0f,
                 visibility = 5f,
@@ -104,12 +104,12 @@ object FakeWeatherDataSource {
                 state = WeatherState.MOSTLY_CLOUDY
             ),
             WeatherFacts(
-                temperature = -1,
+                temperature = -1f,
                 apparentTemperature = 2,
                 precipitation = 0.2f,
                 humidity = 0.49f,
-                windSpeed = 17f,
-                cloudCover = 0.88f,
+                windSpeed = 4f,
+                cloudCover = 0.32f,
                 pressure = 1.0f,
                 visibility = 5f,
                 uvIndex = 1,
@@ -117,12 +117,12 @@ object FakeWeatherDataSource {
                 state = WeatherState.SNOW
             ),
             WeatherFacts(
-                temperature = -1,
+                temperature = -1f,
                 apparentTemperature = 2,
                 precipitation = 0.2f,
                 humidity = 0.49f,
-                windSpeed = 17f,
-                cloudCover = 0.88f,
+                windSpeed = 4f,
+                cloudCover = 0.30f,
                 pressure = 1.0f,
                 visibility = 5f,
                 uvIndex = 1,
@@ -130,12 +130,12 @@ object FakeWeatherDataSource {
                 state = WeatherState.SNOW
             ),
             WeatherFacts(
-                temperature = 0,
+                temperature = 0f,
                 apparentTemperature = 2,
                 precipitation = 0.2f,
                 humidity = 0.49f,
-                windSpeed = 17f,
-                cloudCover = 0.88f,
+                windSpeed = 4f,
+                cloudCover = 0.28f,
                 pressure = 1.0f,
                 visibility = 5f,
                 uvIndex = 1,
@@ -143,12 +143,12 @@ object FakeWeatherDataSource {
                 state = WeatherState.SNOW
             ),
             WeatherFacts(
-                temperature = 1,
+                temperature = 1f,
                 apparentTemperature = 2,
                 precipitation = 0.2f,
                 humidity = 0.49f,
-                windSpeed = 17f,
-                cloudCover = 0.88f,
+                windSpeed = 4f,
+                cloudCover = 0.26f,
                 pressure = 1.0f,
                 visibility = 5f,
                 uvIndex = 1,
@@ -156,12 +156,12 @@ object FakeWeatherDataSource {
                 state = WeatherState.SNOW
             ),
             WeatherFacts(
-                temperature = 2,
+                temperature = 2f,
                 apparentTemperature = 2,
                 precipitation = 0.2f,
                 humidity = 0.49f,
-                windSpeed = 17f,
-                cloudCover = 0.88f,
+                windSpeed = 3f,
+                cloudCover = 0.17f,
                 pressure = 1.0f,
                 visibility = 5f,
                 uvIndex = 1,
@@ -169,12 +169,12 @@ object FakeWeatherDataSource {
                 state = WeatherState.SNOW
             ),
             WeatherFacts(
-                temperature = 3,
+                temperature = 3f,
                 apparentTemperature = 2,
                 precipitation = 0.2f,
                 humidity = 0.49f,
-                windSpeed = 17f,
-                cloudCover = 0.88f,
+                windSpeed = 3f,
+                cloudCover = 0f,
                 pressure = 1.0f,
                 visibility = 5f,
                 uvIndex = 1,
@@ -182,12 +182,12 @@ object FakeWeatherDataSource {
                 state = WeatherState.CLEAR_SKY
             ),
             WeatherFacts(
-                temperature = 5,
+                temperature = 5f,
                 apparentTemperature = 2,
                 precipitation = 0.2f,
                 humidity = 0.49f,
-                windSpeed = 17f,
-                cloudCover = 0.88f,
+                windSpeed = 3f,
+                cloudCover = 0.14f,
                 pressure = 1.0f,
                 visibility = 5f,
                 uvIndex = 1,
@@ -195,12 +195,12 @@ object FakeWeatherDataSource {
                 state = WeatherState.RAIN
             ),
             WeatherFacts(
-                temperature = 6,
+                temperature = 6f,
                 apparentTemperature = 2,
                 precipitation = 0.2f,
                 humidity = 0.49f,
-                windSpeed = 17f,
-                cloudCover = 0.88f,
+                windSpeed = 3f,
+                cloudCover = 0.21f,
                 pressure = 1.0f,
                 visibility = 5f,
                 uvIndex = 1,
@@ -208,12 +208,12 @@ object FakeWeatherDataSource {
                 state = WeatherState.HEAVY_RAIN
             ),
             WeatherFacts(
-                temperature = 7,
+                temperature = 7f,
                 apparentTemperature = 2,
                 precipitation = 0.2f,
                 humidity = 0.49f,
-                windSpeed = 17f,
-                cloudCover = 0.88f,
+                windSpeed = 4f,
+                cloudCover = 0.45f,
                 pressure = 1.0f,
                 visibility = 5f,
                 uvIndex = 1,
@@ -221,12 +221,12 @@ object FakeWeatherDataSource {
                 state = WeatherState.THUNDERSTORM
             ),
             WeatherFacts(
-                temperature = 8,
+                temperature = 8f,
                 apparentTemperature = 2,
                 precipitation = 0.2f,
                 humidity = 0.49f,
-                windSpeed = 17f,
-                cloudCover = 0.88f,
+                windSpeed = 4f,
+                cloudCover = 0.32f,
                 pressure = 1.0f,
                 visibility = 5f,
                 uvIndex = 1,
@@ -234,12 +234,12 @@ object FakeWeatherDataSource {
                 state = WeatherState.RAIN
             ),
             WeatherFacts(
-                temperature = 8,
+                temperature = 8f,
                 apparentTemperature = 2,
                 precipitation = 0.2f,
                 humidity = 0.49f,
-                windSpeed = 17f,
-                cloudCover = 0.88f,
+                windSpeed = 5f,
+                cloudCover = 0.01f,
                 pressure = 1.0f,
                 visibility = 5f,
                 uvIndex = 1,
@@ -247,12 +247,12 @@ object FakeWeatherDataSource {
                 state = WeatherState.CLEAR_SKY
             ),
             WeatherFacts(
-                temperature = 8,
+                temperature = 8f,
                 apparentTemperature = 2,
                 precipitation = 0.2f,
                 humidity = 0.49f,
-                windSpeed = 17f,
-                cloudCover = 0.88f,
+                windSpeed = 5f,
+                cloudCover = 0f,
                 pressure = 1.0f,
                 visibility = 5f,
                 uvIndex = 1,
@@ -260,12 +260,12 @@ object FakeWeatherDataSource {
                 state = WeatherState.CLEAR_SKY
             ),
             WeatherFacts(
-                temperature = 8,
+                temperature = 8f,
                 apparentTemperature = 2,
                 precipitation = 0.2f,
                 humidity = 0.49f,
-                windSpeed = 17f,
-                cloudCover = 0.88f,
+                windSpeed = 5f,
+                cloudCover = 0f,
                 pressure = 1.0f,
                 visibility = 5f,
                 uvIndex = 1,
@@ -273,12 +273,12 @@ object FakeWeatherDataSource {
                 state = WeatherState.CLEAR_SKY
             ),
             WeatherFacts(
-                temperature = 9,
+                temperature = 9f,
                 apparentTemperature = 2,
                 precipitation = 0.2f,
                 humidity = 0.49f,
-                windSpeed = 17f,
-                cloudCover = 0.88f,
+                windSpeed = 6f,
+                cloudCover = 0f,
                 pressure = 1.0f,
                 visibility = 5f,
                 uvIndex = 1,
@@ -286,12 +286,12 @@ object FakeWeatherDataSource {
                 state = WeatherState.CLEAR_SKY
             ),
             WeatherFacts(
-                temperature = 8,
+                temperature = 8f,
                 apparentTemperature = 2,
                 precipitation = 0.2f,
                 humidity = 0.49f,
-                windSpeed = 17f,
-                cloudCover = 0.88f,
+                windSpeed = 6f,
+                cloudCover = 0f,
                 pressure = 1.0f,
                 visibility = 5f,
                 uvIndex = 1,
@@ -299,12 +299,12 @@ object FakeWeatherDataSource {
                 state = WeatherState.CLEAR_SKY
             ),
             WeatherFacts(
-                temperature = 6,
+                temperature = 6f,
                 apparentTemperature = 2,
                 precipitation = 0.2f,
                 humidity = 0.49f,
-                windSpeed = 17f,
-                cloudCover = 0.88f,
+                windSpeed = 6f,
+                cloudCover = 0f,
                 pressure = 1.0f,
                 visibility = 5f,
                 uvIndex = 1,
@@ -312,12 +312,12 @@ object FakeWeatherDataSource {
                 state = WeatherState.CLEAR_SKY
             ),
             WeatherFacts(
-                temperature = 5,
+                temperature = 5f,
                 apparentTemperature = 2,
                 precipitation = 0.2f,
                 humidity = 0.49f,
-                windSpeed = 17f,
-                cloudCover = 0.88f,
+                windSpeed = 7f,
+                cloudCover = 0.2f,
                 pressure = 1.0f,
                 visibility = 5f,
                 uvIndex = 1,
@@ -325,12 +325,12 @@ object FakeWeatherDataSource {
                 state = WeatherState.FOG
             ),
             WeatherFacts(
-                temperature = 4,
+                temperature = 4f,
                 apparentTemperature = 2,
                 precipitation = 0.2f,
                 humidity = 0.49f,
-                windSpeed = 17f,
-                cloudCover = 0.88f,
+                windSpeed = 8f,
+                cloudCover = 0.28f,
                 pressure = 1.0f,
                 visibility = 5f,
                 uvIndex = 1,
@@ -338,12 +338,12 @@ object FakeWeatherDataSource {
                 state = WeatherState.HEAVY_RAIN
             ),
             WeatherFacts(
-                temperature = 3,
+                temperature = 3f,
                 apparentTemperature = 2,
                 precipitation = 0.2f,
                 humidity = 0.49f,
-                windSpeed = 17f,
-                cloudCover = 0.88f,
+                windSpeed = 11f,
+                cloudCover = 0.48f,
                 pressure = 1.0f,
                 visibility = 5f,
                 uvIndex = 1,
@@ -351,12 +351,12 @@ object FakeWeatherDataSource {
                 state = WeatherState.THUNDERSTORM
             ),
             WeatherFacts(
-                temperature = 2,
+                temperature = 2f,
                 apparentTemperature = 2,
                 precipitation = 0.2f,
                 humidity = 0.49f,
-                windSpeed = 17f,
-                cloudCover = 0.88f,
+                windSpeed = 10f,
+                cloudCover = 0.21f,
                 pressure = 1.0f,
                 visibility = 5f,
                 uvIndex = 1,
@@ -397,7 +397,7 @@ object FakeWeatherDataSource {
             DayWeather(
                 date = now.nextDay(),
                 facts = WeatherFacts(
-                    temperature = 4,
+                    temperature = 4f,
                     apparentTemperature = -1,
                     precipitation = 0.0f,
                     humidity = 0.49f,
@@ -417,7 +417,7 @@ object FakeWeatherDataSource {
             DayWeather(
                 date = now.nextDay(),
                 facts = WeatherFacts(
-                    temperature = 4,
+                    temperature = 4f,
                     apparentTemperature = -1,
                     precipitation = 0.0f,
                     humidity = 0.49f,
@@ -437,7 +437,7 @@ object FakeWeatherDataSource {
             DayWeather(
                 date = now.nextDay(),
                 facts = WeatherFacts(
-                    temperature = 4,
+                    temperature = 4f,
                     apparentTemperature = -1,
                     precipitation = 0.01f,
                     humidity = 0.49f,
@@ -457,7 +457,7 @@ object FakeWeatherDataSource {
             DayWeather(
                 date = now.nextDay(),
                 facts = WeatherFacts(
-                    temperature = 4,
+                    temperature = 4f,
                     apparentTemperature = -1,
                     precipitation = 0.01f,
                     humidity = 0.49f,
@@ -477,7 +477,7 @@ object FakeWeatherDataSource {
             DayWeather(
                 date = now.nextDay(),
                 facts = WeatherFacts(
-                    temperature = 4,
+                    temperature = 4f,
                     apparentTemperature = -1,
                     precipitation = 0.0f,
                     humidity = 0.49f,
@@ -497,7 +497,7 @@ object FakeWeatherDataSource {
             DayWeather(
                 date = now.nextDay(),
                 facts = WeatherFacts(
-                    temperature = 4,
+                    temperature = 4f,
                     apparentTemperature = -1,
                     precipitation = 0.01f,
                     humidity = 0.49f,
@@ -517,7 +517,7 @@ object FakeWeatherDataSource {
             DayWeather(
                 date = now.nextDay(),
                 facts = WeatherFacts(
-                    temperature = 4,
+                    temperature = 4f,
                     apparentTemperature = -1,
                     precipitation = 0.11f,
                     humidity = 0.49f,

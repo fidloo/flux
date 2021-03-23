@@ -30,6 +30,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.fidloo.flux.domain.base.Result
 import com.fidloo.flux.domain.model.HourlyWeather
+import com.fidloo.flux.domain.model.HourlyWeatherType
 import com.fidloo.flux.presentation.R
 import com.fidloo.flux.presentation.ui.component.ErrorMessage
 import com.fidloo.flux.presentation.ui.component.ExpandableSectionHeader
@@ -67,7 +68,8 @@ fun HourlyWeather(
                     hourlyWeatherResult.data,
                     selectedTime,
                     onWeatherTimeSelected,
-                    expanded
+                    expanded,
+                    selectedFilter
                 )
             }
         }
