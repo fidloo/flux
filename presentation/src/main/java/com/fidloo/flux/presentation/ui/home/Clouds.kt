@@ -18,6 +18,7 @@ package com.fidloo.flux.presentation.ui.home
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.ImageBitmap
@@ -31,7 +32,7 @@ import com.fidloo.flux.presentation.ui.particle.Precipitations
 import com.fidloo.flux.presentation.ui.particle.PrecipitationsParameters
 
 @Composable
-fun Clouds(modifier: Modifier, tint: ColorFilter, viewModel: HomeViewModel, cloudCount: Int) {
+fun Clouds(modifier: Modifier, tint: ColorFilter, particleAnimationIteration: Long, cloudCount: Int) {
     BoxWithConstraints(modifier = modifier) {
         val cloudsParameters = PrecipitationsParameters(
             particleCount = cloudCount,
@@ -55,7 +56,7 @@ fun Clouds(modifier: Modifier, tint: ColorFilter, viewModel: HomeViewModel, clou
         Precipitations(
             modifier = Modifier
                 .fillMaxSize(),
-            viewModel = viewModel,
+            iteration = particleAnimationIteration,
             parameters = cloudsParameters
         )
     }

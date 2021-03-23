@@ -28,7 +28,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.size
+import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -175,7 +177,7 @@ fun DynamicWeatherLandscape(
         nightTintAlpha = mountainDarkTintPercent * MOUNTAIN_TINT_ALPHA_MAX
 
         backgroundLayer2Alpha = 1 - progress
-        val (backgroundLayer1, backgroundLayer2, mountain, particles, clouds) = createRefs()
+        val (backgroundLayer1, backgroundLayer2, mountain, particles, clouds, fog, thunder) = createRefs()
 
         if (backgroundLayer1Image != null) {
             Image(
@@ -244,6 +246,40 @@ fun DynamicWeatherLandscape(
                 )
                 .size(64.dp),
         )
+
+        val weatherState = weather.hourWeather.state
+        Crossfade(targetState = weatherState) { state ->
+            val fogAlpha = when (state) {
+                WeatherState.MOSTLY_CLOUDY -> 0.1f
+                WeatherState.HEAVY_RAIN -> 0.1f
+                WeatherState.RAIN -> 0.1f
+                WeatherState.THUNDERSTORM -> 0.2f
+                WeatherState.SNOW -> 0.2f
+                WeatherState.FOG -> 0.4f
+                else -> 0f
+            }
+            if (fogAlpha > 0f) {
+                Surface(
+                    color = Color.DarkGray.copy(alpha = fogAlpha),
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .constrainAs(fog) {
+                            start.linkTo(parent.start)
+                            end.linkTo(parent.end)
+                            top.linkTo(parent.top)
+                            bottom.linkTo(parent.bottom)
+                        },
+                    content = {}
+                )
+            }
+        }
+
+        val particleAnimationIteration by viewModel.particleAnimationIteration.collectAsState()
+
+        if (weatherState == WeatherState.THUNDERSTORM) {
+            Thunder(particleAnimationIteration, constraints.maxWidth, constraints.maxHeight)
+        }
+
         Image(
             painter = painterResource(R.drawable.landscape),
             contentDescription = stringResource(R.string.moutain),
@@ -261,15 +297,14 @@ fun DynamicWeatherLandscape(
             )
         )
 
-        val weatherState = weather.hourWeather.state
         Crossfade(targetState = weatherState) { state ->
             val precipitationsParameters = when (state) {
                 WeatherState.RAIN -> rainParameters
                 WeatherState.HEAVY_RAIN -> rainParameters.copy(particleCount = 2000)
                 WeatherState.THUNDERSTORM -> rainParameters.copy(
                     particleCount = 2000,
-                    minAngle = 260,
-                    maxAngle = 280,
+                    minAngle = 265,
+                    maxAngle = 295,
                 )
                 WeatherState.SNOW -> snowParameters
                 else -> null
@@ -287,21 +322,6 @@ fun DynamicWeatherLandscape(
                 WeatherState.FOG -> 3
             }
 
-            if (precipitationsParameters != null) {
-                Precipitations(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .constrainAs(particles) {
-                            top.linkTo(parent.top)
-                            start.linkTo(parent.start)
-                            end.linkTo(parent.end)
-                            bottom.linkTo(parent.bottom)
-                        },
-                    viewModel = viewModel,
-                    parameters = precipitationsParameters
-                )
-            }
-
             if (cloudCount > 0) {
                 Clouds(
                     modifier = Modifier
@@ -317,8 +337,23 @@ fun DynamicWeatherLandscape(
                         Color.Black.copy(alpha = nightTintAlpha),
                         BlendMode.SrcAtop
                     ),
-                    viewModel = viewModel,
+                    particleAnimationIteration = particleAnimationIteration,
                     cloudCount = cloudCount
+                )
+            }
+
+            if (precipitationsParameters != null) {
+                Precipitations(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .constrainAs(particles) {
+                            top.linkTo(parent.top)
+                            start.linkTo(parent.start)
+                            end.linkTo(parent.end)
+                            bottom.linkTo(parent.bottom)
+                        },
+                    iteration = particleAnimationIteration,
+                    parameters = precipitationsParameters,
                 )
             }
         }

@@ -23,6 +23,7 @@ import com.fidloo.flux.domain.business.FetchWeatherAtTime
 import com.fidloo.flux.domain.business.FetchWeekWeather
 import com.fidloo.flux.domain.model.CurrentWeather.Companion.getDefault
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -45,8 +46,8 @@ class HomeViewModel @Inject constructor(
     private val _state = MutableStateFlow(HomeViewState())
     val state: StateFlow<HomeViewState> = _state
 
-    private val _precipitationTimer = MutableStateFlow(0L)
-    val precipitationTimer: StateFlow<Long> = _precipitationTimer
+    private val _particleAnimationIteration = MutableStateFlow(0L)
+    val particleAnimationIteration: StateFlow<Long> = _particleAnimationIteration
 
     private val selectedWeatherTime = MutableStateFlow(Date())
 
@@ -56,9 +57,9 @@ class HomeViewModel @Inject constructor(
 
     init {
         loadData()
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.Default) {
             while (true) {
-                _precipitationTimer.value++
+                _particleAnimationIteration.value++
                 delay(1L)
             }
         }

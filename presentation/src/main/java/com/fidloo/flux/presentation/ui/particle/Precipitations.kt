@@ -19,7 +19,6 @@ import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -30,7 +29,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.PathEffect
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.IntSize
-import com.fidloo.flux.presentation.ui.home.HomeViewModel
 import kotlin.math.cos
 import kotlin.math.sin
 
@@ -47,7 +45,7 @@ data class Particle(
 @Composable
 fun Precipitations(
     modifier: Modifier = Modifier,
-    viewModel: HomeViewModel,
+    iteration: Long,
     parameters: PrecipitationsParameters
 ) {
     BoxWithConstraints(
@@ -69,8 +67,7 @@ fun Precipitations(
         }
 
         particleGenerator.generateParticles()
-        val precipitationAnimationIteration by viewModel.precipitationTimer.collectAsState()
-        particleGenerator.updateParticles(precipitationAnimationIteration)
+        particleGenerator.updateParticles(iteration)
         // Trigger recomposition
         particles = particleGenerator.particles
 
@@ -139,7 +136,7 @@ val rainParameters = PrecipitationsParameters(
     minSpeed = 0.7f,
     maxSpeed = 1f,
     minAngle = 265,
-    maxAngle = 275,
+    maxAngle = 285,
     shape = PrecipitationShape.Line(
         minStrokeWidth = 1,
         maxStrokeWidth = 3,
