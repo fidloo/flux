@@ -61,6 +61,7 @@ import com.fidloo.flux.presentation.R
 import com.fidloo.flux.presentation.ui.component.ExpandableSectionHeader
 import com.fidloo.flux.presentation.ui.component.GenericErrorMessage
 import com.fidloo.flux.presentation.ui.component.SectionProgressBar
+import com.fidloo.flux.presentation.ui.utils.getDescriptionRes
 import com.fidloo.flux.presentation.ui.utils.getIconRes
 import java.util.Calendar
 import java.util.Date
@@ -301,7 +302,7 @@ fun HourWeatherChartItemDescription(
         ) {
             Icon(
                 painter = painterResource(item.facts.state.getIconRes(item.night)),
-                contentDescription = "Weather satellite images",
+                contentDescription = stringResource(id = item.facts.state.getDescriptionRes()),
                 modifier = Modifier.size(36.dp),
             )
 
