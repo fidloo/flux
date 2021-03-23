@@ -34,6 +34,7 @@ import kotlin.math.sin
 import kotlin.random.Random
 
 data class Particle(
+    var n: Long = 0,
     var x: Float,
     var y: Float,
     var width: Float,
@@ -94,7 +95,6 @@ fun Precipitations(
             }
         }
         val precipitationTimer by viewModel.precipitationTimer.collectAsState()
-        Log.d("PrecipitationTimer", "n=$precipitationTimer")
 
         particles.forEach { particle ->
             if (particle.y > constraints.maxHeight || particle.x < 0 || particle.x > constraints.maxWidth) {
@@ -121,6 +121,7 @@ fun Precipitations(
                 } else {
                     Random.nextInt(parameters.minAngle, parameters.maxAngle)
                 }
+                particle.n = precipitationTimer
                 particle.x = Random.nextInt(constraints.maxWidth).toFloat()
                 particle.y = 0f
                 particle.width = randomWidth
@@ -129,6 +130,7 @@ fun Precipitations(
                     Random.nextFloat() * (parameters.maxSpeed - parameters.minSpeed) + parameters.minSpeed
                 particle.angle = angle
             } else {
+                particle.n = precipitationTimer
                 particle.x = particle.x - (parameters.distancePerStep * particle.speed) * cos(
                     Math.toRadians(particle.angle.toDouble())
                 ).toFloat()

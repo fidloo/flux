@@ -266,7 +266,7 @@ fun HourWeatherChartItemDescription(
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Icon(
-                painter = painterResource(item.facts.state.getIconRes()),
+                painter = painterResource(item.facts.state.getIconRes(item.night)),
                 contentDescription = "Weather satellite images",
                 modifier = Modifier.size(36.dp),
             )

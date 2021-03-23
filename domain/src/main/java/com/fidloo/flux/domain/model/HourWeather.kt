@@ -20,4 +20,5 @@ import java.util.Date
 data class HourWeather(
     val time: Date,
     val facts: WeatherFacts,
+    val night: Boolean
 )

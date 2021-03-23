@@ -43,7 +43,13 @@ object FakeWeatherDataSource {
     }
 
     fun getNext24HoursWeather(): List<HourWeather> {
-        val currentHour = Calendar.getInstance()[Calendar.HOUR_OF_DAY]
+        val sunrise = "06:46"
+        val sunset = "18:53"
+        val (sunriseHour, sunriseMinute) = sunrise.split(":").map { it.toFloat() }
+        val sunriseAt = sunriseHour + if (sunriseMinute > 30) 1 else 0
+        val (sunsetHour, sunsetMinute) = sunset.split(":").map { it.toFloat() }
+        val sunsetAt = sunsetHour + if (sunsetMinute > 30) 1 else 0
+
         val next24HourWeather = listOf(
             WeatherFacts(
                 temperature = 2,
@@ -69,19 +75,6 @@ object FakeWeatherDataSource {
                 visibility = 5f,
                 uvIndex = 1,
                 dewPoint = -4,
-                state = WeatherState.SCATTERED_CLOUDS
-            ),
-            WeatherFacts(
-                temperature = 0,
-                apparentTemperature = 2,
-                precipitation = 0.2f,
-                humidity = 0.49f,
-                windSpeed = 17f,
-                cloudCover = 0.88f,
-                pressure = 1.0f,
-                visibility = 5f,
-                uvIndex = 1,
-                dewPoint = -4,
                 state = WeatherState.FEW_CLOUDS
             ),
             WeatherFacts(
@@ -95,33 +88,7 @@ object FakeWeatherDataSource {
                 visibility = 5f,
                 uvIndex = 1,
                 dewPoint = -4,
-                state = WeatherState.FOG
-            ),
-            WeatherFacts(
-                temperature = -1,
-                apparentTemperature = 2,
-                precipitation = 0.2f,
-                humidity = 0.49f,
-                windSpeed = 17f,
-                cloudCover = 0.88f,
-                pressure = 1.0f,
-                visibility = 5f,
-                uvIndex = 1,
-                dewPoint = -4,
-                state = WeatherState.HEAVY_RAIN
-            ),
-            WeatherFacts(
-                temperature = -1,
-                apparentTemperature = 2,
-                precipitation = 0.2f,
-                humidity = 0.49f,
-                windSpeed = 17f,
-                cloudCover = 0.88f,
-                pressure = 1.0f,
-                visibility = 5f,
-                uvIndex = 1,
-                dewPoint = -4,
-                state = WeatherState.RAIN
+                state = WeatherState.SCATTERED_CLOUDS
             ),
             WeatherFacts(
                 temperature = 0,
@@ -134,7 +101,46 @@ object FakeWeatherDataSource {
                 visibility = 5f,
                 uvIndex = 1,
                 dewPoint = -4,
-                state = WeatherState.MOSTLY_CLOUDY
+                state = WeatherState.CLEAR_SKY
+            ),
+            WeatherFacts(
+                temperature = -1,
+                apparentTemperature = 2,
+                precipitation = 0.2f,
+                humidity = 0.49f,
+                windSpeed = 17f,
+                cloudCover = 0.88f,
+                pressure = 1.0f,
+                visibility = 5f,
+                uvIndex = 1,
+                dewPoint = -4,
+                state = WeatherState.SNOW
+            ),
+            WeatherFacts(
+                temperature = -1,
+                apparentTemperature = 2,
+                precipitation = 0.2f,
+                humidity = 0.49f,
+                windSpeed = 17f,
+                cloudCover = 0.88f,
+                pressure = 1.0f,
+                visibility = 5f,
+                uvIndex = 1,
+                dewPoint = -4,
+                state = WeatherState.SNOW
+            ),
+            WeatherFacts(
+                temperature = 0,
+                apparentTemperature = 2,
+                precipitation = 0.2f,
+                humidity = 0.49f,
+                windSpeed = 17f,
+                cloudCover = 0.88f,
+                pressure = 1.0f,
+                visibility = 5f,
+                uvIndex = 1,
+                dewPoint = -4,
+                state = WeatherState.SNOW
             ),
             WeatherFacts(
                 temperature = 1,
@@ -160,7 +166,7 @@ object FakeWeatherDataSource {
                 visibility = 5f,
                 uvIndex = 1,
                 dewPoint = -4,
-                state = WeatherState.THUNDERSTORM
+                state = WeatherState.SNOW
             ),
             WeatherFacts(
                 temperature = 3,
@@ -186,7 +192,7 @@ object FakeWeatherDataSource {
                 visibility = 5f,
                 uvIndex = 1,
                 dewPoint = -4,
-                state = WeatherState.CLEAR_SKY
+                state = WeatherState.RAIN
             ),
             WeatherFacts(
                 temperature = 6,
@@ -199,7 +205,7 @@ object FakeWeatherDataSource {
                 visibility = 5f,
                 uvIndex = 1,
                 dewPoint = -4,
-                state = WeatherState.CLEAR_SKY
+                state = WeatherState.HEAVY_RAIN
             ),
             WeatherFacts(
                 temperature = 7,
@@ -212,7 +218,7 @@ object FakeWeatherDataSource {
                 visibility = 5f,
                 uvIndex = 1,
                 dewPoint = -4,
-                state = WeatherState.CLEAR_SKY
+                state = WeatherState.THUNDERSTORM
             ),
             WeatherFacts(
                 temperature = 8,
@@ -225,7 +231,7 @@ object FakeWeatherDataSource {
                 visibility = 5f,
                 uvIndex = 1,
                 dewPoint = -4,
-                state = WeatherState.CLEAR_SKY
+                state = WeatherState.RAIN
             ),
             WeatherFacts(
                 temperature = 8,
@@ -316,7 +322,7 @@ object FakeWeatherDataSource {
                 visibility = 5f,
                 uvIndex = 1,
                 dewPoint = -4,
-                state = WeatherState.CLEAR_SKY
+                state = WeatherState.FOG
             ),
             WeatherFacts(
                 temperature = 4,
@@ -329,7 +335,7 @@ object FakeWeatherDataSource {
                 visibility = 5f,
                 uvIndex = 1,
                 dewPoint = -4,
-                state = WeatherState.CLEAR_SKY
+                state = WeatherState.HEAVY_RAIN
             ),
             WeatherFacts(
                 temperature = 3,
@@ -342,7 +348,7 @@ object FakeWeatherDataSource {
                 visibility = 5f,
                 uvIndex = 1,
                 dewPoint = -4,
-                state = WeatherState.CLEAR_SKY
+                state = WeatherState.THUNDERSTORM
             ),
             WeatherFacts(
                 temperature = 2,
@@ -355,7 +361,7 @@ object FakeWeatherDataSource {
                 visibility = 5f,
                 uvIndex = 1,
                 dewPoint = -4,
-                state = WeatherState.CLEAR_SKY
+                state = WeatherState.RAIN
             ),
         )
 
@@ -370,9 +376,11 @@ object FakeWeatherDataSource {
                 calendar.add(Calendar.HOUR, 1)
             }
 
+            val hour = calendar[Calendar.HOUR_OF_DAY]
             HourWeather(
                 time = calendar.time,
-                facts = facts
+                facts = facts,
+                night = hour < sunriseAt || hour > sunsetAt
             )
         }
     }

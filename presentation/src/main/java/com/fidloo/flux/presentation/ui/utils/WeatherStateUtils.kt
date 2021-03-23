@@ -32,16 +32,16 @@ fun WeatherState.getDescriptionRes(): Int {
     }
 }
 
-fun WeatherState.getIconRes(): Int {
+fun WeatherState.getIconRes(nightMode: Boolean = false): Int {
     return when (this) {
-        WeatherState.CLEAR_SKY -> R.drawable.ic_sunny
-        WeatherState.FEW_CLOUDS -> R.drawable.ic_day_sunny_overcast
-        WeatherState.SCATTERED_CLOUDS -> R.drawable.ic_day_cloudy
+        WeatherState.CLEAR_SKY -> if (nightMode) R.drawable.ic_night_clear else R.drawable.ic_sunny
+        WeatherState.FEW_CLOUDS -> if (nightMode) R.drawable.ic_night_alt_partly_cloudy else R.drawable.ic_day_sunny_overcast
+        WeatherState.SCATTERED_CLOUDS -> if (nightMode) R.drawable.ic_night_alt_cloudy else R.drawable.ic_day_cloudy
         WeatherState.MOSTLY_CLOUDY -> R.drawable.ic_cloudy
-        WeatherState.RAIN -> R.drawable.ic_day_showers
-        WeatherState.HEAVY_RAIN -> R.drawable.ic_day_rain
-        WeatherState.THUNDERSTORM -> R.drawable.ic_day_thunderstorm
-        WeatherState.SNOW -> R.drawable.ic_day_snow
-        WeatherState.FOG -> R.drawable.ic_day_fog
+        WeatherState.RAIN -> if (nightMode) R.drawable.ic_night_alt_showers else R.drawable.ic_day_showers
+        WeatherState.HEAVY_RAIN -> if (nightMode) R.drawable.ic_night_alt_rain else R.drawable.ic_day_rain
+        WeatherState.THUNDERSTORM -> if (nightMode) R.drawable.ic_night_alt_thunderstorm else R.drawable.ic_day_thunderstorm
+        WeatherState.SNOW -> if (nightMode) R.drawable.ic_night_alt_snow else R.drawable.ic_day_snow
+        WeatherState.FOG -> if (nightMode) R.drawable.ic_night_fog else R.drawable.ic_day_fog
     }
 }

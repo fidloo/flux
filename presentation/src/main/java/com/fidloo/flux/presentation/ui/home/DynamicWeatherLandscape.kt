@@ -260,6 +260,19 @@ fun DynamicWeatherLandscape(
             )
         )
 
+//        Precipitations(
+//            modifier = Modifier
+//                .fillMaxSize()
+//                .constrainAs(particles) {
+//                    top.linkTo(parent.top)
+//                    start.linkTo(parent.start)
+//                    end.linkTo(parent.end)
+//                    bottom.linkTo(parent.bottom)
+//                },
+//            viewModel = viewModel,
+//            parameters = snowParameters
+//        )
+
         val weatherState = weather.hourWeather.state
         Crossfade(targetState = weatherState) { state ->
             val precipitationsParameters = when (state) {
