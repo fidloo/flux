@@ -19,10 +19,12 @@ import com.fidloo.flux.domain.base.Result
 import com.fidloo.flux.domain.model.CurrentWeather
 import com.fidloo.flux.domain.model.DayWeather
 import com.fidloo.flux.domain.model.HourlyWeather
+import com.fidloo.flux.presentation.ui.home.hourly.HourlyWeatherType
 
 data class HomeViewState(
     val currentWeather: CurrentWeather = CurrentWeather.getDefault(),
     val hourlyWeather: Result<HourlyWeather> = Result.Loading,
     val weekWeather: Result<List<DayWeather>> = Result.Loading,
     val refreshing: Boolean = false,
+    val selectedFilter: HourlyWeatherType = HourlyWeatherType.Temperature,
 )

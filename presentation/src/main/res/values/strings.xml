@@ -28,4 +28,6 @@
     <string name="forecast_7days">7-day forecast</string>
     <string name="details">Details</string>
     <string name="weather_now">Weather now</string>
+    <string name="rain">Rain</string>
+    <string name="wind">Wind</string>
 </resources>

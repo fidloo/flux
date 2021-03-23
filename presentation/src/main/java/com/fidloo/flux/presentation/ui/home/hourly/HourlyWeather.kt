@@ -40,7 +40,9 @@ import java.util.Date
 fun HourlyWeather(
     hourlyWeatherResult: Result<HourlyWeather>,
     selectedTime: Date,
-    onWeatherTimeSelected: (Date) -> Unit
+    selectedFilter : HourlyWeatherType,
+    onWeatherTimeSelected: (Date) -> Unit,
+    onFilterSelected: (HourlyWeatherType) -> Unit
 ) {
     var expanded by rememberSaveable { mutableStateOf(true) }
     Column(
@@ -59,12 +61,17 @@ fun HourlyWeather(
         when (hourlyWeatherResult) {
             is Result.Error -> ErrorMessage()
             Result.Loading -> SectionProgressBar()
-            is Result.Success -> HourlyWeatherChart(
-                hourlyWeatherResult.data,
-                selectedTime,
-                onWeatherTimeSelected,
-                expanded
-            )
+            is Result.Success -> {
+                HourlyWeatherFilters(selectedFilter, onFilterSelected)
+                HourlyWeatherChart(
+                    hourlyWeatherResult.data,
+                    selectedTime,
+                    onWeatherTimeSelected,
+                    expanded
+                )
+            }
         }
     }
 }
+
+

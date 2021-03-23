@@ -22,6 +22,7 @@ import com.fidloo.flux.domain.business.FetchHourlyWeather
 import com.fidloo.flux.domain.business.FetchWeatherAtTime
 import com.fidloo.flux.domain.business.FetchWeekWeather
 import com.fidloo.flux.domain.model.CurrentWeather.Companion.getDefault
+import com.fidloo.flux.presentation.ui.home.hourly.HourlyWeatherType
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -50,6 +51,7 @@ class HomeViewModel @Inject constructor(
     val particleAnimationIteration: StateFlow<Long> = _particleAnimationIteration
 
     private val selectedWeatherTime = MutableStateFlow(Date())
+    private val selectedFilter = MutableStateFlow(HourlyWeatherType.Temperature)
 
     var oldSelectedWeatherTime: Date = Date()
 
@@ -72,7 +74,8 @@ class HomeViewModel @Inject constructor(
                 selectedWeatherTime.flatMapLatest { fetchWeatherAtTime(it) },
                 fetchHourlyWeather(Unit),
                 fetchWeekWeather(Unit),
-            ) { currentWeather, hourlyWeather, weekWeather ->
+                selectedFilter
+            ) { currentWeather, hourlyWeather, weekWeather, selectedFilter ->
 
                 // Prevent the swipe refresh to replace a successful state by a progress bar
                 val newCurrentWeather = currentWeather.successOr(getDefault())
@@ -93,6 +96,7 @@ class HomeViewModel @Inject constructor(
                     currentWeather = newCurrentWeather,
                     hourlyWeather = newHourlyWeather,
                     weekWeather = newWeekWeather,
+                    selectedFilter = selectedFilter,
                     refreshing = if (userAction) {
                         currentWeather.isLoading() || hourlyWeather.isLoading() || weekWeather.isLoading()
                     } else {
@@ -111,5 +115,9 @@ class HomeViewModel @Inject constructor(
 
     fun onWeatherDateSelected(time: Date) {
         selectedWeatherTime.value = time
+    }
+
+    fun onFilterSelected(filter: HourlyWeatherType) {
+        selectedFilter.value = filter
     }
 }

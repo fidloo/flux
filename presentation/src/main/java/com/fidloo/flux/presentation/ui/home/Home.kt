@@ -66,6 +66,7 @@ import com.fidloo.flux.presentation.ui.component.SwipeToRefreshLayout
 import com.fidloo.flux.presentation.ui.home.current.CurrentWeatherSection
 import com.fidloo.flux.presentation.ui.home.day.DayWeather
 import com.fidloo.flux.presentation.ui.home.hourly.HourlyWeather
+import com.fidloo.flux.presentation.ui.home.hourly.HourlyWeatherType
 import com.fidloo.flux.presentation.ui.home.landscape.DynamicWeatherSection
 import com.fidloo.flux.presentation.ui.home.radar.WeatherRadar
 import com.fidloo.flux.presentation.ui.theme.BottomSheetShape
@@ -130,13 +131,12 @@ fun HomeScreen(viewModel: HomeViewModel = viewModel()) {
                     DynamicWeatherSection(viewState.currentWeather, viewModel)
                 },
                 frontLayerContent = {
-                    Column {
-                        DetailedWeather(
-                            viewState = viewState,
-                            onShowSnackbar = { snackbarMessage = it },
-                            onWeatherTimeSelected = viewModel::onWeatherDateSelected
-                        )
-                    }
+                    DetailedWeather(
+                        viewState = viewState,
+                        onShowSnackbar = { snackbarMessage = it },
+                        onWeatherTimeSelected = viewModel::onWeatherDateSelected,
+                        onFilterSelected = viewModel::onFilterSelected
+                    )
                 },
                 appBar = {},
                 snackbarHost = { state ->
@@ -160,7 +160,8 @@ fun HomeScreen(viewModel: HomeViewModel = viewModel()) {
 fun DetailedWeather(
     viewState: HomeViewState,
     onShowSnackbar: (String) -> Unit,
-    onWeatherTimeSelected: (Date) -> Unit
+    onWeatherTimeSelected: (Date) -> Unit,
+    onFilterSelected: (HourlyWeatherType) -> Unit
 ) {
     Surface(
         modifier = Modifier.fillMaxSize(),
@@ -179,7 +180,9 @@ fun DetailedWeather(
                 HourlyWeather(
                     viewState.hourlyWeather,
                     viewState.currentWeather.time,
-                    onWeatherTimeSelected
+                    viewState.selectedFilter,
+                    onWeatherTimeSelected,
+                    onFilterSelected
                 )
             }
             item { WeatherRadar(onShowSnackbar = { onShowSnackbar(it) }) }
