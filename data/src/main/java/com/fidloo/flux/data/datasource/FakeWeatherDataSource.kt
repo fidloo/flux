@@ -101,7 +101,7 @@ object FakeWeatherDataSource {
                 visibility = 5f,
                 uvIndex = 1,
                 dewPoint = -4,
-                state = WeatherState.CLEAR_SKY
+                state = WeatherState.MOSTLY_CLOUDY
             ),
             WeatherFacts(
                 temperature = -1,

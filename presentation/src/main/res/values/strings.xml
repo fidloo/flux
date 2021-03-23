@@ -15,4 +15,5 @@
     <string name="sun">Sun</string>
     <string name="refresh_layout">Refresh layout</string>
     <string name="fake_data_message">All data used in Flux is fake.</string>
+    <string name="cloud">Cloud</string>
 </resources>

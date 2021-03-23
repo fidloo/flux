@@ -51,6 +51,7 @@ import com.fidloo.flux.presentation.R
 import com.fidloo.flux.presentation.ui.particle.Precipitations
 import com.fidloo.flux.presentation.ui.particle.rainParameters
 import com.fidloo.flux.presentation.ui.particle.snowParameters
+import dev.chrisbanes.accompanist.insets.statusBarsPadding
 import java.util.Calendar
 
 @Composable
@@ -73,7 +74,7 @@ fun DynamicWeatherLandscape(
     constraints: Constraints,
     viewModel: HomeViewModel
 ) {
-    var mountainDarkTintAlpha by rememberSaveable { mutableStateOf(0f) }
+    var nightTintAlpha by rememberSaveable { mutableStateOf(0f) }
     var backgroundLayer2Alpha by rememberSaveable { mutableStateOf(0f) }
     val height = constraints.maxHeight
     val width = constraints.maxWidth
@@ -171,10 +172,10 @@ fun DynamicWeatherLandscape(
             timeInMin > sunsetAt + MOUNTAIN_TINT_TRANSITION_DURATION -> 1f
             else -> 0f
         }
-        mountainDarkTintAlpha = mountainDarkTintPercent * MOUNTAIN_TINT_ALPHA_MAX
+        nightTintAlpha = mountainDarkTintPercent * MOUNTAIN_TINT_ALPHA_MAX
 
         backgroundLayer2Alpha = 1 - progress
-        val (backgroundLayer1, backgroundLayer2, mountain, particles) = createRefs()
+        val (backgroundLayer1, backgroundLayer2, mountain, particles, clouds) = createRefs()
 
         if (backgroundLayer1Image != null) {
             Image(
@@ -255,23 +256,10 @@ fun DynamicWeatherLandscape(
                     bottom.linkTo(parent.bottom)
                 },
             colorFilter = ColorFilter.tint(
-                Color.Black.copy(alpha = mountainDarkTintAlpha),
+                Color.Black.copy(alpha = nightTintAlpha),
                 BlendMode.SrcAtop
             )
         )
-
-//        Precipitations(
-//            modifier = Modifier
-//                .fillMaxSize()
-//                .constrainAs(particles) {
-//                    top.linkTo(parent.top)
-//                    start.linkTo(parent.start)
-//                    end.linkTo(parent.end)
-//                    bottom.linkTo(parent.bottom)
-//                },
-//            viewModel = viewModel,
-//            parameters = snowParameters
-//        )
 
         val weatherState = weather.hourWeather.state
         Crossfade(targetState = weatherState) { state ->
@@ -286,6 +274,19 @@ fun DynamicWeatherLandscape(
                 WeatherState.SNOW -> snowParameters
                 else -> null
             }
+
+            val cloudCount = when (state) {
+                WeatherState.RAIN -> 3
+                WeatherState.HEAVY_RAIN -> 5
+                WeatherState.THUNDERSTORM -> 6
+                WeatherState.SNOW -> 3
+                WeatherState.CLEAR_SKY -> 0
+                WeatherState.FEW_CLOUDS -> 2
+                WeatherState.SCATTERED_CLOUDS -> 3
+                WeatherState.MOSTLY_CLOUDY -> 8
+                WeatherState.FOG -> 3
+            }
+
             if (precipitationsParameters != null) {
                 Precipitations(
                     modifier = Modifier
@@ -298,6 +299,26 @@ fun DynamicWeatherLandscape(
                         },
                     viewModel = viewModel,
                     parameters = precipitationsParameters
+                )
+            }
+
+            if (cloudCount > 0) {
+                Clouds(
+                    modifier = Modifier
+                        .statusBarsPadding()
+                        .fillMaxWidth()
+                        .fillMaxHeight(0.5f)
+                        .constrainAs(clouds) {
+                            top.linkTo(parent.top)
+                            start.linkTo(parent.start)
+                            end.linkTo(parent.end)
+                        },
+                    tint = ColorFilter.tint(
+                        Color.Black.copy(alpha = nightTintAlpha),
+                        BlendMode.SrcAtop
+                    ),
+                    viewModel = viewModel,
+                    cloudCount = cloudCount
                 )
             }
         }
