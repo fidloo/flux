@@ -169,7 +169,7 @@ fun DetailedWeather(
                 .padding(top = 20.dp)
         ) {
 
-//            item { CurrentWeather(viewState.currentWeather) }
+            item { CurrentWeather(viewState.currentWeather) }
             item {
                 HourlyWeather(
                     viewState.hourlyWeather,

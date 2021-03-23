@@ -40,15 +40,12 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.fidloo.flux.domain.base.Result
 import com.fidloo.flux.domain.model.CurrentWeather
 import com.fidloo.flux.presentation.ui.component.ExpandableSectionHeader
-import com.fidloo.flux.presentation.ui.component.GenericErrorMessage
-import com.fidloo.flux.presentation.ui.component.SectionProgressBar
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun CurrentWeather(currentWeatherResult: Result<CurrentWeather>) {
+fun CurrentWeather(currentWeather: CurrentWeather) {
     var expanded by rememberSaveable { mutableStateOf(false) }
     Column(
         modifier = Modifier
@@ -63,30 +60,23 @@ fun CurrentWeather(currentWeatherResult: Result<CurrentWeather>) {
         )
         Spacer(Modifier.height(8.dp))
 
-        when (currentWeatherResult) {
-            is Result.Error -> GenericErrorMessage()
-            Result.Loading -> SectionProgressBar()
-            is Result.Success -> {
-                val currentWeather = currentWeatherResult.data
-                val weatherFacts = currentWeather.extractFacts()
+        val weatherFacts = currentWeather.extractFacts()
 
-                val itemsPerRow = 2
-                weatherFacts.chunked(itemsPerRow)
-                    .run { if (!expanded) take(2) else this }
-                    .forEach { factsPerRow ->
-                        Row(modifier = Modifier.fillMaxWidth()) {
-                            factsPerRow.forEachIndexed { index, fact ->
-                                Box(
-                                    modifier = Modifier
-                                        .fillMaxWidth(1f / (itemsPerRow - index))
-                                ) {
-                                    WeatherFact(fact)
-                                }
-                            }
+        val itemsPerRow = 2
+        weatherFacts.chunked(itemsPerRow)
+            .run { if (!expanded) take(2) else this }
+            .forEach { factsPerRow ->
+                Row(modifier = Modifier.fillMaxWidth()) {
+                    factsPerRow.forEachIndexed { index, fact ->
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth(1f / (itemsPerRow - index))
+                        ) {
+                            WeatherFact(fact)
                         }
                     }
+                }
             }
-        }
     }
 }
 
