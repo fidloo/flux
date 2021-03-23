@@ -15,6 +15,7 @@
  */
 package com.fidloo.flux.presentation.ui.home
 
+import androidx.compose.animation.Crossfade
 import androidx.compose.animation.core.LinearOutSlowInEasing
 import androidx.compose.animation.core.MutableTransitionState
 import androidx.compose.animation.core.animateFloat
@@ -45,7 +46,11 @@ import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import com.fidloo.flux.domain.model.CurrentWeather
+import com.fidloo.flux.domain.model.WeatherState
 import com.fidloo.flux.presentation.R
+import com.fidloo.flux.presentation.ui.particle.Precipitations
+import com.fidloo.flux.presentation.ui.particle.rainParameters
+import com.fidloo.flux.presentation.ui.particle.snowParameters
 import java.util.Calendar
 
 @Composable
@@ -169,7 +174,7 @@ fun DynamicWeatherLandscape(
         mountainDarkTintAlpha = mountainDarkTintPercent * MOUNTAIN_TINT_ALPHA_MAX
 
         backgroundLayer2Alpha = 1 - progress
-        val (backgroundLayer1, backgroundLayer2, mountain) = createRefs()
+        val (backgroundLayer1, backgroundLayer2, mountain, particles) = createRefs()
 
         if (backgroundLayer1Image != null) {
             Image(
@@ -254,6 +259,35 @@ fun DynamicWeatherLandscape(
                 BlendMode.SrcAtop
             )
         )
+
+        val weatherState = weather.hourWeather.state
+        Crossfade(targetState = weatherState) { state ->
+            val precipitationsParameters = when (state) {
+                WeatherState.RAIN -> rainParameters
+                WeatherState.HEAVY_RAIN -> rainParameters.copy(particleCount = 2000)
+                WeatherState.THUNDERSTORM -> rainParameters.copy(
+                    particleCount = 2000,
+                    minAngle = 260,
+                    maxAngle = 280,
+                )
+                WeatherState.SNOW -> snowParameters
+                else -> null
+            }
+            if (precipitationsParameters != null) {
+                Precipitations(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .constrainAs(particles) {
+                            top.linkTo(parent.top)
+                            start.linkTo(parent.start)
+                            end.linkTo(parent.end)
+                            bottom.linkTo(parent.bottom)
+                        },
+                    viewModel = viewModel,
+                    parameters = precipitationsParameters
+                )
+            }
+        }
     }
 }
 
