@@ -23,4 +23,9 @@
     <string name="temperature">Temperature</string>
     <string name="expandable_header_toggle_message">Toggle expanded state</string>
     <string name="precipitation">Precipitation</string>
+    <string name="generic_error_message">An error occurred.</string>
+    <string name="this_week">This week</string>
+    <string name="forecast_7days">7-day forecast</string>
+    <string name="details">Details</string>
+    <string name="weather_now">Weather now</string>
 </resources>

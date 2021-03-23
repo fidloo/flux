@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.fidloo.flux.presentation.ui.home
+package com.fidloo.flux.presentation.ui.home.current
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Face

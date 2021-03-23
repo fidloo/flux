@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.fidloo.flux.presentation.ui.home
+package com.fidloo.flux.presentation.ui.home.landscape
 
 import androidx.compose.animation.Crossfade
 import androidx.compose.animation.core.LinearOutSlowInEasing
@@ -50,7 +50,8 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import com.fidloo.flux.domain.model.CurrentWeather
 import com.fidloo.flux.domain.model.WeatherState
 import com.fidloo.flux.presentation.R
-import com.fidloo.flux.presentation.ui.particle.Precipitations
+import com.fidloo.flux.presentation.ui.home.HomeViewModel
+import com.fidloo.flux.presentation.ui.particle.Particles
 import com.fidloo.flux.presentation.ui.particle.rainParameters
 import com.fidloo.flux.presentation.ui.particle.snowParameters
 import dev.chrisbanes.accompanist.insets.statusBarsPadding
@@ -343,7 +344,7 @@ fun DynamicWeatherLandscape(
             }
 
             if (precipitationsParameters != null) {
-                Precipitations(
+                Particles(
                     modifier = Modifier
                         .fillMaxSize()
                         .constrainAs(particles) {

@@ -59,10 +59,15 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.fidloo.flux.domain.base.Result
 import com.fidloo.flux.presentation.R
-import com.fidloo.flux.presentation.ui.component.GenericErrorMessage
+import com.fidloo.flux.presentation.ui.component.ErrorMessage
 import com.fidloo.flux.presentation.ui.component.SectionHeader
 import com.fidloo.flux.presentation.ui.component.SectionProgressBar
 import com.fidloo.flux.presentation.ui.component.SwipeToRefreshLayout
+import com.fidloo.flux.presentation.ui.home.current.CurrentWeatherSection
+import com.fidloo.flux.presentation.ui.home.day.DayWeather
+import com.fidloo.flux.presentation.ui.home.hourly.HourlyWeather
+import com.fidloo.flux.presentation.ui.home.landscape.DynamicWeatherSection
+import com.fidloo.flux.presentation.ui.home.radar.WeatherRadar
 import com.fidloo.flux.presentation.ui.theme.BottomSheetShape
 import com.fidloo.flux.presentation.ui.theme.FluxTheme
 import java.util.Date
@@ -169,7 +174,7 @@ fun DetailedWeather(
                 .padding(top = 20.dp)
         ) {
 
-            item { CurrentWeather(viewState.currentWeather) }
+            item { CurrentWeatherSection(viewState.currentWeather) }
             item {
                 HourlyWeather(
                     viewState.hourlyWeather,
@@ -178,10 +183,17 @@ fun DetailedWeather(
                 )
             }
             item { WeatherRadar(onShowSnackbar = { onShowSnackbar(it) }) }
-            item { SectionHeader(title = "This week", subtitle = "7-day forecast") }
+            item {
+                SectionHeader(
+                    title = stringResource(R.string.this_week),
+                    subtitle = stringResource(
+                        R.string.forecast_7days
+                    )
+                )
+            }
             item { Spacer(Modifier.height(8.dp)) }
             when (viewState.weekWeather) {
-                is Result.Error -> item { GenericErrorMessage() }
+                is Result.Error -> item { ErrorMessage() }
                 Result.Loading -> item { SectionProgressBar() }
                 is Result.Success -> {
                     items(viewState.weekWeather.data) { item ->

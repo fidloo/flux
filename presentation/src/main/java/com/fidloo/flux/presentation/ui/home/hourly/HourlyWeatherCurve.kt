@@ -13,36 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.fidloo.flux.presentation.ui.home
+package com.fidloo.flux.presentation.ui.home.hourly
 
 import android.graphics.Paint
-import androidx.compose.animation.animateContentSize
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Canvas
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.horizontalScroll
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.material.Card
-import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.PathEffect
 import androidx.compose.ui.graphics.drawscope.Fill
@@ -50,81 +30,14 @@ import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
 import androidx.compose.ui.graphics.nativeCanvas
 import androidx.compose.ui.graphics.toArgb
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.fidloo.flux.domain.base.Result
 import com.fidloo.flux.domain.business.HourlyWeatherCurveParameters
 import com.fidloo.flux.domain.model.HourWeather
 import com.fidloo.flux.domain.model.HourlyWeather
-import com.fidloo.flux.presentation.R
-import com.fidloo.flux.presentation.ui.component.ExpandableSectionHeader
-import com.fidloo.flux.presentation.ui.component.GenericErrorMessage
-import com.fidloo.flux.presentation.ui.component.SectionProgressBar
-import com.fidloo.flux.presentation.ui.utils.getDescriptionRes
-import com.fidloo.flux.presentation.ui.utils.getIconRes
+import com.fidloo.flux.domain.model.HourlyWeatherCurvePoints
+import com.fidloo.flux.domain.model.WeatherFacts
 import java.util.Calendar
-import java.util.Date
-
-@Composable
-fun HourlyWeather(
-    hourlyWeatherResult: Result<HourlyWeather>,
-    selectedTime: Date,
-    onWeatherTimeSelected: (Date) -> Unit
-) {
-    var expanded by rememberSaveable { mutableStateOf(true) }
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .animateContentSize()
-    ) {
-        ExpandableSectionHeader(
-            title = stringResource(R.string.hourly_weather),
-            subtitle = stringResource(R.string.forecast_24h),
-            expanded = expanded,
-            onToggleState = { expanded = !expanded }
-        )
-        Spacer(Modifier.height(8.dp))
-
-        when (hourlyWeatherResult) {
-            is Result.Error -> GenericErrorMessage()
-            Result.Loading -> SectionProgressBar()
-            is Result.Success -> HourlyWeatherChart(
-                hourlyWeatherResult.data,
-                selectedTime,
-                onWeatherTimeSelected,
-                expanded
-            )
-        }
-    }
-}
-
-@Composable
-fun HourlyWeatherChart(
-    hourlyWeather: HourlyWeather,
-    selectedTime: Date,
-    onWeatherTimeSelected: (Date) -> Unit,
-    expanded: Boolean
-) {
-    val scrollState = rememberScrollState()
-
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .horizontalScroll(scrollState)
-    ) {
-        Column(modifier = Modifier.animateContentSize()) {
-            if (expanded) {
-                HourlyWeatherCurve(hourlyWeather)
-            }
-            HourlyWeatherChartHorizontalAxisDescription(
-                hourlyWeather,
-                selectedTime,
-                onWeatherTimeSelected
-            )
-        }
-    }
-}
 
 @Composable
 fun HourlyWeatherCurve(hourlyWeather: HourlyWeather) {
@@ -247,71 +160,29 @@ fun HourlyWeatherCurve(hourlyWeather: HourlyWeather) {
     )
 }
 
+@Preview
 @Composable
-fun HourlyWeatherChartHorizontalAxisDescription(
-    hourlyWeather: HourlyWeather,
-    selectedTime: Date,
-    onWeatherTimeSelected: (Date) -> Unit
-) {
-    val dpPerCell = HourlyWeatherCurveParameters.cellSize
-
-    Row(
-        modifier = Modifier.padding(start = dpPerCell.dp / 2, top = 8.dp)
-    ) {
-        hourlyWeather.weatherPerHour.forEach { item ->
-            HourWeatherChartItemDescription(
-                item = item,
-                selectedTime = selectedTime,
-                modifier = Modifier.width(dpPerCell.dp),
-                onWeatherTimeSelected = onWeatherTimeSelected
-            )
-        }
-    }
-}
-
-@Composable
-fun HourWeatherChartItemDescription(
-    item: HourWeather,
-    selectedTime: Date,
-    modifier: Modifier = Modifier,
-    onWeatherTimeSelected: (Date) -> Unit
-) {
-
+fun HourlyWeatherCurvePreview() {
     val calendar = Calendar.getInstance()
-    calendar.time = selectedTime
-    val selectedHour = calendar[Calendar.HOUR_OF_DAY]
-    calendar.time = item.time
-    val itemHour = calendar[Calendar.HOUR_OF_DAY]
-    val isSelected = selectedHour == itemHour
+    calendar[Calendar.HOUR_OF_DAY] = 0
+    calendar[Calendar.MINUTE] = 0
+    calendar[Calendar.SECOND] = 0
+    calendar[Calendar.MILLISECOND] = 0
 
-    Card(
-        shape = MaterialTheme.shapes.medium,
-        backgroundColor = if (isSelected) MaterialTheme.colors.primary.copy(alpha = 0.2f) else Color.Transparent,
-        elevation = 0.dp,
-        border = if (selectedHour == itemHour) {
-            BorderStroke(2.dp, MaterialTheme.colors.primary)
-        } else {
-            null
+    val weatherPerHour = (1..10).map { index ->
+        if (index != 0) {
+            calendar.add(Calendar.HOUR, 1)
         }
-    ) {
-        Column(
-            modifier = modifier
-                .clickable { onWeatherTimeSelected(item.time) }
-                .padding(vertical = 4.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
-        ) {
-            Icon(
-                painter = painterResource(item.facts.state.getIconRes(item.night)),
-                contentDescription = stringResource(id = item.facts.state.getDescriptionRes()),
-                modifier = Modifier.size(36.dp),
-            )
 
-            calendar.time = item.time
-            val currentHour = calendar[Calendar.HOUR_OF_DAY]
-            Text(
-                text = "%02d".format(currentHour),
-                style = MaterialTheme.typography.h2
-            )
-        }
+        HourWeather(
+            time = calendar.time,
+            facts = WeatherFacts.Default.copy(temperature = index),
+            night = false
+        )
     }
+    val item = HourlyWeather(
+        weatherPerHour = weatherPerHour,
+        hourlyWeatherCurvePoints = HourlyWeatherCurvePoints()
+    )
+    HourlyWeatherCurve(item)
 }

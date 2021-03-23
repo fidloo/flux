@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.fidloo.flux.presentation.ui.home
+package com.fidloo.flux.presentation.ui.home.day
 
 import android.annotation.SuppressLint
 import androidx.compose.animation.animateContentSize
@@ -50,12 +50,17 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.fidloo.flux.domain.model.DayWeather
+import com.fidloo.flux.domain.model.WeatherFacts
 import com.fidloo.flux.presentation.R
+import com.fidloo.flux.presentation.ui.home.current.WeatherFact
+import com.fidloo.flux.presentation.ui.home.current.extractFacts
 import com.fidloo.flux.presentation.ui.utils.getDescriptionRes
 import com.fidloo.flux.presentation.ui.utils.getIconRes
 import java.text.SimpleDateFormat
+import java.util.Date
 
 @SuppressLint("SimpleDateFormat")
 @Composable
@@ -63,7 +68,7 @@ fun DayWeather(item: DayWeather) {
     val dateFormat = SimpleDateFormat("EEEE d")
     var expanded by rememberSaveable { mutableStateOf(false) }
     val rotation: Float by animateFloatAsState(if (expanded) 180f else 0f)
-""
+
     Column(modifier = Modifier.animateContentSize()) {
         Row(
             horizontalArrangement = Arrangement.SpaceBetween,
@@ -163,4 +168,19 @@ fun DayWeather(item: DayWeather) {
             }
         }
     }
+}
+
+@Preview
+@Composable
+fun DayWeatherPreview() {
+    val item = DayWeather(
+        date = Date(),
+        facts = WeatherFacts.Default,
+        sunrise = "06:44",
+        sunset = "18:54",
+        minTemperature = 4,
+        maxTemperature = 21,
+    )
+
+    DayWeather(item)
 }

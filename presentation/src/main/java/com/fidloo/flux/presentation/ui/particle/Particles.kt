@@ -25,25 +25,15 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.PathEffect
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.IntSize
 import kotlin.math.cos
 import kotlin.math.sin
 
-data class Particle(
-    var n: Long = 0,
-    var x: Float,
-    var y: Float,
-    var width: Float,
-    var height: Float,
-    var speed: Float,
-    var angle: Int,
-)
-
 @Composable
-fun Precipitations(
+fun Particles(
     modifier: Modifier = Modifier,
     iteration: Long,
     parameters: PrecipitationsParameters
@@ -115,34 +105,8 @@ fun Precipitations(
     }
 }
 
-val snowParameters = PrecipitationsParameters(
-    particleCount = 200,
-    distancePerStep = 5,
-    minSpeed = 0.1f,
-    maxSpeed = 1f,
-    minAngle = 260,
-    maxAngle = 280,
-    shape = PrecipitationShape.Circle(
-        minRadius = 1,
-        maxRadius = 10,
-        color = Color.White,
-    ),
-    sourceEdge = PrecipitationSourceEdge.TOP
-)
-
-val rainParameters = PrecipitationsParameters(
-    particleCount = 600,
-    distancePerStep = 30,
-    minSpeed = 0.7f,
-    maxSpeed = 1f,
-    minAngle = 265,
-    maxAngle = 285,
-    shape = PrecipitationShape.Line(
-        minStrokeWidth = 1,
-        maxStrokeWidth = 3,
-        minHeight = 10,
-        maxHeight = 15,
-        color = Color.Gray,
-    ),
-    sourceEdge = PrecipitationSourceEdge.TOP
-)
+@Preview
+@Composable
+fun ParticlesPreview() {
+    Particles(iteration = 1, parameters = snowParameters)
+}

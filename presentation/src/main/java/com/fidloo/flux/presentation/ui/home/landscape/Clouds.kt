@@ -13,26 +13,33 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.fidloo.flux.presentation.ui.home
+package com.fidloo.flux.presentation.ui.home.landscape
 
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.BlendMode
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.imageResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.fidloo.flux.presentation.R
+import com.fidloo.flux.presentation.ui.particle.Particles
 import com.fidloo.flux.presentation.ui.particle.PrecipitationShape
 import com.fidloo.flux.presentation.ui.particle.PrecipitationSourceEdge
-import com.fidloo.flux.presentation.ui.particle.Precipitations
 import com.fidloo.flux.presentation.ui.particle.PrecipitationsParameters
 
 @Composable
-fun Clouds(modifier: Modifier, tint: ColorFilter, particleAnimationIteration: Long, cloudCount: Int) {
+fun Clouds(
+    modifier: Modifier = Modifier,
+    tint: ColorFilter,
+    particleAnimationIteration: Long,
+    cloudCount: Int
+) {
     BoxWithConstraints(modifier = modifier) {
         val cloudsParameters = PrecipitationsParameters(
             particleCount = cloudCount,
@@ -53,11 +60,24 @@ fun Clouds(modifier: Modifier, tint: ColorFilter, particleAnimationIteration: Lo
             sourceEdge = PrecipitationSourceEdge.RIGHT
         )
 
-        Precipitations(
+        Particles(
             modifier = Modifier
                 .fillMaxSize(),
             iteration = particleAnimationIteration,
             parameters = cloudsParameters
         )
     }
+}
+
+@Preview
+@Composable
+fun CloudsPreview() {
+    Clouds(
+        tint = ColorFilter.tint(
+            Color.Black.copy(alpha = 0.2f),
+            BlendMode.SrcAtop
+        ),
+        particleAnimationIteration = 1,
+        cloudCount = 8
+    )
 }

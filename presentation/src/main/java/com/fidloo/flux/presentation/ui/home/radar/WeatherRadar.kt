@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.fidloo.flux.presentation.ui.home
+package com.fidloo.flux.presentation.ui.home.radar
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -30,6 +30,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.fidloo.flux.presentation.R
 import com.fidloo.flux.presentation.ui.component.SectionHeader
@@ -43,7 +44,10 @@ fun WeatherRadar(onShowSnackbar: (String) -> Unit) {
             .fillMaxWidth()
             .padding(vertical = 16.dp)
     ) {
-        SectionHeader(title = stringResource(R.string.weather_radar), subtitle = stringResource(R.string.satellite_images))
+        SectionHeader(
+            title = stringResource(R.string.weather_radar),
+            subtitle = stringResource(R.string.satellite_images)
+        )
         Spacer(Modifier.height(8.dp))
 
         Box(
@@ -51,7 +55,8 @@ fun WeatherRadar(onShowSnackbar: (String) -> Unit) {
                 .padding(horizontal = 24.dp)
         ) {
             Card(
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier
+                    .fillMaxWidth()
                     .clickable { onShowSnackbar(fakeDataMessage) },
                 shape = MaterialTheme.shapes.medium,
                 elevation = FluxTheme.elevations.Card
@@ -64,4 +69,10 @@ fun WeatherRadar(onShowSnackbar: (String) -> Unit) {
             }
         }
     }
+}
+
+@Preview
+@Composable
+fun WeatherRadarPreview() {
+    WeatherRadar(onShowSnackbar = {})
 }
