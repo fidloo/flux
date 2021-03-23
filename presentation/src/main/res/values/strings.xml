@@ -18,4 +18,9 @@
     <string name="cloud">Cloud</string>
     <string name="hourly_weather">Hourly weather</string>
     <string name="forecast_24h">24-hour forecast</string>
+    <string name="weather_radar">Weather radar</string>
+    <string name="satellite_images">Satellite images</string>
+    <string name="temperature">Temperature</string>
+    <string name="expandable_header_toggle_message">Toggle expanded state</string>
+    <string name="precipitation">Precipitation</string>
 </resources>

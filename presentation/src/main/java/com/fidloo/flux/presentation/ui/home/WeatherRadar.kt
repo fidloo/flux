@@ -43,7 +43,7 @@ fun WeatherRadar(onShowSnackbar: (String) -> Unit) {
             .fillMaxWidth()
             .padding(vertical = 16.dp)
     ) {
-        SectionHeader(title = "Weather radar", subtitle = "Satellite images")
+        SectionHeader(title = stringResource(R.string.weather_radar), subtitle = stringResource(R.string.satellite_images))
         Spacer(Modifier.height(8.dp))
 
         Box(
@@ -58,7 +58,7 @@ fun WeatherRadar(onShowSnackbar: (String) -> Unit) {
             ) {
                 Image(
                     painter = painterResource(R.drawable.weather_radar_lyon),
-                    contentDescription = "Weather satellite images",
+                    contentDescription = stringResource(R.string.satellite_images),
                     contentScale = ContentScale.Crop
                 )
             }

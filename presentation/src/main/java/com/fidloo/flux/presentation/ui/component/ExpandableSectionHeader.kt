@@ -38,8 +38,10 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.fidloo.flux.presentation.R
 
 @Composable
 fun ExpandableSectionHeader(
@@ -73,8 +75,9 @@ fun ExpandableSectionHeader(
         }
         Icon(
             imageVector = Icons.Rounded.ExpandMore,
-            contentDescription = "Toggle expanded state",
-            modifier = Modifier.size(28.dp)
+            contentDescription = stringResource(R.string.expandable_header_toggle_message),
+            modifier = Modifier
+                .size(28.dp)
                 .rotate(rotation)
         )
     }
@@ -84,8 +87,8 @@ fun ExpandableSectionHeader(
 @Composable
 fun ExpandableSectionHeaderPreview() {
     ExpandableSectionHeader(
-        title = "Hourly weather",
-        subtitle = "24-hour forecast",
+        title = stringResource(id = R.string.hourly_weather),
+        subtitle = stringResource(id = R.string.forecast_24h),
         expanded = false,
         onToggleState = {}
     )

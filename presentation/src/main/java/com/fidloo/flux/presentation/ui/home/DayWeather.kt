@@ -63,7 +63,7 @@ fun DayWeather(item: DayWeather) {
     val dateFormat = SimpleDateFormat("EEEE d")
     var expanded by rememberSaveable { mutableStateOf(false) }
     val rotation: Float by animateFloatAsState(if (expanded) 180f else 0f)
-
+""
     Column(modifier = Modifier.animateContentSize()) {
         Row(
             horizontalArrangement = Arrangement.SpaceBetween,
@@ -76,7 +76,7 @@ fun DayWeather(item: DayWeather) {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Icon(
                     painter = painterResource(item.facts.state.getIconRes()),
-                    contentDescription = "Weather satellite images",
+                    contentDescription = stringResource(id = item.facts.state.getDescriptionRes()),
                     modifier = Modifier.size(56.dp)
                 )
                 Spacer(Modifier.width(16.dp))
@@ -91,7 +91,7 @@ fun DayWeather(item: DayWeather) {
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Icon(
                             imageVector = Icons.Outlined.Thermostat,
-                            contentDescription = "Temperature",
+                            contentDescription = stringResource(R.string.temperature),
                             modifier = Modifier.size(16.dp),
                             tint = MaterialTheme.colors.primary
                         )
@@ -106,7 +106,7 @@ fun DayWeather(item: DayWeather) {
                         Spacer(Modifier.width(16.dp))
                         Icon(
                             painter = painterResource(R.drawable.ic_rain),
-                            contentDescription = "Precipitation",
+                            contentDescription = stringResource(R.string.precipitation),
                             modifier = Modifier.size(22.dp),
                             tint = MaterialTheme.colors.primary
                         )
@@ -124,7 +124,7 @@ fun DayWeather(item: DayWeather) {
 
             Icon(
                 imageVector = Icons.Rounded.ExpandMore,
-                contentDescription = "Toggle expanded state",
+                contentDescription = stringResource(id = R.string.expandable_header_toggle_message),
                 modifier = Modifier
                     .size(28.dp)
                     .rotate(rotation),
