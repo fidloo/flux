@@ -61,6 +61,7 @@ import com.fidloo.flux.presentation.ui.home.HomeViewModel
 import com.fidloo.flux.presentation.ui.particle.Particles
 import com.fidloo.flux.presentation.ui.particle.rainParameters
 import com.fidloo.flux.presentation.ui.particle.snowParameters
+import com.fidloo.flux.presentation.ui.theme.white
 import com.fidloo.flux.presentation.ui.utils.getDescriptionRes
 import dev.chrisbanes.accompanist.insets.statusBarsPadding
 import java.util.Calendar
@@ -376,12 +377,14 @@ fun DynamicWeatherLandscape(
             blurRadius = 5f
         )
 
+        val textColor = white.copy(alpha = 0.8f)
         Text(
             text = weather.hourWeather.temperature.toInt().toString(),
             style = MaterialTheme.typography.h1.copy(
                 fontSize = 60.sp,
                 shadow = textShadow
             ),
+            color = textColor,
             modifier = Modifier
                 .statusBarsPadding()
                 .constrainAs(temperature) {
@@ -395,6 +398,7 @@ fun DynamicWeatherLandscape(
             style = MaterialTheme.typography.h1.copy(
                 shadow = textShadow
             ),
+            color = textColor,
             modifier = Modifier
                 .statusBarsPadding()
                 .padding(top = 12.dp)
@@ -411,6 +415,7 @@ fun DynamicWeatherLandscape(
                 fontWeight = FontWeight.Normal,
                 shadow = textShadow
             ),
+            color = textColor,
             modifier = Modifier
                 .constrainAs(weatherDescription) {
                     top.linkTo(temperature.bottom, margin = 8.dp)

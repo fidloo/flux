@@ -1,27 +1,43 @@
-# Template repository
+# Flux
 
-Template repository for the Jetpack Compose [#AndroidDevChallenge](https://developer.android.com/dev-challenge).
+![Workflow result](https://github.com/fidloo/flux/workflows/Check/badge.svg)
 
-## Getting started
-Copy this repository by pressing the "Use this template" button in Github.
-Clone your repository and open it in the latest [Android Studio (Canary build)](https://developer.android.com/studio/preview).
 
-## Submission requirements
-- Follow the challenge description on the project website: [developer.android.com/dev-challenge](https://developer.android.com/dev-challenge)
-- All UI should be written using Jetpack Compose
-- The Github Actions workflow should complete successfully
-- Include two screenshots of your submission in the [results](results) folder. The names should be
-  screenshot_1.png and screenshot_2.png.
-- Include a screen record of your submission in the [results](results) folder. The name should be
-  video.mp4
-- Replace the contents of [README.md](README.md) with the contents of [README-template.md](README-template.md) and fill out the template.
+## :scroll: Description
+Flux is a dynamic weather that communicates the weather throughout a landscape whose details vary according to the time and the weather at that particular time.
+This dynamic landscape follows a day / night cycle with multiple layers that vary regarding the phase of the day (night, sunrise, day and sunset). The sun and the moon are drawn using a quadratic function computed according to the available space for simplicity purposes.
+In addition to the day / night cycle, a particle generation system has been created to draw generic types of particles : 
+- Lines
+- Points
+- Images
 
-## Code formatting
-The CI uses [Spotless](https://github.com/diffplug/spotless) to check if your code is formatted correctly and contains the right licenses.
-Internally, Spotless uses [ktlint](https://github.com/pinterest/ktlint) to check the formatting of your code.
-To set up ktlint correctly with Android Studio, follow one of the [listed setup options](https://github.com/pinterest/ktlint#-with-intellij-idea).
+As it is fully customizable, the particle generator was used to draw snow, rain (light, heavy and thunderstorm) as well as clouds on the landscape view using Jetpack Compose Canvas.
+This canvas also draws lighting with a random path when the displayed weather is a thunderstorm.
 
-Before committing your code, run `./gradlew app:spotlessApply` to automatically format your code.
+Flux also displays basic weather info via four sections:
+- Details: current weather
+- Hourly weather : A chart showing the temperature, wind or cloud cover according to the time. You can click on the temperature / wind / cloud cover filter and the curve will animates to the target state. The curve is drawn on a Canvas and interpolated using Bezier method and connections points. You can also click on the time at the bottom of the chart to update the time shown in the dynamic landscape.
+- Weather radar
+- This week : 7-day forecast
+
+Flux has a light and dark theme that follows your device preference.
+A lot of animations have been used in this project (landscape, curve, expand / collapse, fade, etc.)
+
+This project follows an architecture by layer (data, domain, presentation).
+
+
+
+## :bulb: Motivation and Context
+It's very impressive how fast an app can be developed using Jetpack Compose and its underlying tools (easy theming, state management, navigation, animation). The Android Dev Challenge was a great way to discover the power of Jetpack Compose.
+
+## :camera_flash: Screenshots
+
+### Dark Theme
+<img src="/results/screenshot_1.png" width="260">&emsp;<img src="/results/screenshot_2.png" width="260">&emsp;<img src="/results/screenshot_3.png" width="260">&emsp;<img src="/results/screenshot_4.png" width="260">
+
+### Light Theme
+<img src="/results/screenshot_1_light.png" width="260">&emsp;<img src="/results/screenshot_2_light.png" width="260">&emsp;<img src="/results/screenshot_3_light.png" width="260">&emsp;<img src="/results/screenshot_4_light.png" width="260">
+
 
 ## License
 ```
