@@ -24,7 +24,7 @@ import kotlinx.coroutines.Dispatchers
 
 @Module
 @InstallIn(SingletonComponent::class)
-object CoroutinesModule {
+object DispatchersModule {
 
     @DefaultDispatcher
     @JvmStatic

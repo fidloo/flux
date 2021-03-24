@@ -102,4 +102,8 @@ dependencies {
     androidTestImplementation Libs.AndroidX.Test.rules
     androidTestImplementation Libs.AndroidX.Test.Ext.junit
     androidTestImplementation Libs.AndroidX.Compose.uiTest
+    androidTestImplementation Libs.AndroidX.Test.runner
+    androidTestImplementation Libs.Coroutines.test
+    androidTestImplementation Libs.Hilt.library
+    androidTestImplementation Libs.Hilt.testing
 }
