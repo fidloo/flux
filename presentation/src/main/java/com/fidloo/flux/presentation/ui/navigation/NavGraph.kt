@@ -16,7 +16,7 @@
 package com.fidloo.flux.presentation.ui.navigation
 
 import androidx.compose.runtime.Composable
-import androidx.hilt.navigation.compose.hiltNavGraphViewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -36,7 +36,7 @@ fun NavGraph(startDestination: String = MainDestinations.HOME_ROUTE) {
         startDestination = startDestination
     ) {
         composable(MainDestinations.HOME_ROUTE) { backStackEntry ->
-            val viewModel = hiltNavGraphViewModel<HomeViewModel>(backStackEntry = backStackEntry)
+            val viewModel = hiltViewModel<HomeViewModel>(backStackEntry)
             HomeScreen(viewModel)
         }
     }

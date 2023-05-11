@@ -21,8 +21,8 @@
         android:theme="@style/Theme.Flux">
         <activity
             android:name=".presentation.ui.MainActivity"
-            android:label="@string/app_name"
-            android:theme="@style/Theme.Flux.Splash">
+            android:theme="@style/Theme.Flux.Splash"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
