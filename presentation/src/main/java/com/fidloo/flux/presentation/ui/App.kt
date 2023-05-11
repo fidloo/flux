@@ -27,7 +27,7 @@ import androidx.compose.ui.Modifier
 import com.fidloo.flux.presentation.ui.navigation.LocalBackDispatcher
 import com.fidloo.flux.presentation.ui.navigation.NavGraph
 import com.fidloo.flux.presentation.ui.theme.FluxTheme
-import dev.chrisbanes.accompanist.insets.ProvideWindowInsets
+import com.google.accompanist.insets.ProvideWindowInsets
 
 @Composable
 fun App(backDispatcher: OnBackPressedDispatcher, window: Window) {

@@ -22,13 +22,7 @@ import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.core.updateTransition
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.BoxWithConstraints
-import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.offset
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
@@ -63,7 +57,6 @@ import com.fidloo.flux.presentation.ui.particle.rainParameters
 import com.fidloo.flux.presentation.ui.particle.snowParameters
 import com.fidloo.flux.presentation.ui.theme.white
 import com.fidloo.flux.presentation.ui.utils.getDescriptionRes
-import dev.chrisbanes.accompanist.insets.statusBarsPadding
 import java.util.Calendar
 
 @Composable
@@ -104,7 +97,7 @@ fun DynamicWeatherLandscape(
         MutableTransitionState(AnimatedTimeJumpProgress.START)
             .apply { targetState = AnimatedTimeJumpProgress.END }
     }
-    val transition = updateTransition(currentState)
+    val transition = updateTransition(currentState, label = "")
 
     val timeInMin by transition.animateFloat(
         transitionSpec = {
@@ -112,7 +105,7 @@ fun DynamicWeatherLandscape(
                 durationMillis = 900,
                 easing = LinearOutSlowInEasing
             )
-        }
+        }, label = ""
     ) { progress ->
         if (progress == AnimatedTimeJumpProgress.START) {
             oldTimeInMin.toFloat()

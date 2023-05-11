@@ -13,7 +13,7 @@
     package="com.fidloo.flux">
 
     <application
-        android:name=".app.ui.FluxApplication"
+        android:name=".app.FluxApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -21,8 +21,8 @@
         android:theme="@style/Theme.Flux">
         <activity
             android:name=".presentation.ui.MainActivity"
-            android:label="@string/app_name"
-            android:theme="@style/Theme.Flux.Splash">
+            android:theme="@style/Theme.Flux.Splash"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
