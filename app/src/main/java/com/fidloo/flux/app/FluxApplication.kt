@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.fidloo.flux.app.ui
+package com.fidloo.flux.app
 
 import android.app.Application
 import dagger.hilt.android.HiltAndroidApp
